@@ -5,7 +5,7 @@ module.exports = {
   tabWidth: 2,
   useTabs: false,
   bracketSpacing: true,
-  printWidth: 80,
+  printWidth: 100,
   endOfLine: 'lf',
 
   plugins: ['@trivago/prettier-plugin-sort-imports'],
