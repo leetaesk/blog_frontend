@@ -1,1 +1,1 @@
-# starter
+# Leetaesk's blog, frontend

@@ -1,7 +1,7 @@
 import '@/App.css';
 
 function App() {
-  return <></>;
+  return <>스타트 ㄱㄱ</>;
 }
 
 export default App;
