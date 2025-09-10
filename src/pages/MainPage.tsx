@@ -1,6 +1,5 @@
 import logo from '@/assets/Arrow_up-right.svg';
 import CardNav from '@/components/CardNav';
-import Particles from '@/components/Particles';
 
 const MainPage = () => {
   const items = [
