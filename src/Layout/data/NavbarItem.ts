@@ -1,9 +1,11 @@
+import { ROUTES } from '@/constants/routes';
+
 // 1. 변하지 않는 기본 메뉴 구조 정의
 export const navItems = [
   {
     label: 'Archive',
     links: [
-      { label: 'All Posts', to: '/archive', ariaLabel: 'View all posts' },
+      { label: 'All Posts', to: ROUTES.ARCHIVE, ariaLabel: 'View all posts' },
       { label: 'By Category', to: '/archive', ariaLabel: 'Browse posts by category' },
     ],
   },

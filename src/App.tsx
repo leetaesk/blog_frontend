@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import Layout from '@/Layout/Layout';
+import { ROUTES } from '@/constants/routes';
 import ArchivePage from '@/pages/ArchivePage';
 import MainPage from '@/pages/MainPage';
 
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
         element: <MainPage />,
       },
       {
-        path: 'archive', // 'localhost:5173/blog' 경로
+        path: ROUTES.ARCHIVE,
         element: <ArchivePage />,
       },
     ],
