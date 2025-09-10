@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import GoArrowUpRight from '@/assets/Arrow_up-right.svg';
 import Logo from '@/components/Logo';
+import useThemeStore from '@/store/themeStore';
 
 type CardNavLink = {
   label: string;
