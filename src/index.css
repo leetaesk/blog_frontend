@@ -46,6 +46,15 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+@theme {
+  --color-compDark: #333333;
+  --color-compWhite: #fff;
+  --color-secondDark: #111;
+  --color-secondWhite: #f2f2f2;
+  --color-textDark: #202020;
+  --color-textWhite: #fff;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

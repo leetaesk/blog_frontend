@@ -1,7 +1,7 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { gsap } from 'gsap';
-import { Link } from 'react-router-dom';
+import { Link, type To, useLocation } from 'react-router-dom';
 
 import GoArrowUpRight from '@/assets/Arrow_up-right.svg';
 import Logo from '@/components/Logo';
@@ -9,7 +9,7 @@ import useThemeStore from '@/store/themeStore';
 
 type CardNavLink = {
   label: string;
-  href?: string;
+  to: To;
   ariaLabel: string;
 };
 
@@ -43,6 +43,7 @@ const CardNav: React.FC<CardNavProps> = ({
   buttonBgColor,
   buttonTextColor,
 }) => {
+  const location = useLocation();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const navRef = useRef<HTMLDivElement | null>(null);
@@ -186,6 +187,14 @@ const CardNav: React.FC<CardNavProps> = ({
     }
   };
 
+  useEffect(() => {
+    const tl = tlRef.current;
+    if (!tl) return;
+    setIsHamburgerOpen(false);
+    tl.eventCallback('onReverseComplete', () => setIsExpanded(false));
+    tl.reverse();
+  }, [location]);
+
   const setCardRef = (i: number) => (el: HTMLDivElement | null) => {
     if (el) cardsRef.current[i] = el;
   };
@@ -263,10 +272,10 @@ const CardNav: React.FC<CardNavProps> = ({
               </div>
               <div className="nav-card-links mt-auto flex flex-col gap-[2px]">
                 {item.links?.map((lnk, i) => (
-                  <a
+                  <Link
                     key={`${lnk.label}-${i}`}
                     className="nav-card-link inline-flex items-center gap-[6px] no-underline cursor-pointer transition-opacity duration-300 hover:opacity-75 text-[15px] md:text-[16px]"
-                    href={lnk.href}
+                    to={lnk.to}
                     aria-label={lnk.ariaLabel}
                   >
                     <img
@@ -275,7 +284,7 @@ const CardNav: React.FC<CardNavProps> = ({
                       aria-hidden="true"
                     />
                     {lnk.label}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>

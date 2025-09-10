@@ -3,23 +3,23 @@ export const navItems = [
   {
     label: 'Archive',
     links: [
-      { label: 'All Posts', ariaLabel: 'View all posts' },
-      { label: 'By Category', ariaLabel: 'Browse posts by category' },
+      { label: 'All Posts', to: '/archive', ariaLabel: 'View all posts' },
+      { label: 'By Category', to: '/archive', ariaLabel: 'Browse posts by category' },
     ],
   },
   {
     label: 'Projects',
     links: [
-      { label: 'All Projects', ariaLabel: 'View all projects' },
-      { label: 'My GitHub', ariaLabel: 'Visit my GitHub profile' },
+      { label: 'All Projects', to: '/archive', ariaLabel: 'View all projects' },
+      { label: 'My GitHub', to: '/archive', ariaLabel: 'Visit my GitHub profile' },
     ],
   },
   {
     label: 'About & Contact',
     links: [
-      { label: 'About Me', ariaLabel: 'Learn more about me' },
-      { label: 'Email', ariaLabel: 'Send me an email' },
-      { label: 'LinkedIn', ariaLabel: 'Connect on LinkedIn' },
+      { label: 'Email', to: '/archive', ariaLabel: 'Send me an email' },
+      { label: 'About Me', to: '/archive', ariaLabel: 'Learn more about me' },
+      { label: 'LinkedIn', to: '/archive', ariaLabel: 'Connect on LinkedIn' },
     ],
   },
 ];

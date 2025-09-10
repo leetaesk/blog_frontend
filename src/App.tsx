@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import Layout from '@/Layout/Layout';
+import ArchivePage from '@/pages/ArchivePage';
 import MainPage from '@/pages/MainPage';
 
 const router = createBrowserRouter([
@@ -12,10 +13,10 @@ const router = createBrowserRouter([
         index: true,
         element: <MainPage />,
       },
-      // {
-      //   path: 'blog', // 'localhost:5173/blog' 경로
-      //   element: <BlogPage />,
-      // },
+      {
+        path: 'archive', // 'localhost:5173/blog' 경로
+        element: <ArchivePage />,
+      },
     ],
   },
 ]);
