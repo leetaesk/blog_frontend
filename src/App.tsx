@@ -4,14 +4,15 @@ import Layout from '@/Layout/Layout';
 import { ROUTES } from '@/constants/routes';
 import ArchivePage from '@/pages/ArchivePage';
 import MainPage from '@/pages/MainPage';
+import NotFoundPage from '@/pages/NotFoundPage';
+// NotFoundPage는 그대로 사용합니다.
 import PostDetailPage from '@/pages/PostDetailPage';
-
-// 1. 상세 페이지 컴포넌트 import
 
 const router = createBrowserRouter([
   {
     path: ROUTES.HOME, // '/'
     element: <Layout />,
+    errorElement: <NotFoundPage />, // ✨ 1. 여기에 errorElement를 추가합니다.
     children: [
       {
         index: true,
@@ -22,11 +23,12 @@ const router = createBrowserRouter([
         element: <ArchivePage />,
       },
       {
-        path: ROUTES.POST_DETAIL, // '/posts/:postId'  2. 상세 페이지 라우트 추가
+        path: ROUTES.POST_DETAIL, // '/posts/:postId'
         element: <PostDetailPage />,
       },
     ],
   },
+  // 2. 기존의 path="*" 라우트는 이제 필요 없으므로 삭제합니다.
 ]);
 
 function App() {
