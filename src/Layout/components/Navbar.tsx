@@ -9,7 +9,6 @@ const Navbar = () => {
   const theme = useThemeStore((state) => state.theme);
 
   const themedItems = useMemo(() => {
-    // ... (이전과 동일)
     const colors = theme === 'dark' ? darkColors : lightColors;
     return navItems.map((item, index) => ({
       ...item,
@@ -20,7 +19,7 @@ const Navbar = () => {
 
   return (
     <CardNav
-      key={theme} // ✨ 이 부분을 추가합니다! 'light' 또는 'dark'
+      key={theme} //'light' 또는 'dark'
       logo={logo}
       logoAlt="Company Logo"
       items={themedItems}

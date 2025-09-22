@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { Renderer, Camera, Geometry, Program, Mesh } from 'ogl';
+
+import { Camera, Geometry, Mesh, Program, Renderer } from 'ogl';
 
 interface ParticlesProps {
   particleCount?: number;
@@ -23,7 +24,7 @@ const hexToRgb = (hex: string): [number, number, number] => {
   if (hex.length === 3) {
     hex = hex
       .split('')
-      .map(c => c + c)
+      .map((c) => c + c)
       .join('');
   }
   const int = parseInt(hex, 16);
@@ -111,7 +112,7 @@ const Particles: React.FC<ParticlesProps> = ({
   sizeRandomness = 1,
   cameraDistance = 20,
   disableRotation = false,
-  className
+  className,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -172,7 +173,7 @@ const Particles: React.FC<ParticlesProps> = ({
     const geometry = new Geometry(gl, {
       position: { size: 3, data: positions },
       random: { size: 4, data: randoms },
-      color: { size: 3, data: colors }
+      color: { size: 3, data: colors },
     });
 
     const program = new Program(gl, {
@@ -183,10 +184,10 @@ const Particles: React.FC<ParticlesProps> = ({
         uSpread: { value: particleSpread },
         uBaseSize: { value: particleBaseSize },
         uSizeRandomness: { value: sizeRandomness },
-        uAlphaParticles: { value: alphaParticles ? 1 : 0 }
+        uAlphaParticles: { value: alphaParticles ? 1 : 0 },
       },
       transparent: true,
-      depthTest: false
+      depthTest: false,
     });
 
     const particles = new Mesh(gl, { mode: gl.POINTS, geometry, program });
@@ -242,10 +243,10 @@ const Particles: React.FC<ParticlesProps> = ({
     particleBaseSize,
     sizeRandomness,
     cameraDistance,
-    disableRotation
+    disableRotation,
   ]);
 
-  return <div ref={containerRef} className={`relative w-full h-full ${className}`} />;
+  return <div ref={containerRef} className={`relative h-full w-full ${className}`} />;
 };
 
 export default Particles;

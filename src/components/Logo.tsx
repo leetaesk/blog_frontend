@@ -6,7 +6,7 @@ const Logo = () => {
       text="leetaesk*blog*tt*"
       onHover="pause"
       spinDuration={20}
-      className="text-black h-full"
+      className="h-full text-black"
     />
   );
 };

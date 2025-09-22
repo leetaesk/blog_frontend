@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-// 1. 스토어의 상태와 액션에 대한 타입을 정의합니다.
 interface ThemeState {
   theme: 'light' | 'dark';
   toggleTheme: () => void;

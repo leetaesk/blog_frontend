@@ -52,25 +52,18 @@ const CardNav: React.FC<CardNavProps> = ({
 
   // --- ⬇️ 스크롤 감지 로직 추가 ⬇️ ---
   const [isVisible, setIsVisible] = useState(true);
-  const lastScrollY = useRef(0);
 
   useLayoutEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
       // 페이지 최상단에서는 항상 표시
-      if (currentScrollY <= 10) {
+      if (currentScrollY <= 40) {
         setIsVisible(true);
         // 아래로 스크롤하면 숨김
-      } else if (currentScrollY > lastScrollY.current) {
-        setIsVisible(false);
-        // 위로 스크롤하면 표시
       } else {
-        setIsVisible(true);
+        setIsVisible(false);
       }
-
-      // 마지막 스크롤 위치 업데이트
-      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -203,7 +196,7 @@ const CardNav: React.FC<CardNavProps> = ({
     <div
       // --- ⬇️ 동적 클래스 추가 ⬇️ ---
       // isVisible 상태에 따라 Y축 위치 변경, transition으로 부드러운 효과 적용
-      className={`card-nav-container fixed left-1/2 -translate-x-1/2 w-[90%] max-w-[800px] z-[99] top-[1.2em] md:top-[2em] transition-transform duration-300 ease-in-out ${
+      className={`card-nav-container fixed top-[1.2em] left-1/2 z-[99] w-[90%] max-w-[800px] -translate-x-1/2 transition-transform duration-300 ease-in-out md:top-[2em] ${
         isVisible ? 'translate-y-0' : '-translate-y-[160%]' // 150%로 설정하여 확실히 화면 밖으로 이동
       } ${className}`}
       // --- ⬆️ 동적 클래스 추가 ⬆️ ---
@@ -212,14 +205,14 @@ const CardNav: React.FC<CardNavProps> = ({
         ref={navRef}
         className={`card-nav ${
           isExpanded ? 'open' : ''
-        } block h-[60px] p-0 rounded-xl shadow-md relative overflow-hidden will-change-[height]`}
+        } relative block h-[60px] overflow-hidden rounded-xl p-0 shadow-md will-change-[height]`}
         style={{ backgroundColor: baseColor }}
       >
-        <div className="card-nav-top absolute inset-x-0 top-0 h-[60px] flex items-center justify-between p-2 pl-[1.1rem] z-[2]">
+        <div className="card-nav-top absolute inset-x-0 top-0 z-[2] flex h-[60px] items-center justify-between p-2 pl-[1.1rem]">
           <div
             className={`hamburger-menu ${
               isHamburgerOpen ? 'open' : ''
-            } group h-full flex flex-col items-center justify-center cursor-pointer gap-[6px] order-2 md:order-none`}
+            } group order-2 flex h-full cursor-pointer flex-col items-center justify-center gap-[6px] md:order-none`}
             onClick={toggleMenu}
             role="button"
             aria-label={isExpanded ? 'Close menu' : 'Open menu'}
@@ -227,27 +220,27 @@ const CardNav: React.FC<CardNavProps> = ({
             style={{ color: menuColor || '#000' }}
           >
             <div
-              className={`hamburger-line w-[30px] h-[2px] bg-current transition-all duration-200 ease-linear [transform-origin:50%_50%] ${
+              className={`hamburger-line h-[2px] w-[30px] [transform-origin:50%_50%] bg-current transition-all duration-200 ease-linear ${
                 isHamburgerOpen ? 'translate-y-[4px] rotate-45' : ''
               } group-hover:opacity-75`}
             />
             <div
-              className={`hamburger-line w-[30px] h-[2px] bg-current transition-all duration-200 ease-linear [transform-origin:50%_50%] ${
+              className={`hamburger-line h-[2px] w-[30px] [transform-origin:50%_50%] bg-current transition-all duration-200 ease-linear ${
                 isHamburgerOpen ? '-translate-y-[4px] -rotate-45' : ''
               } group-hover:opacity-75`}
             />
           </div>
 
-          <div className="logo-container flex items-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 order-1 md:order-none">
+          <div className="logo-container order-1 flex items-center md:absolute md:top-1/2 md:left-1/2 md:order-none md:-translate-x-1/2 md:-translate-y-1/2">
             {/* <div className="h-12 w-12"><Logo /></div> */}
-            <Link to={'/'} className="font-bold italic text-xl">
+            <Link to={'/'} className="text-xl font-bold italic">
               LeetaeSk
             </Link>
           </div>
 
           <button
             type="button"
-            className="card-nav-cta-button flex items-center justify-center  md:inline-flex border-0 rounded-[calc(0.75rem-0.2rem)] px-4 h-full font-medium cursor-pointer transition-colors duration-300"
+            className="card-nav-cta-button flex h-full cursor-pointer items-center justify-center rounded-[calc(0.75rem-0.2rem)] border-0 px-4 font-medium transition-colors duration-300 md:inline-flex"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
           >
             Get Started
@@ -255,32 +248,32 @@ const CardNav: React.FC<CardNavProps> = ({
         </div>
 
         <div
-          className={`card-nav-content absolute left-0 right-0 top-[60px] bottom-0 p-2 flex flex-col items-stretch gap-2 justify-start z-[1] ${
-            isExpanded ? 'visible pointer-events-auto' : 'invisible pointer-events-none'
+          className={`card-nav-content absolute top-[60px] right-0 bottom-0 left-0 z-[1] flex flex-col items-stretch justify-start gap-2 p-2 ${
+            isExpanded ? 'pointer-events-auto visible' : 'pointer-events-none invisible'
           } md:flex-row md:items-end md:gap-[12px]`}
           // aria-hidden={!isExpanded}
         >
           {(items || []).slice(0, 3).map((item, idx) => (
             <div
               key={`${item.label}-${idx}`}
-              className="nav-card select-none relative flex flex-col gap-2 p-[12px_16px] rounded-[calc(0.75rem-0.2rem)] min-w-0 flex-[1_1_auto] h-auto min-h-[60px] md:h-full md:min-h-0 md:flex-[1_1_0%]"
+              className="nav-card relative flex h-auto min-h-[60px] min-w-0 flex-[1_1_auto] flex-col gap-2 rounded-[calc(0.75rem-0.2rem)] p-[12px_16px] select-none md:h-full md:min-h-0 md:flex-[1_1_0%]"
               ref={setCardRef(idx)}
               style={{ backgroundColor: item.bgColor, color: item.textColor }}
             >
-              <div className="nav-card-label font-normal tracking-[-0.5px] text-[18px] md:text-[22px]">
+              <div className="nav-card-label text-[18px] font-normal tracking-[-0.5px] md:text-[22px]">
                 {item.label}
               </div>
               <div className="nav-card-links mt-auto flex flex-col gap-[2px]">
                 {item.links?.map((lnk, i) => (
                   <Link
                     key={`${lnk.label}-${i}`}
-                    className="nav-card-link inline-flex items-center gap-[6px] no-underline cursor-pointer transition-opacity duration-300 hover:opacity-75 text-[15px] md:text-[16px]"
+                    className="nav-card-link inline-flex cursor-pointer items-center gap-[6px] text-[15px] no-underline transition-opacity duration-300 hover:opacity-75 md:text-[16px]"
                     to={lnk.to}
                     aria-label={lnk.ariaLabel}
                   >
                     <img
                       src={GoArrowUpRight}
-                      className="nav-card-link-icon shrink-0 h-4"
+                      className="nav-card-link-icon h-4 shrink-0"
                       aria-hidden="true"
                     />
                     {lnk.label}

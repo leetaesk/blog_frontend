@@ -8,7 +8,7 @@ module.exports = {
   printWidth: 100,
   endOfLine: 'lf',
 
-  plugins: ['@trivago/prettier-plugin-sort-imports'],
+  plugins: ['@trivago/prettier-plugin-sort-imports', 'prettier-plugin-tailwindcss'],
 
   importOrder: ['^react$', '<THIRD_PARTY_MODULES>', '^@(/.*)?$', '^[./]'],
   importOrderSeparation: true,

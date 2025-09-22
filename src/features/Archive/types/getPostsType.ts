@@ -20,7 +20,7 @@ interface Category {
 }
 
 // 개별 게시글 정보 타입
-interface Post {
+export interface PostListItem {
   id: number;
   title: string;
   summary: string;
@@ -44,7 +44,7 @@ interface Pagination {
  * @description 게시글 목록 조회 API 응답의 실제 데이터 부분을 정의합니다.
  */
 export type GetPostsResultType = {
-  posts: Post[];
+  posts: PostListItem[];
   pagination: Pagination;
 };
 

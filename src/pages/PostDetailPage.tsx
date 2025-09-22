@@ -1,8 +1,4 @@
-import React from 'react';
-
 import { Link, useParams } from 'react-router-dom';
-
-// --- Mock Data & Types (실제로는 API 호출로 대체됩니다) ---
 
 interface Category {
   id: number;
@@ -85,7 +81,7 @@ const mockPostDetails: PostDetail[] = [
 const CalendarIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-5 w-5 mr-1.5 inline-block"
+    className="mr-1.5 inline-block h-5 w-5"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -106,14 +102,14 @@ const PostDetailPage = () => {
 
   if (!post) {
     return (
-      <div className="bg-bgWhite dark:bg-bgDark text-textDark dark:text-textWhite min-h-screen flex flex-col justify-center items-center px-4">
-        <h2 className="text-3xl font-bold mb-4 text-center">게시글을 찾을 수 없습니다.</h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-8 text-center">
+      <div className="bg-bgWhite dark:bg-bgDark text-textDark dark:text-textWhite flex min-h-screen flex-col items-center justify-center px-4">
+        <h2 className="mb-4 text-center text-3xl font-bold">게시글을 찾을 수 없습니다.</h2>
+        <p className="mb-8 text-center text-gray-500 dark:text-gray-400">
           요청하신 페이지가 존재하지 않거나, 다른 주소로 옮겨졌을 수 있습니다.
         </p>
         <Link
           to="/archive"
-          className="bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors"
+          className="rounded-lg bg-indigo-600 px-6 py-3 font-bold text-white transition-colors hover:bg-indigo-700"
         >
           목록으로 돌아가기
         </Link>
@@ -123,26 +119,26 @@ const PostDetailPage = () => {
 
   return (
     <div className="bg-bgWhite dark:bg-bgDark text-textDark dark:text-textWhite min-h-screen py-8 md:py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-        <article className="bg-compWhite dark:bg-compDark p-6 sm:p-8 md:p-12 rounded-2xl shadow-xl dark:shadow-gray-800">
+      <div className="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <article className="bg-compWhite dark:bg-compDark rounded-2xl p-6 shadow-xl sm:p-8 md:p-12">
           <header className="mb-8">
             <Link
               to={`/archive?category=${post.category.name.toLowerCase()}`}
-              className="text-indigo-600 dark:text-indigo-400 font-semibold mb-2 inline-block hover:underline"
+              className="mb-2 inline-block font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
             >
               {post.category.name}
             </Link>
-            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
+            <h1 className="text-3xl leading-tight font-extrabold tracking-tight md:text-5xl">
               {post.title}
             </h1>
           </header>
 
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-gray-500 dark:text-gray-400 border-y border-gray-200 dark:border-gray-700 py-4 mb-8">
+          <div className="mb-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-gray-200 py-4 text-gray-500 dark:border-gray-700 dark:text-gray-400">
             <div className="flex items-center">
               <img
                 src={post.author.avatarUrl}
                 alt={post.author.name}
-                className="w-10 h-10 rounded-full mr-3"
+                className="mr-3 h-10 w-10 rounded-full"
               />
               <span className="font-semibold">{post.author.name}</span>
             </div>
@@ -153,38 +149,38 @@ const PostDetailPage = () => {
           </div>
 
           {post.thumbnailUrl && (
-            <div className="my-8 rounded-lg overflow-hidden shadow-lg">
+            <div className="my-8 overflow-hidden rounded-lg shadow-lg">
               <img
                 src={post.thumbnailUrl}
                 alt={post.title}
-                className="w-full h-auto object-cover"
+                className="h-auto w-full object-cover"
               />
             </div>
           )}
 
           <div
-            className="prose prose-lg dark:prose-invert max-w-none prose-p:text-textDark dark:prose-p:text-textWhite prose-h3:text-textDark dark:prose-h3:text-textWhite prose-strong:text-textDark dark:prose-strong:text-textWhite"
+            className="prose prose-lg dark:prose-invert prose-p:text-textDark dark:prose-p:text-textWhite prose-h3:text-textDark dark:prose-h3:text-textWhite prose-strong:text-textDark dark:prose-strong:text-textWhite max-w-none"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </article>
 
         {/* Author Profile Section */}
-        <section className="mt-12 bg-compWhite dark:bg-compDark p-8 rounded-2xl shadow-xl dark:shadow-gray-800 flex items-center">
+        <section className="bg-compWhite dark:bg-compDark mt-12 flex items-center rounded-2xl p-8 shadow-xl">
           <img
             src={post.author.avatarUrl}
             alt={post.author.name}
-            className="w-20 h-20 rounded-full mr-6"
+            className="mr-6 h-20 w-20 rounded-full"
           />
           <div>
             <h4 className="text-xl font-bold">{post.author.name}</h4>
-            <p className="text-gray-600 dark:text-gray-400 mt-1">{post.author.bio}</p>
+            <p className="mt-1 text-gray-600 dark:text-gray-400">{post.author.bio}</p>
           </div>
         </section>
 
         <div className="mt-12 text-center">
           <Link
             to="/archive"
-            className="inline-block bg-compWhite dark:bg-compDark font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+            className="bg-compWhite dark:bg-compDark inline-block rounded-lg px-6 py-3 font-bold shadow-md transition-shadow hover:shadow-lg"
           >
             &larr; 목록으로 돌아가기
           </Link>

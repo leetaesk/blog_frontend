@@ -13,18 +13,18 @@ const Pagination = ({ currentPage, totalPage, onPageChange }: PaginationProps) =
 
   return (
     <nav className="mt-12 flex justify-center" aria-label="페이지네이션">
-      <ul className="flex items-center -space-x-px h-10 text-base">
+      <ul className="flex h-10 items-center -space-x-px text-base">
         {/* 이전 버튼 */}
         <li>
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-compWhite border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-compDark dark:border-gray-600 dark:text-gray-400 dark:hover:bg-bgDark dark:hover:text-textWhite"
+            className="bg-compWhite dark:bg-compDark dark:hover:bg-bgDark dark:hover:text-textWhite ms-0 flex h-10 items-center justify-center rounded-s-lg border border-e-0 border-gray-300 px-4 leading-tight text-gray-500 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-600 dark:text-gray-400"
             aria-label="이전 페이지"
           >
             <span className="sr-only">Previous</span>
             <svg
-              className="w-3 h-3 rtl:rotate-180"
+              className="h-3 w-3 rtl:rotate-180"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -47,10 +47,10 @@ const Pagination = ({ currentPage, totalPage, onPageChange }: PaginationProps) =
             <button
               onClick={() => onPageChange(number)}
               aria-current={currentPage === number ? 'page' : undefined}
-              className={`flex items-center justify-center px-4 h-10 leading-tight ${
+              className={`flex h-10 items-center justify-center px-4 leading-tight ${
                 currentPage === number
-                  ? 'z-10 text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 dark:border-gray-600 dark:bg-bgDark dark:text-textWhite'
-                  : 'text-gray-500 bg-compWhite border border-gray-300 hover:bg-gray-100 dark:bg-compDark dark:border-gray-600 dark:text-gray-400 dark:hover:bg-bgDark dark:hover:text-textWhite'
+                  ? 'dark:bg-bgDark dark:text-textWhite z-10 border border-blue-300 bg-blue-50 text-blue-600 hover:bg-blue-100 dark:border-gray-600'
+                  : 'bg-compWhite dark:bg-compDark dark:hover:bg-bgDark dark:hover:text-textWhite border border-gray-300 text-gray-500 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-400'
               }`}
             >
               {number}
@@ -63,12 +63,12 @@ const Pagination = ({ currentPage, totalPage, onPageChange }: PaginationProps) =
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPage}
-            className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-compWhite border border-e-0 border-gray-300 rounded-e-lg hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-compDark dark:border-gray-600 dark:text-gray-400 dark:hover:bg-bgDark dark:hover:text-textWhite"
+            className="bg-compWhite dark:bg-compDark dark:hover:bg-bgDark dark:hover:text-textWhite flex h-10 items-center justify-center rounded-e-lg border border-e-0 border-gray-300 px-4 leading-tight text-gray-500 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-600 dark:text-gray-400"
             aria-label="다음 페이지"
           >
             <span className="sr-only">Next</span>
             <svg
-              className="w-3 h-3 rtl:rotate-180"
+              className="h-3 w-3 rtl:rotate-180"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
