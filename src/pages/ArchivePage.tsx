@@ -1,21 +1,26 @@
+import { useState } from 'react';
+
 import { useSearchParams } from 'react-router-dom';
 
 import Pagination from '@/components/Pagination';
 import ArchiveSideBar from '@/features/Archive/components/CategorySideBar';
 import PostCard from '@/features/Archive/components/PostCard';
 import SearchSideBar from '@/features/Archive/components/SearchSideBar';
+import SkeletonPostCard from '@/features/Archive/components/SkeletonPostCard';
 import { useGetPosts } from '@/features/Archive/hooks/useGetPosts';
 
 const ArchivePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1', 10);
   const category = searchParams.get('category');
+  const [searchValue, setSearchValue] = useState<string>('');
 
   const { posts, pagination, isLoading, isError, error } = useGetPosts({
     page,
-    // 한 페이지당 8개로 하드코딩
+    // 한 페이지당 12개로 하드코딩
     limit: 12,
     category: category || undefined,
+    search: searchValue,
   });
 
   /** 페이지 변경 시 URL의 쿼리 파라미터를 업데이트하는 핸들러 */
@@ -25,10 +30,6 @@ const ArchivePage = () => {
     newSearchParams.set('page', newPage.toString());
     setSearchParams(newSearchParams);
   };
-
-  if (isLoading) {
-    return <div className="flex h-screen items-center justify-center">Loading...</div>;
-  }
 
   if (isError) {
     return <div className="flex h-screen items-center justify-center">Error: {error?.message}</div>;
@@ -48,7 +49,7 @@ const ArchivePage = () => {
           {/* Sidebar */}
           <aside className="w-full min-w-48 md:w-1/3 lg:w-1/3 2xl:w-1/4">
             <div className="sticky top-24 space-y-8">
-              <SearchSideBar />
+              <SearchSideBar searchValue={searchValue} setSearchValue={setSearchValue} />
 
               {/* Categories */}
               <ArchiveSideBar />
@@ -58,8 +59,10 @@ const ArchivePage = () => {
           {/* Main Content: Post Grid */}
           <main className="w-full">
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-              {posts && posts.length > 0 ? (
-                posts.map((post) => <PostCard post={post} />)
+              {isLoading ? (
+                Array.from({ length: 3 }).map((_, index) => <SkeletonPostCard key={index} />)
+              ) : posts && posts.length > 0 ? (
+                posts.map((post) => <PostCard post={post} key={post.id} />)
               ) : (
                 <p className="col-span-full text-center text-gray-500">게시글이 없습니다.</p>
               )}

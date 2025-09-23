@@ -11,6 +11,7 @@ export interface GetPostsRequestDto {
   page?: number;
   limit?: number;
   category?: string;
+  search?: string;
 }
 
 // 개별 카테고리 정보 타입
