@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import ChatBubbleIcon from '@/components/ChatBubbleIcon';
+import { urlFor } from '@/constants/routes';
 import type { PostListItem } from '@/features/Archive/types/getPostsType';
 
 interface PostCardProps {
@@ -9,7 +10,7 @@ interface PostCardProps {
 
 const PostCard = ({ post }: PostCardProps) => {
   return (
-    <Link to={`/posts/${post.id}`} key={post.id}>
+    <Link to={urlFor.postDetail(post.id)} key={post.id}>
       <article className="bg-compWhite dark:bg-compDark group flex h-full transform flex-col overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
         {/* 이미지 */}
         {post.thumbnailUrl && (
