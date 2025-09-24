@@ -101,7 +101,7 @@ const PostDetailPage = () => {
           <header className="mb-8">
             {post.category && (
               <Link
-                to={`/archive?category=${post.category.name.toLowerCase()}`}
+                to={`/archive?category=${post.category.name}`}
                 className="mb-2 inline-block font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
               >
                 {post.category.name}
@@ -152,13 +152,12 @@ const PostDetailPage = () => {
               <div className="flex flex-wrap items-center gap-3">
                 <TagIcon />
                 {post.tags.map((tag) => (
-                  <Link
+                  <div
                     key={tag.id}
-                    to={`/archive?tag=${tag.name}`}
                     className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-800 transition-colors hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-200 dark:hover:bg-indigo-800"
                   >
                     # {tag.name}
-                  </Link>
+                  </div>
                 ))}
               </div>
             </div>

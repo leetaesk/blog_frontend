@@ -25,18 +25,16 @@
 }
 
 /* Dark Mode Color Overrides */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-text-primary: #c9d1d9;
-    --color-text-secondary: #8b949e;
-    --color-bg-primary: #0d1117;
-    --color-border: #30363d;
-    --color-link: #58a6ff;
-    --color-blockquote-border: #30363d;
-    --color-code-bg: #161b22;
-    --color-code-text: #c9d1d9;
-    --color-hr: #30363d;
-  }
+html.dark {
+  --color-text-primary: #c9d1d9;
+  --color-text-secondary: #8b949e;
+  --color-bg-primary: #0d1117;
+  --color-border: #30363d;
+  --color-link: #58a6ff;
+  --color-blockquote-border: #30363d;
+  --color-code-bg: #161b22;
+  --color-code-text: #c9d1d9;
+  --color-hr: #30363d;
 }
 
 /* ==========================================================================
