@@ -6,5 +6,6 @@ export const ROUTES = {
 };
 
 export const urlFor = {
+  archive: (category?: string) => (category ? `/archive?category=${category}` : `/archive`),
   postDetail: (postId: number) => `/posts/${postId}`,
 };

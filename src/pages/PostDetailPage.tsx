@@ -1,60 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
 
+import CalendarIcon from '@/components/icons/CalendarIcon';
+import EyeIcon from '@/components/icons/EyeIcon';
+import { ROUTES, urlFor } from '@/constants/routes';
 import { useGetPostById } from '@/features/Post/hooks/useGetPostById';
 import '@/features/Post/styles/postDetail.css';
-
-// --- Icon Components (SVG) ---
-const CalendarIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="mr-1.5 inline-block h-5 w-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-    />
-  </svg>
-);
-const EyeIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="mr-1.5 inline-block h-5 w-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={2}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-    />
-  </svg>
-);
-const TagIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="mr-1.5 inline-block h-5 w-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={3}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M7 7h.01M7 3h5a2 2 0 012 2v5a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"
-    />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M7 15h2v2H7v-2z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M17 17h.01" />
-  </svg>
-);
 
 // --- Main Page Component ---
 const PostDetailPage = () => {
@@ -84,7 +34,7 @@ const PostDetailPage = () => {
           요청하신 페이지가 존재하지 않거나, 서버에 문제가 발생했을 수 있습니다.
         </p>
         <Link
-          to="/archive"
+          to={ROUTES.ARCHIVE}
           className="rounded-lg bg-indigo-600 px-6 py-3 font-bold text-white transition-colors hover:bg-indigo-700"
         >
           목록으로 돌아가기
@@ -101,7 +51,7 @@ const PostDetailPage = () => {
           <header className="mb-8">
             {post.category && (
               <Link
-                to={`/archive?category=${post.category.name}`}
+                to={urlFor.archive(post.category.name)}
                 className="mb-2 inline-block font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
               >
                 {post.category.name}
@@ -142,7 +92,7 @@ const PostDetailPage = () => {
           )}
 
           <div
-            className="post-content prose prose-lg dark:prose-invert prose-p:text-textDark dark:prose-p:text-textWhite prose-h3:text-textDark dark:prose-h3:text-textWhite prose-strong:text-textDark dark:prose-strong:text-textWhite max-w-none"
+            className="prose prose-lg post-content dark:prose-invert prose-p:text-textDark dark:prose-p:text-textWhite prose-h3:text-textDark dark:prose-h3:text-textWhite prose-strong:text-textDark dark:prose-strong:text-textWhite max-w-none"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
@@ -150,11 +100,10 @@ const PostDetailPage = () => {
           {post.tags.length > 0 && (
             <div className="mt-10 border-t border-gray-200 pt-6 dark:border-gray-700">
               <div className="flex flex-wrap items-center gap-3">
-                <TagIcon />
                 {post.tags.map((tag) => (
                   <div
                     key={tag.id}
-                    className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-800 transition-colors hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-200 dark:hover:bg-indigo-800"
+                    className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200"
                   >
                     # {tag.name}
                   </div>
@@ -166,7 +115,7 @@ const PostDetailPage = () => {
 
         <div className="mt-12 text-center">
           <Link
-            to="/archive"
+            to={ROUTES.ARCHIVE}
             className="bg-compWhite dark:bg-compDark inline-block rounded-lg px-6 py-3 font-bold shadow-md transition-shadow hover:shadow-lg"
           >
             &larr; 목록으로 돌아가기
