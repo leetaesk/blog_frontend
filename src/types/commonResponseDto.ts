@@ -1,4 +1,4 @@
-export type commonResponseDto<T> = {
+export type CommonResponseDto<T> = {
   isSuccess: boolean;
   code: string;
   message: string;

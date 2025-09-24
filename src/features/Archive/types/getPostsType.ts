@@ -1,4 +1,4 @@
-import type { commonResponseDto } from '@/types/commonResponseDto';
+import type { CommonResponseDto } from '@/types/CommonResponseDto';
 
 /**
  * GET /api/posts - 요청 DTO (Query Parameters)
@@ -53,4 +53,4 @@ export type GetPostsResultType = {
  * GET /api/posts - 최종 응답 타입
  * @description 게시글 목록 조회 API의 최종 응답 형태를 정의합니다.
  */
-export type GetPostsResponseDto = commonResponseDto<GetPostsResultType>;
+export type GetPostsResponseDto = CommonResponseDto<GetPostsResultType>;

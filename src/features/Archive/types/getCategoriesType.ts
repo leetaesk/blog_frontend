@@ -1,4 +1,4 @@
-import type { commonResponseDto } from '@/types/commonResponseDto';
+import type { CommonResponseDto } from '@/types/CommonResponseDto';
 
 export interface CategoryWithPostCount {
   id: number;
@@ -10,4 +10,4 @@ export interface GetCategoriesResultType {
   categories: CategoryWithPostCount[];
 }
 
-export type GetCategoriesResponseDto = commonResponseDto<GetCategoriesResultType>;
+export type GetCategoriesResponseDto = CommonResponseDto<GetCategoriesResultType>;

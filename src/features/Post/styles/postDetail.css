@@ -1,0 +1,229 @@
+/* ==========================================================================
+   Post Detail Content Styles
+   ========================================================================== */
+
+/* * CSS 변수를 사용하여 색상과 폰트를 관리합니다.
+ * 이 부분만 수정하면 블로그의 전체적인 톤앤매너를 쉽게 변경할 수 있습니다.
+ */
+:root {
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji';
+  --font-serif: 'Georgia', 'Times New Roman', serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+  /* Light Mode Colors */
+  --color-text-primary: #24292e;
+  --color-text-secondary: #586069;
+  --color-bg-primary: #ffffff;
+  --color-border: #e1e4e8;
+  --color-link: #0366d6;
+  --color-blockquote-border: #dfe2e5;
+  --color-code-bg: #f6f8fa;
+  --color-code-text: #24292e;
+  --color-hr: #dfe2e5;
+}
+
+/* Dark Mode Color Overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text-primary: #c9d1d9;
+    --color-text-secondary: #8b949e;
+    --color-bg-primary: #0d1117;
+    --color-border: #30363d;
+    --color-link: #58a6ff;
+    --color-blockquote-border: #30363d;
+    --color-code-bg: #161b22;
+    --color-code-text: #c9d1d9;
+    --color-hr: #30363d;
+  }
+}
+
+/* ==========================================================================
+   Base Container
+   ========================================================================== */
+.post-content {
+  color: var(--color-text-primary);
+  font-family: var(--font-serif);
+  font-size: 1.1rem; /* 17px or 18px is good for reading */
+  line-height: 1.7;
+  max-width: 720px; /* 가독성을 위한 최대 너비 */
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Typography (제목, 문단, 링크 등)
+   ========================================================================== */
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  line-height: 1.3;
+}
+
+.post-content h1 {
+  font-size: 2.2em;
+}
+.post-content h2 {
+  font-size: 1.8em;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.3em;
+}
+.post-content h3 {
+  font-size: 1.4em;
+}
+.post-content h4 {
+  font-size: 1.2em;
+  color: var(--color-text-secondary);
+}
+
+.post-content p {
+  margin-bottom: 1.2em;
+}
+
+.post-content a {
+  color: var(--color-link);
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.post-content a:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.post-content strong {
+  font-weight: 700;
+}
+
+.post-content em {
+  font-style: italic;
+}
+
+.post-content del {
+  text-decoration: line-through;
+}
+
+/* ==========================================================================
+   Blockquotes (인용문)
+   ========================================================================== */
+
+.post-content blockquote {
+  margin: 1.5em 0;
+  padding: 0.5em 1em;
+  border-left: 4px solid var(--color-blockquote-border);
+  color: var(--color-text-secondary);
+  background-color: var(--color-code-bg);
+}
+
+.post-content blockquote p {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Lists (목록)
+   ========================================================================== */
+
+.post-content ul,
+.post-content ol {
+  margin-bottom: 1em;
+  padding-left: 2em;
+}
+
+.post-content li {
+  margin-bottom: 0.5em;
+}
+
+.post-content li > ul,
+.post-content li > ol {
+  margin-top: 0.5em;
+}
+
+/* ==========================================================================
+   Code Blocks (코드)
+   ========================================================================== */
+
+/* Inline code */
+.post-content :not(pre) > code {
+  font-family: var(--font-mono);
+  background-color: var(--color-code-bg);
+  color: var(--color-code-text);
+  padding: 0.2em 0.4em;
+  margin: 0 2px;
+  font-size: 85%;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+}
+
+/* Fenced code block */
+.post-content pre {
+  font-family: var(--font-mono);
+  background-color: var(--color-code-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1em;
+  margin: 1.5em 0;
+  overflow-x: auto; /* 코드가 길어지면 가로 스크롤 생성 */
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+.post-content pre code {
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+/* ==========================================================================
+   Images & Media
+   ========================================================================== */
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5em auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  display: block;
+  overflow-x: auto;
+}
+
+.post-content th,
+.post-content td {
+  border: 1px solid var(--color-border);
+  padding: 0.6em 0.8em;
+}
+
+.post-content th {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  background-color: var(--color-code-bg);
+}
+
+/* ==========================================================================
+   Horizontal Rule (구분선)
+   ========================================================================== */
+.post-content hr {
+  border: 0;
+  border-top: 1px solid var(--color-hr);
+  margin: 3em 0;
+}
