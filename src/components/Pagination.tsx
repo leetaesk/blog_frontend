@@ -1,3 +1,5 @@
+import useScrollToTop from '@/hooks/useScrollToTop';
+
 interface PaginationProps {
   currentPage: number;
   totalPage: number;
@@ -5,6 +7,7 @@ interface PaginationProps {
 }
 
 const Pagination = ({ currentPage, totalPage, onPageChange }: PaginationProps) => {
+  useScrollToTop(currentPage);
   // 렌더링할 페이지 번호 배열 생성
   const pageNumbers = Array.from({ length: totalPage }, (_, i) => i + 1);
 

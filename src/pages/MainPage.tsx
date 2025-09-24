@@ -1,10 +1,9 @@
-import React, { type ReactNode, useEffect, useRef } from 'react';
+import React, { type ReactNode, useRef } from 'react';
 
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 import { useGetPosts } from '@/features/Archive/hooks/useGetPosts';
-import useThemeStore from '@/store/themeStore';
 
 // 기존에 만드신 훅
 
@@ -56,38 +55,7 @@ const ScrollReveal = ({ children, stagger = false }: ScrollRevealProps) => {
 };
 
 // 2. SVG 아이콘들
-const SunIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-    />
-  </svg>
-);
-const MoonIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-    />
-  </svg>
-);
+
 const ArrowRightIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -235,26 +203,9 @@ const RecentPostsSection = () => {
 // --- 최종 메인 페이지 컴포넌트 ---
 
 const MainPage = () => {
-  const { theme, toggleTheme } = useThemeStore();
-
-  // Zustand 스토어의 theme 상태가 변경될 때마다 <html> 태그에 'dark' 클래스를 적용/제거합니다.
-  useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.remove('light', 'dark'); // 기존 클래스 제거
-    root.classList.add(theme); // 현재 테마 클래스 추가
-  }, [theme]);
-
   return (
     // bg-background, text-foreground 등 index.css에 정의된 CSS 변수를 사용합니다.
     <div className="bg-background text-foreground">
-      <button
-        onClick={toggleTheme}
-        className="bg-card border-border fixed top-6 right-6 z-50 rounded-full border p-2 shadow-lg"
-        aria-label="Toggle Dark Mode"
-      >
-        {theme === 'light' ? <MoonIcon /> : <SunIcon />}
-      </button>
-
       <main>
         <HeroSection />
         <ProjectSection />

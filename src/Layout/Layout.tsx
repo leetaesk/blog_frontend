@@ -1,20 +1,22 @@
 import { useEffect } from 'react';
 
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 import Navbar from '@/Layout/components/Navbar';
+import useScrollToTop from '@/hooks/useScrollToTop';
 import useThemeStore from '@/store/themeStore';
 
 const Layout = () => {
+  const location = useLocation();
+  useScrollToTop(location);
+
   const { theme, toggleTheme } = useThemeStore();
 
+  // Zustand 스토어의 theme 상태가 변경될 때마다 <html> 태그에 'dark' 클래스를 적용/제거합니다.
   useEffect(() => {
-    const root = document.documentElement; // <html> 태그
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark'); // 기존 클래스 제거
+    root.classList.add(theme); // 현재 테마 클래스 추가
   }, [theme]);
 
   return (
