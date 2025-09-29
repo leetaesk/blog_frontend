@@ -65,7 +65,7 @@ const PostDetailPage = () => {
           <div className="mb-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-gray-200 py-4 text-gray-500 dark:border-gray-700 dark:text-gray-400">
             <div className="flex items-center">
               <img
-                src={`https://placehold.co/100x100/a78bfa/ffffff?text=${post.author.nickname.charAt(0)}`}
+                src={post.author.profileImageUrl}
                 alt={post.author.nickname}
                 className="mr-3 h-10 w-10 rounded-full"
               />
