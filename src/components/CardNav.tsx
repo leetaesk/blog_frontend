@@ -1,10 +1,11 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { gsap } from 'gsap';
-import { Link, type To, useLocation } from 'react-router-dom';
+import { Link, type To, useLocation, useNavigate } from 'react-router-dom';
 
 import GoArrowUpRight from '@/assets/Arrow_up-right.svg';
 import Logo from '@/components/Logo';
+import { ROUTES } from '@/constants/routes';
 import useThemeStore from '@/store/themeStore';
 
 type CardNavLink = {
@@ -43,6 +44,7 @@ const CardNav: React.FC<CardNavProps> = ({
   buttonBgColor,
   buttonTextColor,
 }) => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -232,7 +234,7 @@ const CardNav: React.FC<CardNavProps> = ({
           </div>
 
           <div className="logo-container order-1 flex items-center md:absolute md:top-1/2 md:left-1/2 md:order-none md:-translate-x-1/2 md:-translate-y-1/2">
-            {/* <div className="h-12 w-12"><Logo /></div> */}
+            {/* <div className="w-12 h-12"><Logo /></div> */}
             <Link to={'/'} className="text-xl font-bold italic">
               LeetaeSk
             </Link>
@@ -240,6 +242,7 @@ const CardNav: React.FC<CardNavProps> = ({
 
           <button
             type="button"
+            onClick={() => navigate(ROUTES.LOGIN)}
             className="card-nav-cta-button flex h-full cursor-pointer items-center justify-center rounded-[calc(0.75rem-0.2rem)] border-0 px-4 font-medium transition-colors duration-300 md:inline-flex"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
           >

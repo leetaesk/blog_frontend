@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Layout from '@/Layout/Layout';
 import { ROUTES } from '@/constants/routes';
 import ArchivePage from '@/pages/ArchivePage';
+import LoginPage from '@/pages/LoginPage';
 import MainPage from '@/pages/MainPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import PostDetailPage from '@/pages/PostDetailPage';
@@ -26,6 +27,11 @@ const router = createBrowserRouter([
         element: <PostDetailPage />,
       },
     ],
+  },
+  {
+    path: ROUTES.LOGIN,
+    element: <LoginPage />,
+    errorElement: <NotFoundPage />,
   },
 ]);
 
