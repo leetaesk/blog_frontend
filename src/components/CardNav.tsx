@@ -6,7 +6,9 @@ import { Link, type To, useLocation, useNavigate } from 'react-router-dom';
 import GoArrowUpRight from '@/assets/Arrow_up-right.svg';
 import Logo from '@/components/Logo';
 import { ROUTES } from '@/constants/routes';
+import { useKakaoLogoutMutation } from '@/features/Auth/hooks/useKakaoAuth';
 import useThemeStore from '@/store/themeStore';
+import useUserStore from '@/store/useUserStore';
 
 type CardNavLink = {
   label: string;
@@ -194,6 +196,14 @@ const CardNav: React.FC<CardNavProps> = ({
     if (el) cardsRef.current[i] = el;
   };
 
+  const accessToken = useUserStore((s) => s.accessToken);
+  const { mutate: kakaoLogout } = useKakaoLogoutMutation();
+
+  const handleAuthButton = () => {
+    if (accessToken) kakaoLogout();
+    else navigate(ROUTES.LOGIN);
+  };
+
   return (
     <div
       // --- ⬇️ 동적 클래스 추가 ⬇️ ---
@@ -233,20 +243,20 @@ const CardNav: React.FC<CardNavProps> = ({
             />
           </div>
 
-          <div className="logo-container order-1 flex items-center md:absolute md:top-1/2 md:left-1/2 md:order-none md:-translate-x-1/2 md:-translate-y-1/2">
+          <div className="flex items-center order-1 logo-container md:absolute md:top-1/2 md:left-1/2 md:order-none md:-translate-x-1/2 md:-translate-y-1/2">
             {/* <div className="w-12 h-12"><Logo /></div> */}
-            <Link to={'/'} className="text-xl font-bold italic">
+            <Link to={'/'} className="text-xl italic font-bold">
               LeetaeSk
             </Link>
           </div>
 
           <button
             type="button"
-            onClick={() => navigate(ROUTES.LOGIN)}
+            onClick={handleAuthButton}
             className="card-nav-cta-button flex h-full cursor-pointer items-center justify-center rounded-[calc(0.75rem-0.2rem)] border-0 px-4 font-medium transition-colors duration-300 md:inline-flex"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
           >
-            Get Started
+            {accessToken ? 'log Out' : 'Get Started'}
           </button>
         </div>
 
@@ -276,7 +286,7 @@ const CardNav: React.FC<CardNavProps> = ({
                   >
                     <img
                       src={GoArrowUpRight}
-                      className="nav-card-link-icon h-4 shrink-0"
+                      className="h-4 nav-card-link-icon shrink-0"
                       aria-hidden="true"
                     />
                     {lnk.label}

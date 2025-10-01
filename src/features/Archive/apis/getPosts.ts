@@ -3,7 +3,7 @@ import type {
   GetPostsResponseDto,
   GetPostsResultType,
 } from '@/features/Archive/types/getPostsType';
-import axiosInstance from '@/lib/axiosInstance';
+import { axiosInstance } from '@/lib/axiosInstance';
 
 export const getPosts = async (params: GetPostsRequestDto): Promise<GetPostsResultType> => {
   const response = await axiosInstance.get<GetPostsResponseDto>('/api/posts', {

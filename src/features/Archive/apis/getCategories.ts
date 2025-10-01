@@ -1,5 +1,5 @@
 import type { GetCategoriesResponseDto } from '@/features/Archive/types/getCategoriesType';
-import axiosInstance from '@/lib/axiosInstance';
+import { axiosInstance } from '@/lib/axiosInstance';
 
 /**
  * GET /api/categories

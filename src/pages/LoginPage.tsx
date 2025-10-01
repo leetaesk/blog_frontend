@@ -1,12 +1,9 @@
 import { useEffect } from 'react';
 
-import { useNavigate } from 'react-router-dom';
-
 import KakaoIcon from '@/assets/KakaoIcon.svg';
 import { useKakaoLoginMutation } from '@/features/Auth/hooks/useKakaoAuth';
 
 const LoginPage = () => {
-  const navigate = useNavigate();
   const REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
   const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;

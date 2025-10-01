@@ -3,7 +3,7 @@ import type {
   GetPostByIdResponseDto,
   GetPostByIdResultType,
 } from '@/features/Post/types/getPostByIdType';
-import axiosInstance from '@/lib/axiosInstance';
+import { axiosInstance } from '@/lib/axiosInstance';
 
 export const getPostById = async (
   params: GetPostByIdRequestDto,

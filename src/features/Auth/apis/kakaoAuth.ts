@@ -5,7 +5,7 @@ import type {
   KakaoLogoutResponseDto,
   KakaoLogoutResultType,
 } from '@/features/Auth/types/kakaoAuthType';
-import axiosInstance from '@/lib/axiosInstance';
+import { axiosInstance, axiosPrivateInstance } from '@/lib/axiosInstance';
 
 export const kakaoLogIn = async (params: KakaoLoginRequestDto): Promise<KakaoLoginResultType> => {
   const response = await axiosInstance.post<KakaoLoginResponseDto>(`/api/auth/kakao/login`, params);
@@ -20,7 +20,8 @@ export const kakaoLogIn = async (params: KakaoLoginRequestDto): Promise<KakaoLog
 };
 
 export const kakaoLogOut = async (): Promise<KakaoLogoutResultType> => {
-  const response = await axiosInstance.post<KakaoLogoutResponseDto>(`/api/auth/kakao/logout`);
+  const response =
+    await axiosPrivateInstance.post<KakaoLogoutResponseDto>(`/api/auth/kakao/logout`);
 
   // 가드 클로저: isSuccess가 false이면 에러를 던지고 함수를 즉시 종료합니다.
   if (!response.data.isSuccess) {
