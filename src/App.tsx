@@ -5,6 +5,7 @@ import { ROUTES } from '@/constants/routes';
 import ArchivePage from '@/pages/ArchivePage';
 import LoginPage from '@/pages/LoginPage';
 import MainPage from '@/pages/MainPage';
+import MyPage from '@/pages/MyPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import PostDetailPage from '@/pages/PostDetailPage';
 
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES.POST_DETAIL, // '/posts/:postId'
         element: <PostDetailPage />,
+      },
+      {
+        path: ROUTES.MYPAGE,
+        element: <MyPage />,
       },
     ],
   },

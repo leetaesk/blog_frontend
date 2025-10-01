@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 
-import CalendarIcon from '@/components/icons/CalendarIcon';
-import EyeIcon from '@/components/icons/EyeIcon';
+import CalendarIcon from '@/assets/icons/CalendarIcon';
+import EyeIcon from '@/assets/icons/EyeIcon';
 import { ROUTES, urlFor } from '@/constants/routes';
 import { useGetPostById } from '@/features/Post/hooks/useGetPostById';
 import '@/features/Post/styles/postDetail.css';
@@ -12,18 +12,7 @@ const PostDetailPage = () => {
   const postId = parseInt(postIdStr || '', 10);
 
   // postId가 유효한 숫자인 경우에만 쿼리를 실행합니다.
-  const { data: post, isLoading, isError } = useGetPostById({ postId });
-
-  console.log(post);
-
-  // --- 로딩 상태 처리 ---
-  if (isLoading) {
-    return (
-      <div className="bg-bgWhite dark:bg-bgDark text-textDark dark:text-textWhite flex min-h-screen items-center justify-center">
-        <div className="text-2xl font-bold">Loading post...</div>
-      </div>
-    );
-  }
+  const { data: post, isError, isSuccess } = useGetPostById({ postId });
 
   // --- 에러 또는 데이터 없음 처리 ---
   if (isError || !post) {

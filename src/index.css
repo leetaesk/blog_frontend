@@ -154,3 +154,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes bounce-animation {
+  /* 시작: 원래 크기, 불투명 */
+  0%,
+  100% {
+    transform: scale(0);
+  }
+  /* 중간: 최대 크기 */
+  50% {
+    transform: scale(1);
+  }
+}

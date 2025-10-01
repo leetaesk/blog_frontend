@@ -3,13 +3,15 @@ import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import Navbar from '@/Layout/components/Navbar';
+import BounceLoader from '@/components/BounceLoader';
 import useScrollToTop from '@/hooks/useScrollToTop';
 import useThemeStore from '@/store/themeStore';
+import useUiStore from '@/store/useUiStore';
 
 const Layout = () => {
   const location = useLocation();
   useScrollToTop(location);
-
+  const isLoading = useUiStore((s) => s.isGlobalLoading);
   const { theme, toggleTheme } = useThemeStore();
 
   // Zustand 스토어의 theme 상태가 변경될 때마다 <html> 태그에 'dark' 클래스를 적용/제거합니다.
@@ -22,6 +24,7 @@ const Layout = () => {
   return (
     // Navbar 공간(pt-32) + 반응형 좌우 패딩(px-6 md:px-12) + 최대 너비 제한 및 중앙 정렬(max-w-7xl mx-auto)
     <div className="mx-auto max-w-7xl px-6 pt-32 md:px-12">
+      {isLoading && <BounceLoader />}
       <Navbar />
       <Outlet />
       <button

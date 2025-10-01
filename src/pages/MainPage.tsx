@@ -5,12 +5,6 @@ import { Link } from 'react-router-dom';
 
 import { useGetPosts } from '@/features/Archive/hooks/useGetPosts';
 
-// 기존에 만드신 훅
-
-// 알려주신 Zustand 스토어
-
-// --- 헬퍼 컴포넌트 및 아이콘 (파일 내부에 포함) ---
-
 // 1. 스크롤 애니메이션 컴포넌트
 interface ScrollRevealProps {
   children: ReactNode;
