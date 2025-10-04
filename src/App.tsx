@@ -1,13 +1,17 @@
+import { QueryClient } from '@tanstack/react-query';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import Layout from '@/Layout/Layout';
 import { ROUTES } from '@/constants/routes';
+import { getPostByIdLoader } from '@/features/Post/loaders/getPostByIdLoader';
 import ArchivePage from '@/pages/ArchivePage';
 import LoginPage from '@/pages/LoginPage';
 import MainPage from '@/pages/MainPage';
 import MyPage from '@/pages/MyPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import PostDetailPage from '@/pages/PostDetailPage';
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -26,6 +30,7 @@ const router = createBrowserRouter([
       {
         path: ROUTES.POST_DETAIL, // '/posts/:postId'
         element: <PostDetailPage />,
+        loader: getPostByIdLoader(queryClient),
       },
       {
         path: ROUTES.MYPAGE,

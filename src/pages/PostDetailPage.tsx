@@ -12,15 +12,18 @@ const PostDetailPage = () => {
   const postId = parseInt(postIdStr || '', 10);
 
   // postId가 유효한 숫자인 경우에만 쿼리를 실행합니다.
-  const { data: post, isError, isSuccess } = useGetPostById({ postId });
+  const { data: post, isError, isLoading } = useGetPostById({ postId });
 
   // --- 에러 또는 데이터 없음 처리 ---
+
+  if (isLoading) return;
   if (isError || !post) {
     return (
-      <div className="bg-bgWhite dark:bg-bgDark text-textDark dark:text-textWhite flex min-h-screen flex-col items-center justify-center px-4">
+      <div className="bg-bgWhite dark:bg-bgDark dark:text-textWhite text-textDark flex min-h-screen flex-col items-center justify-center px-4">
         <h2 className="mb-4 text-center text-3xl font-bold">게시글을 찾을 수 없습니다.</h2>
         <p className="mb-8 text-center text-gray-500 dark:text-gray-400">
-          요청하신 페이지가 존재하지 않거나, 서버에 문제가 발생했을 수 있습니다.
+          요청하신 페이지가 존재하지 않거나, 서버에 문제가 발생했을 수 있습니다. 근데 사실 여기까진
+          올수가 없죠 ㅋㅋ
         </p>
         <Link
           to={ROUTES.ARCHIVE}

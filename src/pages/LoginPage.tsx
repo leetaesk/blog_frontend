@@ -12,7 +12,7 @@ const LoginPage = () => {
   const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
-  const { mutate: kakaoLogin, isPending } = useKakaoLoginMutation();
+  const { mutate: kakaoLogin } = useKakaoLoginMutation();
 
   const handleKakaoLogin = () => {
     // TODO: 추후 이곳에 카카오 로그인 리다이렉션 로직을 구현합니다.

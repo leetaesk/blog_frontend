@@ -8,12 +8,12 @@ import type { GetPostByIdRequestDto } from '@/features/Post/types/getPostByIdTyp
  * @param params page, limit, category를 포함하는 객체
  */
 export const useGetPostById = (params: GetPostByIdRequestDto) => {
-  const { data, isLoading, isError, error, isSuccess } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ['post', params.postId],
     queryFn: () => getPostById(params),
     gcTime: 5 * 60 * 1000,
     staleTime: 3 * 60 * 1000,
-    enabled: true,
+    enabled: !isNaN(params.postId),
   });
 
   return {
@@ -21,6 +21,5 @@ export const useGetPostById = (params: GetPostByIdRequestDto) => {
     isLoading,
     isError,
     error,
-    isSuccess,
   };
 };
