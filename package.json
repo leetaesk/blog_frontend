@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.87.4",
     "@tanstack/react-query-devtools": "^5.87.4",
+    "@uiw/react-md-editor": "^4.0.8",
     "axios": "^1.12.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

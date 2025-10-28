@@ -10,6 +10,7 @@ import MainPage from '@/pages/MainPage';
 import MyPage from '@/pages/MyPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import PostDetailPage from '@/pages/PostDetailPage';
+import PostNewPage from '@/pages/PostNewPage';
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
         path: ROUTES.POST_DETAIL, // '/posts/:postId'
         element: <PostDetailPage />,
         loader: getPostByIdLoader(queryClient),
+      },
+      {
+        path: ROUTES.POST_NEW,
+        element: <PostNewPage />,
       },
       {
         path: ROUTES.MYPAGE,
