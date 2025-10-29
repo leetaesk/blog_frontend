@@ -6,14 +6,14 @@ import imageCompression from 'browser-image-compression';
 
 // 👈 1. 라이브러리 import
 
-import { axiosInstance } from '@/lib/axiosInstance';
+import { axiosPrivateInstance } from '@/lib/axiosInstance';
 
 // --- API 통신 함수 ---
 const uploadImageAPI = async (file: File) => {
   const formData = new FormData();
   formData.append('image', file);
 
-  const { data } = await axiosInstance.post('/api/images', formData, {
+  const { data } = await axiosPrivateInstance.post('/api/images', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 

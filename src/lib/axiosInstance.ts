@@ -8,7 +8,6 @@ const baseURL = 'http://localhost:3000';
 // 로그인 불필요 API용 인스턴스
 export const axiosInstance = axios.create({
   baseURL: baseURL,
-  withCredentials: true,
 });
 
 // 로그인 필요 API용 인스턴스
@@ -37,14 +36,15 @@ axiosPrivateInstance.interceptors.response.use(
 
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       try {
-        const response = await axios.get(`${baseURL}/api/auth/refresh`, {
-          withCredentials: true,
-        });
+        const response = await axiosInstance.post(
+          '/api/auth/reissue',
+          {}, // 1. 비어있는 body를 두 번째 인자로 전달
+          { withCredentials: true }, // 2. config 객체를 세 번째 인자로 전달
+        );
 
-        const newAccessToken = response.data.accessToken;
-
+        const newAccessToken = response.data.result.accessToken;
+        console.log('reissue: accessToken updated');
         // ❗️ 수정된 부분 1: setState를 사용하여 accessToken만 갱신합니다.
         // 이렇게 하면 기존의 다른 유저 정보(userId, userInfo)는 그대로 유지됩니다.
         useUserStore.setState({ accessToken: newAccessToken });
