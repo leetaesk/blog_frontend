@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 
-import { darkColors, lightColors, navItems } from '@/Layout/data/NavbarItem';
+import { darkColors, lightColors, useNavItems } from '@/Layout/data/NavbarItem';
 import logo from '@/assets/Arrow_up-right.svg';
 import CardNav from '@/components/CardNav';
 import useThemeStore from '@/store/themeStore';
 
 const Navbar = () => {
   const theme = useThemeStore((state) => state.theme);
+  const navItems = useNavItems();
 
   const themedItems = useMemo(() => {
     const colors = theme === 'dark' ? darkColors : lightColors;

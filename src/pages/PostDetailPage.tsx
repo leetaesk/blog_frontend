@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import CalendarIcon from '@/assets/icons/CalendarIcon';
 import EyeIcon from '@/assets/icons/EyeIcon';
+import ProfileImage from '@/components/ProfileImage';
 import { ROUTES, urlFor } from '@/constants/routes';
 import { useGetPostById } from '@/features/Post/hooks/useGetPostById';
 import '@/features/Post/styles/postDetail.css';
@@ -13,6 +14,8 @@ const PostDetailPage = () => {
 
   // postId가 유효한 숫자인 경우에만 쿼리를 실행합니다.
   const { data: post, isError, isLoading } = useGetPostById({ postId });
+
+  // const profileUrl = post?.author.profileImageUrl || DefaultProfileIcon;
 
   // --- 에러 또는 데이터 없음 처리 ---
 
@@ -56,11 +59,10 @@ const PostDetailPage = () => {
 
           <div className="mb-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-gray-200 py-4 text-gray-500 dark:border-gray-700 dark:text-gray-400">
             <div className="flex items-center">
-              <img
-                src={post.author.profileImageUrl}
-                alt={post.author.nickname}
-                className="mr-3 h-10 w-10 rounded-full"
-              />
+              <div className="mr-3 h-10 w-10 rounded-full">
+                <ProfileImage src={post.author.profileImageUrl} alt={post.author.nickname} />
+              </div>
+
               <span className="font-semibold">{post.author.nickname}</span>
             </div>
             <div className="flex items-center">
