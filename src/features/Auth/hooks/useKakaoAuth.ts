@@ -11,7 +11,7 @@ import useUserStore from '@/store/useUserStore';
  */
 export const useKakaoLoginMutation = () => {
   const navigate = useNavigate();
-  const { setUser } = useUserStore.getState();
+  const { userInfo, setUser } = useUserStore.getState();
 
   return useMutation({
     mutationFn: (params: KakaoLoginRequestDto) => kakaoLogIn(params),
@@ -27,6 +27,8 @@ export const useKakaoLoginMutation = () => {
           profileImageUrl: data.userProfileImageUrl,
         },
       });
+      console.log('로그인 성공');
+      console.log(userInfo);
       navigate(ROUTES.HOME);
     },
 

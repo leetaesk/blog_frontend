@@ -8,6 +8,7 @@ const baseURL = 'http://localhost:3000';
 // 로그인 불필요 API용 인스턴스
 export const axiosInstance = axios.create({
   baseURL: baseURL,
+  withCredentials: true,
 });
 
 // 로그인 필요 API용 인스턴스
