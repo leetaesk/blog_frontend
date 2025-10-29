@@ -11,6 +11,7 @@ import MyPage from '@/pages/MyPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import PostDetailPage from '@/pages/PostDetailPage';
 import PostNewPage from '@/pages/PostNewPage';
+import { isAdminLoader, isGuestLoader } from '@/utils/userRoleLoader';
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       {
         path: ROUTES.POST_NEW,
         element: <PostNewPage />,
+        loader: isAdminLoader,
       },
       {
         path: ROUTES.MYPAGE,
@@ -46,6 +48,7 @@ const router = createBrowserRouter([
   {
     path: ROUTES.LOGIN,
     element: <LoginPage />,
+    loader: isGuestLoader,
     errorElement: <NotFoundPage />,
   },
 ]);

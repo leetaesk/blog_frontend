@@ -16,7 +16,7 @@ const Navbar = () => {
       bgColor: colors[index].bgColor,
       textColor: colors[index].textColor,
     }));
-  }, [theme]);
+  }, [theme, navItems]);
 
   return (
     <CardNav
