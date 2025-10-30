@@ -2,14 +2,18 @@ import { useState } from 'react';
 
 import MDEditor from '@uiw/react-md-editor';
 import { useNavigate } from 'react-router-dom';
+import { ZodError } from 'zod';
 
 import ImageUploader from '@/components/ImageUploader';
 import CategoryInput from '@/features/Post/components/CategoryInput';
+import { usePostPost } from '@/features/Post/hooks/usePostPost';
+import { postPostSchema } from '@/features/Post/schemas/postSchema';
 import useThemeStore from '@/store/themeStore';
 
 function PostNewPage() {
   const navigate = useNavigate();
   const currentTheme = useThemeStore((s) => s.theme);
+  const { mutate: createPost, isPending } = usePostPost();
 
   // 1. DTO에 매핑되는 상태들
   const [title, setTitle] = useState<string>('');
@@ -38,10 +42,26 @@ function PostNewPage() {
       ...(tags && tags.length > 0 && { tags }),
     };
 
-    // 3. 수집된 데이터를 콘솔에 출력
-    console.log('--- 수집된 폼 데이터 (DTO) ---', postData);
-    alert('콘솔을 확인해보세요! (F12)');
-    // navigate('/'); // 성공 시 메인으로 이동 (주석 처리)
+    try {
+      // 3. Zod 스키마로 데이터 유효성 검증
+      const validatedData = postPostSchema.parse(postData);
+
+      // 4. 검증 통과 시, 서버에 데이터 전송 (mutate 함수 호출)
+      createPost(validatedData);
+    } catch (error) {
+      // 5. 유효성 검증 실패 시 에러 처리
+      if (error instanceof ZodError) {
+        // 첫 번째 에러 메시지를 사용자에게 보여줍니다.
+        // const firstErrorMessage = error.errors[0].message;
+        const firstErrorMessage = error.message;
+        console.error('폼 데이터 검증 오류:', error.flatten());
+        alert(firstErrorMessage);
+      } else {
+        // Zod 에러가 아닌 다른 예기치 않은 에러 처리
+        console.error('알 수 없는 오류 발생:', error);
+        alert('알 수 없는 오류가 발생했습니다.');
+      }
+    }
   };
 
   /**
@@ -184,16 +204,19 @@ function PostNewPage() {
       {/* 액션 버튼 */}
       <div className="mt-8 flex justify-end gap-4">
         <button
+          type="button"
           onClick={handleCancel}
           className="rounded-lg-md bg-secondary text-secondary-foreground hover:bg-muted px-6 py-2 font-semibold transition-colors"
         >
           취소
         </button>
         <button
+          type="button"
           onClick={handleSave}
-          className="rounded-lg-md bg-primary text-primary-foreground px-6 py-2 font-semibold transition-opacity hover:opacity-90"
+          disabled={isPending} // 🔽 요청이 진행 중일 때 버튼 비활성화
+          className="rounded-lg-md bg-primary text-primary-foreground px-6 py-2 font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          저장하기
+          {isPending ? '저장 중...' : '저장하기'}
         </button>
       </div>
     </div>
