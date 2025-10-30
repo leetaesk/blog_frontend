@@ -4,14 +4,12 @@ import MDEditor from '@uiw/react-md-editor';
 import { useNavigate } from 'react-router-dom';
 
 import ImageUploader from '@/components/ImageUploader';
-import { useGetCategories } from '@/features/Archive/hooks/useGetCategories';
+import CategoryInput from '@/features/Post/components/CategoryInput';
 import useThemeStore from '@/store/themeStore';
 
 function PostNewPage() {
   const navigate = useNavigate();
   const currentTheme = useThemeStore((s) => s.theme);
-
-  const { categories } = useGetCategories();
 
   // 1. DTO에 매핑되는 상태들
   const [title, setTitle] = useState<string>('');
@@ -117,15 +115,17 @@ function PostNewPage() {
         </div>
 
         {/* 3. 카테고리 (categoryId) */}
-        <div>
-          <label htmlFor="category" className="text-foreground mb-2 block text-lg font-semibold">
+        {/* 3. 🔽 카테고리 (categoryId) - 기존 select 로직을 통째로 교체 */}
+        <CategoryInput value={categoryId} onChange={setCategoryId} />
+        {/* <div>
+          <label htmlFor="category" className="block mb-2 text-lg font-semibold text-foreground">
             카테고리
           </label>
           <select
             id="category"
             value={categoryId || ''}
             onChange={(e) => setCategoryId(Number(e.target.value))}
-            className="bg-card text-foreground rounded-lg-md border-border focus:ring-ring w-full border p-3 transition focus:ring-2 focus:outline-none"
+            className="w-full p-3 transition border bg-card text-foreground rounded-lg-md border-border focus:ring-ring focus:ring-2 focus:outline-none"
           >
             <option value="">카테고리 선택</option>
             {categories?.map((cat) => (
@@ -134,7 +134,7 @@ function PostNewPage() {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
 
         {/* 4. 요약 (summary) */}
         <div>

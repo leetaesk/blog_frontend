@@ -59,7 +59,7 @@ const PostDetailPage = () => {
 
           <div className="mb-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-gray-200 py-4 text-gray-500 dark:border-gray-700 dark:text-gray-400">
             <div className="flex items-center">
-              <div className="mr-3 h-10 w-10 rounded-full">
+              <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
                 <ProfileImage src={post.author.profileImageUrl} alt={post.author.nickname} />
               </div>
 
