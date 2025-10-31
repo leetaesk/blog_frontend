@@ -1,13 +1,7 @@
+import type { PostData } from '@/features/Post/types/postByIdType';
 import type { CommonResponseDto } from '@/types/CommonResponseDto';
 
-export interface PostPostRequestDto {
-  title: string;
-  content: string;
-  categoryId: number;
-  summary: string;
-  thumbnailUrl: string;
-  tags?: string[];
-}
+export type PostPostRequestDto = PostData;
 
 export interface PostPostResultType {
   postId: number;

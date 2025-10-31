@@ -4,11 +4,13 @@ export const ROUTES = {
   ARCHIVE: '/archive',
   MYPAGE: '/my',
   POSTS: '/posts',
-  POST_DETAIL: '/posts/:postId', // ':postId'는 URL 파라미터를 의미하는 동적 세그먼트입니다.
+  POST_DETAIL: '/posts/:postId',
   POST_NEW: '/posts/new',
+  POST_EDIT: '/posts/:postId/edit',
 };
 
 export const urlFor = {
   archive: (category?: string) => (category ? `/archive?category=${category}` : `/archive`),
   postDetail: (postId: number) => `/posts/${postId}`,
+  editPost: (postId: number) => `/posts/${postId}/edit`,
 };

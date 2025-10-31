@@ -4,20 +4,19 @@ import CalendarIcon from '@/assets/icons/CalendarIcon';
 import EyeIcon from '@/assets/icons/EyeIcon';
 import ProfileImage from '@/components/ProfileImage';
 import { ROUTES, urlFor } from '@/constants/routes';
-import { useGetPostById } from '@/features/Post/hooks/useGetPostById';
+import { useDeletePost, useGetPostById } from '@/features/Post/hooks/usePostById';
 import '@/features/Post/styles/postDetail.css';
+import useUserStore from '@/store/useUserStore';
 
 // --- Main Page Component ---
 const PostDetailPage = () => {
   const { postId: postIdStr } = useParams<{ postId: string }>();
   const postId = parseInt(postIdStr || '', 10);
+  const userId = useUserStore((s) => s.userId);
 
   // postId가 유효한 숫자인 경우에만 쿼리를 실행합니다.
   const { data: post, isError, isLoading } = useGetPostById({ postId });
-
-  // const profileUrl = post?.author.profileImageUrl || DefaultProfileIcon;
-
-  // --- 에러 또는 데이터 없음 처리 ---
+  const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
 
   if (isLoading) return;
   if (isError || !post) {
@@ -38,10 +37,36 @@ const PostDetailPage = () => {
     );
   }
 
+  const isOwner = userId === post.author.id;
+
+  // 3. 삭제 버튼 핸들러
+  const handleDelete = () => {
+    if (window.confirm('정말 이 게시글을 삭제하시겠습니까?')) {
+      deletePost({ postId });
+    }
+  };
+
   // --- 데이터 로딩 성공 시 렌더링 ---
   return (
     <div className="bg-bgWhite dark:bg-bgDark text-textDark dark:text-textWhite min-h-screen py-8 md:py-12">
       <div className="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        {isOwner && (
+          <div className="mb-4 flex justify-end gap-x-3">
+            <Link
+              to={urlFor.editPost(post.id)}
+              className="rounded-md bg-gray-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-gray-700"
+            >
+              수정
+            </Link>
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700 disabled:opacity-50"
+            >
+              {isDeleting ? '삭제 중...' : '삭제'}
+            </button>
+          </div>
+        )}
         <article className="bg-compWhite dark:bg-compDark rounded-2xl p-6 shadow-xl sm:p-8 md:p-12">
           <header className="mb-8">
             {post.category && (

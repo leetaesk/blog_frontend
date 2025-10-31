@@ -5,6 +5,7 @@ import Layout from '@/Layout/Layout';
 import { ROUTES } from '@/constants/routes';
 import { getPostByIdLoader } from '@/features/Post/loaders/getPostByIdLoader';
 import ArchivePage from '@/pages/ArchivePage';
+import EditPostPage from '@/pages/EditPostPage';
 import LoginPage from '@/pages/LoginPage';
 import MainPage from '@/pages/MainPage';
 import MyPage from '@/pages/MyPage';
@@ -35,9 +36,24 @@ const router = createBrowserRouter([
         loader: getPostByIdLoader(queryClient),
       },
       {
+        path: ROUTES.POST_DETAIL, // '/posts/:postId'
+        element: <PostDetailPage />,
+        loader: getPostByIdLoader(queryClient),
+      },
+      {
         path: ROUTES.POST_NEW,
         element: <PostNewPage />,
         loader: isAdminLoader,
+      },
+      {
+        path: ROUTES.POST_EDIT, // '/posts/:postId/edit'
+        element: <EditPostPage />,
+        // 1. 페이지 렌더링 전, 폼에 채울 게시글 데이터를 미리 불러옵니다.
+        // 2. 동시에 관리자(글쓴이)가 맞는지 권한을 확인합니다.
+        // loader: async (args) => {
+        //   await isAdminLoader(args); // 권한 먼저 체크
+        //   return getPostByIdLoader(queryClient)(args); // 권한 통과 시 데이터 로드
+        // },
       },
       {
         path: ROUTES.MYPAGE,

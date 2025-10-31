@@ -3,8 +3,8 @@ import { QueryClient } from '@tanstack/react-query';
 import type { LoaderFunction, LoaderFunctionArgs } from 'react-router-dom';
 
 // 기존 훅에서 사용하던 API 호출 함수를 그대로 가져옵니다.
-import { getPostById } from '@/features/Post/apis/getPostById';
-import type { GetPostByIdResultType } from '@/features/Post/types/getPostByIdType';
+import { getPostById } from '@/features/Post/apis/postById';
+import type { GetPostByIdResultType } from '@/features/Post/types/postByIdType';
 
 // QueryClient를 인자로 받는 loader 생성 함수
 export const getPostByIdLoader =
