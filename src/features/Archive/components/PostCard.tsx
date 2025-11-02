@@ -8,6 +8,23 @@ interface PostCardProps {
   post: PostListItem;
 }
 
+const HeartIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-4 w-4" // 크기 조절 (h-5 w-5 등)
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z"
+    />
+  </svg>
+);
+
 const PostCard = ({ post }: PostCardProps) => {
   return (
     <Link to={urlFor.postDetail(post.id)} key={post.id}>
@@ -38,7 +55,12 @@ const PostCard = ({ post }: PostCardProps) => {
             <span className="mx-2">&middot;</span>
             <div className="flex items-center">
               <ChatBubbleIcon />
-              <span>{post.commentCount}</span>
+              <span className="ml-1">{post.commentCount}</span>
+            </div>
+            {/* 좋아요 수 */}
+            <div className="ml-3 flex items-center">
+              <HeartIcon />
+              <span className="ml-1">{post.likesCount}</span>
             </div>
           </div>
         </div>

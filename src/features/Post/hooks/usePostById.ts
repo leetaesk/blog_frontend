@@ -2,17 +2,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { ROUTES } from '@/constants/routes';
 import {
-  // API 함수 import
   deletePostById,
-  // API 함수 import
   getPostById,
   getPostForEdit,
   patchPostById,
 } from '@/features/Post/apis/postById';
 import type {
-  // 타입 import
   DeletePostRequestDto,
-  // 타입 import
   GetPostByIdRequestDto,
   GetPostForEditRequestDto,
   UpdatePostRequestDto,
@@ -75,6 +71,7 @@ export const useDeletePost = () => {
       // archive 쿼리 캐시를 무효화
       queryClient.invalidateQueries({ queryKey: ['posts'] });
       alert(`게시글 삭제 성공: ${data.postId}`);
+      window.location.href = ROUTES.ARCHIVE;
     },
     onError: (error) => {
       console.error('게시글 삭제 중 오류 발생:', error);

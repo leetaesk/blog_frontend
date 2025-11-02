@@ -4,6 +4,7 @@ import CalendarIcon from '@/assets/icons/CalendarIcon';
 import EyeIcon from '@/assets/icons/EyeIcon';
 import ProfileImage from '@/components/ProfileImage';
 import { ROUTES, urlFor } from '@/constants/routes';
+import LikeButton from '@/features/Post/components/LikeButton';
 import { useDeletePost, useGetPostById } from '@/features/Post/hooks/usePostById';
 import '@/features/Post/styles/postDetail.css';
 import useUserStore from '@/store/useUserStore';
@@ -100,36 +101,47 @@ const PostDetailPage = () => {
             </div>
           </div>
 
-          {post.thumbnailUrl && (
+          {/* 썸네일 어케할지 고민 중 배경으로 할까 했는데 별로일 듯 */}
+          {/* {post.thumbnailUrl && (
             <div className="my-8 overflow-hidden rounded-lg shadow-lg">
               <img
                 src={post.thumbnailUrl}
                 alt={post.title}
-                className="h-auto w-full object-cover"
+                className="object-cover w-full h-auto"
               />
             </div>
-          )}
+          )} */}
 
           <div
             className="prose prose-lg post-content dark:prose-invert prose-p:text-textDark dark:prose-p:text-textWhite prose-h3:text-textDark dark:prose-h3:text-textWhite prose-strong:text-textDark dark:prose-strong:text-textWhite max-w-none"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
-          {/* --- Tags Section --- */}
-          {post.tags.length > 0 && (
-            <div className="mt-10 border-t border-gray-200 pt-6 dark:border-gray-700">
+          {/* --- [수정됨] Tags & Like Section --- */}
+          <div className="mt-10 border-t border-gray-200 pt-6 dark:border-gray-700">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              {/* LikeButton (Right) */}
+              <div className="flex-shrink-0">
+                <LikeButton
+                  postId={postId}
+                  initialLikesCount={post.likesCount}
+                  initialIsLiked={post.isLikedByUser}
+                />
+              </div>
+              {/* Tags (Left) */}
               <div className="flex flex-wrap items-center gap-3">
-                {post.tags.map((tag) => (
-                  <div
-                    key={tag.id}
-                    className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200"
-                  >
-                    # {tag.name}
-                  </div>
-                ))}
+                {post.tags.length > 0 &&
+                  post.tags.map((tag) => (
+                    <div
+                      key={tag.id}
+                      className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200"
+                    >
+                      # {tag.name}
+                    </div>
+                  ))}
               </div>
             </div>
-          )}
+          </div>
         </article>
 
         <div className="mt-12 text-center">

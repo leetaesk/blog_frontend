@@ -12,12 +12,14 @@ import type {
   UpdatePostResponseDto,
   UpdatePostResultType,
 } from '@/features/Post/types/postByIdType';
-import { axiosInstance, axiosPrivateInstance } from '@/lib/axiosInstance';
+import { axiosPrivateInstance } from '@/lib/axiosInstance';
 
 export const getPostById = async (
   params: GetPostByIdRequestDto,
 ): Promise<GetPostByIdResultType> => {
-  const response = await axiosInstance.get<GetPostByIdResponseDto>(`/api/posts/${params.postId}`);
+  const response = await axiosPrivateInstance.get<GetPostByIdResponseDto>(
+    `/api/posts/${params.postId}`,
+  );
 
   if (!response.data.isSuccess) {
     throw new Error(`API Error: ${response.data.code} - ${response.data.message}`);

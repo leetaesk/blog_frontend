@@ -29,6 +29,7 @@ export interface PostListItem {
   thumbnailUrl: string | null;
   commentCount: number;
   category: Category;
+  likesCount: number;
 }
 
 // 페이지네이션 정보 타입

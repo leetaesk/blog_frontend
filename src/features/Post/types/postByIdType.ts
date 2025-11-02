@@ -49,6 +49,8 @@ export interface GetPostByIdResultType {
   category: Category | null; // 카테고리가 없을 수 있음
   tags: Tag[]; // 태그는 여러 개일 수 있고, 없을 수도 있음
   commentCount: number;
+  likesCount: number;
+  isLikedByUser: boolean;
 }
 
 /**
