@@ -19,21 +19,16 @@ import type {
  * @param params postId를 포함하는 객체
  */
 export const useGetPostById = (params: GetPostByIdRequestDto) => {
-  const { data, isLoading, isError, error } = useQuery({
+  return useQuery({
     queryKey: ['post', params.postId],
     queryFn: () => getPostById(params),
-    gcTime: 5 * 60 * 1000,
-    staleTime: 3 * 60 * 1000,
+    initialData: params.initialData,
+    // gcTime: 5 * 60 * 1000,
+    // staleTime: 3 * 60 * 1000,
     // postId가 유효한 숫자일 때만 쿼리를 실행합니다.
     enabled: !!params.postId && !isNaN(params.postId),
+    refetchOnWindowFocus: false,
   });
-
-  return {
-    data,
-    isLoading,
-    isError,
-    error,
-  };
 };
 
 export const useUpdatePost = () => {

@@ -1,10 +1,12 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLoaderData, useParams } from 'react-router-dom';
 
 import CalendarIcon from '@/assets/icons/CalendarIcon';
 import EyeIcon from '@/assets/icons/EyeIcon';
 import ProfileImage from '@/components/ProfileImage';
 import { ROUTES, urlFor } from '@/constants/routes';
+import Comment, { mockCommentData } from '@/features/Post/components/Comment';
 import LikeButton from '@/features/Post/components/LikeButton';
+import { useGetComments } from '@/features/Post/hooks/useComments';
 import { useDeletePost, useGetPostById } from '@/features/Post/hooks/usePostById';
 import '@/features/Post/styles/postDetail.css';
 import useUserStore from '@/store/useUserStore';
@@ -15,11 +17,15 @@ const PostDetailPage = () => {
   const postId = parseInt(postIdStr || '', 10);
   const userId = useUserStore((s) => s.userId);
 
-  // postId가 유효한 숫자인 경우에만 쿼리를 실행합니다.
-  const { data: post, isError, isLoading } = useGetPostById({ postId });
-  const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
+  const initialData = useLoaderData();
 
-  if (isLoading) return;
+  // postId가 유효한 숫자인 경우에만 쿼리를 실행합니다.
+  const { data: post, isError } = useGetPostById({ postId, initialData: initialData });
+  const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
+  const { data: comments } = useGetComments({ postId });
+  console.log(`comments:${comments}`);
+
+  // if (isLoading) return;
   if (isError || !post) {
     return (
       <div className="bg-bgWhite dark:bg-bgDark dark:text-textWhite text-textDark flex min-h-screen flex-col items-center justify-center px-4">
@@ -143,6 +149,14 @@ const PostDetailPage = () => {
             </div>
           </div>
         </article>
+
+        <div>
+          {comments?.comments === undefined ? (
+            <>댓글 없음 </>
+          ) : (
+            <Comment comment={mockCommentData} />
+          )}
+        </div>
 
         <div className="mt-12 text-center">
           <Link

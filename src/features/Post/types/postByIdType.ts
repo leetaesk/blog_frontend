@@ -17,7 +17,7 @@ interface Category {
 }
 
 // 작성자 정보 타입
-interface Author {
+export interface Author {
   id: number;
   nickname: string;
   profileImageUrl: string;
@@ -36,6 +36,7 @@ interface Tag {
 
 export interface GetPostByIdRequestDto {
   postId: number;
+  initialData?: GetPostByIdResultType;
 }
 export interface GetPostByIdResultType {
   id: number;

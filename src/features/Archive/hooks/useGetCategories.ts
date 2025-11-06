@@ -10,6 +10,8 @@ export const useGetCategories = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['categories'],
     queryFn: getCategories,
+    gcTime: 5 * 60 * 1000,
+    staleTime: 3 * 60 * 1000,
     select: (data) => data.result.categories, // result.categories만 추출하여 반환
   });
 
