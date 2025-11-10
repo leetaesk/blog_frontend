@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import MDEditor from '@uiw/react-md-editor';
 import { useNavigate } from 'react-router-dom';
@@ -10,18 +10,66 @@ import { postPostSchema } from '@/features/posts/posts.schema';
 import useThemeStore from '@/store/themeStore';
 import CategoryInput from '@/ui/PostDetail/components/CategoryInput';
 
+export const DRAFT_STORAGE_KEY = 'create-post-draft';
+
+const getInitialDraft = () => {
+  const savedDraft = sessionStorage.getItem(DRAFT_STORAGE_KEY);
+  if (savedDraft) {
+    try {
+      // JSON 파싱에 실패할 경우를 대비해 try...catch
+      const draft = JSON.parse(savedDraft);
+      console.log('임시 저장된 글을 불러왔습니다.', draft);
+      return draft;
+    } catch (e) {
+      console.error('임시 저장된 글을 불러오는 데 실패했습니다.', e);
+      // 잘못된 데이터가 저장되어 있으면 삭제
+      sessionStorage.removeItem(DRAFT_STORAGE_KEY);
+      return null;
+    }
+  }
+  return null;
+};
+
 const CreatePostPage = () => {
   const navigate = useNavigate();
   const currentTheme = useThemeStore((s) => s.theme);
   const { mutate: createPost, isPending } = usePostPost();
 
+  // 👈 3. 마운트 시 1회만 실행되는 'Lazy Initializer'로 초기 상태 설정
+  // getInitialDraft()를 한 번만 호출해서 초기 데이터를 가져옴
+  const initialDraft = getInitialDraft();
+
+  // // 1. DTO에 매핑되는 상태들
+  // const [title, setTitle] = useState<string>('');
+  // const [content, setContent] = useState<string>('**새로운 글을 작성해보세요!**');
+  // const [categoryId, setCategoryId] = useState<number>(0);
+  // const [summary, setSummary] = useState<string>('');
+  // const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
+  // const [tagsInput, setTagsInput] = useState(''); // 태그는 쉼표로 구분된 문자열로 우선 받습니다.
+
   // 1. DTO에 매핑되는 상태들
-  const [title, setTitle] = useState<string>('');
-  const [content, setContent] = useState<string>('**새로운 글을 작성해보세요!**');
-  const [categoryId, setCategoryId] = useState<number>(0);
-  const [summary, setSummary] = useState<string>('');
-  const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
-  const [tagsInput, setTagsInput] = useState(''); // 태그는 쉼표로 구분된 문자열로 우선 받습니다.
+  const [title, setTitle] = useState<string>(() => initialDraft?.title || '');
+  const [content, setContent] = useState<string>(
+    () => initialDraft?.content || '**새로운 글을 작성해보세요!**',
+  );
+  const [categoryId, setCategoryId] = useState<number>(() => initialDraft?.categoryId || 0);
+  const [summary, setSummary] = useState<string>(() => initialDraft?.summary || '');
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>(() => initialDraft?.thumbnailUrl || '');
+  const [tagsInput, setTagsInput] = useState<string>(() => initialDraft?.tagsInput || '');
+
+  // 👈 4. 폼 상태가 변경될 때마다 sessionStorage에 자동 저장
+  useEffect(() => {
+    const draft = {
+      title,
+      content,
+      categoryId,
+      summary,
+      thumbnailUrl,
+      tagsInput,
+    };
+    // 현재 폼 상태를 JSON 문자열로 변환하여 저장
+    sessionStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+  }, [title, content, categoryId, summary, thumbnailUrl, tagsInput]); // 👈 감시할 상태들
 
   const handleSave = () => {
     // 1. 태그 문자열을 배열로 파싱

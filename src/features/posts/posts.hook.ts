@@ -16,6 +16,7 @@ import type {
   PostPostRequestDto,
   UpdatePostRequestDto,
 } from '@/features/posts/posts.dto';
+import { DRAFT_STORAGE_KEY } from '@/ui/CreatePost/CreatePostPage';
 
 /**
  * 게시글 상세를 조회하는 useQuery 커스텀 훅
@@ -96,6 +97,7 @@ export const usePostPost = () => {
     // 3. 뮤테이션 성공 시 실행 (API가 isSuccess: true 반환 시)
     onSuccess: (data) => {
       alert(`postpost 성공, postId:${data.postId}`);
+      sessionStorage.removeItem(DRAFT_STORAGE_KEY);
       navigate(urlFor.postDetail(data.postId));
     },
 

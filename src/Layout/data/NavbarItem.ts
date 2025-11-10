@@ -16,10 +16,10 @@ export const useNavItems = () => {
         label: 'Archive',
         links: [
           { label: 'All Posts', to: ROUTES.ARCHIVE, ariaLabel: 'View all posts' },
-          { label: 'By Category', to: '/archive', ariaLabel: 'Browse posts by category' },
+          { label: 'By Category', to: ROUTES.ARCHIVE, ariaLabel: 'Browse posts by category' },
           // 조건부 렌더링 로직은 그대로 사용
           ...(userRole === 'admin'
-            ? [{ label: 'postpost', to: '/posts/new', ariaLabel: 'create post' }]
+            ? [{ label: 'postpost', to: ROUTES.POST_CREATE, ariaLabel: 'create post' }]
             : []),
         ],
       },
