@@ -10,7 +10,7 @@ import { postPostSchema } from '@/features/posts/posts.schema';
 import useThemeStore from '@/store/themeStore';
 import CategoryInput from '@/ui/PostDetail/components/CategoryInput';
 
-function PostNewPage() {
+const CreatePostPage = () => {
   const navigate = useNavigate();
   const currentTheme = useThemeStore((s) => s.theme);
   const { mutate: createPost, isPending } = usePostPost();
@@ -221,6 +221,6 @@ function PostNewPage() {
       </div>
     </div>
   );
-}
+};
 
-export default PostNewPage;
+export default CreatePostPage;

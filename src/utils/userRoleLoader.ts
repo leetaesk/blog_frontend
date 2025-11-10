@@ -14,6 +14,7 @@ export const isAdminLoader = () => {
     alert('접근 권한이 없습니다.');
     return redirect('/');
   }
+
   return null;
 };
 

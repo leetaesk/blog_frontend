@@ -11,7 +11,7 @@ import { postPostSchema } from '@/features/posts/posts.schema';
 import useThemeStore from '@/store/themeStore';
 import CategoryInput from '@/ui/PostDetail/components/CategoryInput';
 
-function EditPostPage() {
+const UpdatePostPage = () => {
   const navigate = useNavigate();
   const { postId: postIdStr } = useParams<{ postId: string }>();
   const postId = parseInt(postIdStr || '', 10);
@@ -241,6 +241,6 @@ function EditPostPage() {
       </div>
     </div>
   );
-}
+};
 
-export default EditPostPage;
+export default UpdatePostPage;

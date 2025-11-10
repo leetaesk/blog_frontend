@@ -5,8 +5,8 @@ export const ROUTES = {
   MYPAGE: '/my',
   POSTS: '/posts',
   POST_DETAIL: '/posts/:postId',
-  POST_NEW: '/posts/new',
-  POST_EDIT: '/posts/:postId/edit',
+  POST_CREATE: '/posts/create',
+  POST_UPDATE: '/posts/:postId/update',
 };
 
 export const urlFor = {
