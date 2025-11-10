@@ -11,7 +11,7 @@ import MainPage from '@/ui/Main/MainPage';
 import MyPage from '@/ui/Mypage/MyPage';
 import NotFoundPage from '@/ui/NotFoundPage';
 import PostDetailPage from '@/ui/PostDetail/PostDetailPage';
-import UpdatePostPage from '@/ui/UpdatePost/EditPostPage';
+import UpdatePostPage from '@/ui/UpdatePost/UpdatePostPage';
 import { isAdminLoader, isGuestLoader } from '@/utils/userRoleLoader';
 
 const queryClient = new QueryClient();
