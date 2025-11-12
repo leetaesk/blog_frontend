@@ -25,6 +25,7 @@ export const useKakaoLoginMutation = () => {
           role: data.userRole,
           nickname: data.userNickname,
           profileImageUrl: data.userProfileImageUrl,
+          kakaoProfileImageUrl: data.userKakaoProfileImageUrl,
         },
       });
       console.log('로그인 성공');

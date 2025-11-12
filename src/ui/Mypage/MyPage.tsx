@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 
-import DefaultProfileIcon from '@/assets/icons/DefaultProfileIcon';
+import ProfileImage from '@/components/ProfileImage';
 import { useKakaoLogoutMutation } from '@/features/Auth/kakaoAuth.hook';
 import useUserStore from '@/store/useUserStore';
+import UpdateProfilePage from '@/ui/Mypage/components/UpdateProfilePage';
 
 const MyPage = () => {
   const userInfo = useUserStore((s) => s.userInfo);
@@ -24,18 +25,10 @@ const MyPage = () => {
     <div className="bg-compWhite dark:bg-compDark mx-auto my-10 h-fit w-full max-w-4xl rounded-lg p-5 shadow-md">
       {/* 1. 프로필 정보 섹션 */}
       <section className="mb-10 flex items-center gap-4 border-b border-gray-200 pb-6 dark:border-gray-700">
-        {userInfo.profileImageUrl ? (
-          <img
-            src={userInfo.profileImageUrl}
-            alt="프로필 이미지"
-            className="h-24 w-24 rounded-full object-cover"
-          />
-        ) : (
-          <div className="h-24 w-24">
-            {/* [수정] 기본 프로필 아이콘 색상 추가 */}
-            <DefaultProfileIcon />
-          </div>
-        )}
+        <div className="h-24 w-24 overflow-hidden rounded-full">
+          <ProfileImage src={userInfo.profileImageUrl} alt={'프로필사진'} />
+        </div>
+
         <div className="flex flex-col items-baseline">
           {/* [수정] dark:text-gray-100 -> dark:text-textWhite */}
           <h2 className="dark:text-textWhite text-3xl font-bold text-gray-800">
@@ -57,6 +50,7 @@ const MyPage = () => {
           >
             프로필 수정
           </li>
+          <UpdateProfilePage />
           <li
             className="cursor-pointer rounded-md p-4 text-lg text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
             onClick={() => navigate('/mypage/posts')}

@@ -5,7 +5,8 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 interface UserInfo {
   role: 'user' | 'admin';
   nickname: string;
-  profileImageUrl: string;
+  profileImageUrl: string | null; // ⭐️ null 허용 (백엔드 응답과 일치)
+  kakaoProfileImageUrl: string | null; // ⭐️ null 허용
 }
 
 // 2. UserState에서 닉네임과 프로필 이미지 URL 필드를 userInfo 객체로 통합합니다.
@@ -22,9 +23,17 @@ interface SetUserPayload {
   userInfo: UserInfo;
 }
 
+// ⭐️ 4. (추가) 프로필 업데이트용 payload 타입
+interface UpdateUserInfoPayload {
+  nickname: string;
+  profileImageUrl: string | null;
+}
+
 interface UserActions {
   setUser: (payload: SetUserPayload) => void;
   clearUser: () => void;
+  // ⭐️ 5. (추가) 프로필 업데이트 액션 정의
+  updateUserInfo: (payload: UpdateUserInfoPayload) => void;
 }
 
 const useUserStore = create(
@@ -45,6 +54,19 @@ const useUserStore = create(
           userId: null,
           userInfo: null,
         }),
+
+      // ⭐️ 6. (추가) updateUserInfo 액션 구현
+      updateUserInfo: (payload) =>
+        set((state) => ({
+          ...state, // accessToken, userId 등 기존 상태 유지
+          userInfo: state.userInfo
+            ? {
+                ...state.userInfo, // role, kakaoUrl 등 기존 userInfo 유지
+                nickname: payload.nickname, // 닉네임만 덮어쓰기
+                profileImageUrl: payload.profileImageUrl, // 프로필 이미지만 덮어쓰기
+              }
+            : null, // userInfo가 없었으면 null 유지
+        })),
     }),
     {
       name: 'user-storage',

@@ -11,7 +11,7 @@ interface ProfileImageProps {
  */
 const ProfileImage = ({ src, alt }: ProfileImageProps) => {
   if (src) {
-    return <img src={src} alt={alt} className="h-full w-full" />;
+    return <img src={src} alt={alt} className="h-full w-full object-cover" />;
   }
 
   return <DefaultProfileIcon />;
