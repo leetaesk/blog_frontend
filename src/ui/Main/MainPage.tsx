@@ -3,7 +3,9 @@ import React, { type ReactNode, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
+import ThemeToggleButton from '@/Layout/components/ThemeToggleButton';
 import { useGetPosts } from '@/features/posts/archive/archive.hook';
+import HeroSection from '@/ui/Main/components/HeroSection';
 
 // 1. 스크롤 애니메이션 컴포넌트
 interface ScrollRevealProps {
@@ -69,40 +71,41 @@ const ArrowRightIcon = () => (
 
 // --- 각 섹션 컴포넌트 (파일 내부에 포함) ---
 
-const HeroSection = () => (
-  <section className="flex min-h-screen flex-col items-center justify-center text-center">
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.8 }}
-    >
-      <h1 className="text-foreground mb-4 text-4xl font-extrabold tracking-tight md:text-6xl">
-        안녕하세요, 이태석입니다.
-      </h1>
-      <p className="text-muted-foreground mx-auto max-w-3xl text-lg md:text-xl">
-        신소재에서 코드로, 아이디어를 현실로 만드는 개발자입니다. <br />
-        비전공자로서의 경험을 바탕으로 꾸준히 성장하며 가치를 만듭니다.
-      </p>
-      <div className="mt-8 flex justify-center gap-4">
-        <a
-          href="/path-to-resume.pdf"
-          target="_blank"
-          className="bg-primary text-primary-foreground rounded-lg px-6 py-3 font-semibold shadow-md transition-opacity hover:opacity-90"
-        >
-          이력서 보기
-        </a>
-        <a
-          href="https://github.com/leetaesk"
-          rel="noopener"
-          target="_blank"
-          className="bg-card text-card-foreground hover:bg-accent rounded-lg px-6 py-3 font-semibold shadow-md transition-colors"
-        >
-          GitHub
-        </a>
-      </div>
-    </motion.div>
-  </section>
-);
+// const HeroSection = () => (
+//   <section className="flex flex-col items-center justify-center w-full min-h-screen text-center">
+//     <motion.div
+//       initial={{ opacity: 0, scale: 0.9 }}
+//       animate={{ opacity: 1, scale: 1 }}
+//       transition={{ duration: 0.8 }}
+//       className="w-full"
+//     >
+//       <h1 className="font-archivo text-foreground mb-4 w-full text-right text-[226px] leading-none font-normal tracking-[-0.08em]">
+//         LEETAESK'S<br></br>ARCHIVE
+//       </h1>
+//       <p className="max-w-3xl mx-auto text-lg text-muted-foreground md:text-xl">
+//         신소재에서 코드로, 아이디어를 현실로 만드는 개발자입니다. <br />
+//         비전공자로서의 경험을 바탕으로 꾸준히 성장하며 가치를 만듭니다.
+//       </p>
+//       <div className="flex justify-center gap-4 mt-8">
+//         <a
+//           href="/path-to-resume.pdf"
+//           target="_blank"
+//           className="px-6 py-3 font-semibold transition-opacity rounded-lg shadow-md bg-primary text-primary-foreground hover:opacity-90"
+//         >
+//           이력서 보기
+//         </a>
+//         <a
+//           href="https://github.com/leetaesk"
+//           rel="noopener"
+//           target="_blank"
+//           className="px-6 py-3 font-semibold transition-colors rounded-lg shadow-md bg-card text-card-foreground hover:bg-accent"
+//         >
+//           GitHub
+//         </a>
+//       </div>
+//     </motion.div>
+//   </section>
+// );
 
 const ProjectSection = () => (
   <section className="py-24">
@@ -152,13 +155,13 @@ const RecentPostsSection = () => {
     return <div className="text-muted-foreground py-24 text-center">Loading posts...</div>;
 
   return (
-    <section className="bg-secondary py-24">
+    <section className="w-full py-24">
       <div className="container mx-auto px-4">
         <h2 className="text-foreground mb-12 text-center text-3xl font-bold md:text-4xl">
           Recent Posts
         </h2>
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <ScrollReveal stagger>
+        <ScrollReveal stagger>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {posts?.map((post) => (
               <Link to={`/posts/${post.id}`} key={post.id}>
                 <article className="bg-card group flex h-full transform flex-col overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
@@ -179,8 +182,8 @@ const RecentPostsSection = () => {
                 </article>
               </Link>
             ))}
-          </ScrollReveal>
-        </div>
+          </div>
+        </ScrollReveal>
         <div className="mt-12 text-center">
           <Link
             to="/archive"
@@ -199,15 +202,18 @@ const RecentPostsSection = () => {
 const MainPage = () => {
   return (
     // bg-background, text-foreground 등 index.css에 정의된 CSS 변수를 사용합니다.
-    <div className="bg-background text-foreground">
+    <div className="bg-background text-foreground w-full max-w-[1480px]">
       <main>
         <HeroSection />
-        <ProjectSection />
         <RecentPostsSection />
+        <ProjectSection />
       </main>
 
-      <footer className="text-muted-foreground border-border border-t py-8 text-center">
-        © {new Date().getFullYear()} Taeseok Lee. All Rights Reserved.
+      <footer className="text-muted-foreground border-border grid grid-cols-3 border-t px-6 py-8 text-center md:px-12">
+        <div>
+          <ThemeToggleButton />
+        </div>
+        <p>© {new Date().getFullYear()} Taeseok Lee. All Rights Reserved.</p>
       </footer>
     </div>
   );

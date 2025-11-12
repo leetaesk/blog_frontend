@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap');
+
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -53,6 +55,13 @@
   --color-secondWhite: #f2f2f2;
   --color-textDark: #202020;
   --color-textWhite: #fff;
+  --color-main: #f5f4f0;
+  /* fontFamily: {
+    archivo:
+      [ 'Archivo',
+      'sans-serif'];
+  } */
+  --font-archivo: 'Archivo', 'sans-serif';
 }
 
 @theme inline {
@@ -164,5 +173,21 @@
   /* 중간: 최대 크기 */
   50% {
     transform: scale(1);
+  }
+}
+
+@layer utilities {
+  @keyframes pan-vertical {
+    from {
+      object-position: 50% 0%; /* 50% 0% -> 상단 중앙 */
+    }
+    to {
+      object-position: 50% 100%; /* 50% 100% -> 하단 중앙 */
+    }
+  }
+
+  .animate-pan-vertical {
+    /* 20초 동안, 부드럽게(ease-in-out), 무한반복, 역방향(alternate)으로 재생 */
+    animation: pan-vertical 7s ease-in-out infinite alternate;
   }
 }

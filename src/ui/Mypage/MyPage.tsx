@@ -21,7 +21,7 @@ const MyPage = () => {
   }
 
   return (
-    <div className="bg-compWhite dark:bg-compDark mx-auto my-10 max-w-4xl rounded-lg p-5 shadow-md">
+    <div className="bg-compWhite dark:bg-compDark mx-auto my-10 w-full max-w-4xl rounded-lg p-5 shadow-md">
       {/* 1. 프로필 정보 섹션 */}
       <section className="mb-10 flex items-center gap-4 border-b border-gray-200 pb-6 dark:border-gray-700">
         {userInfo.profileImageUrl ? (
