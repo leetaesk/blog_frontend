@@ -3,7 +3,6 @@ import React, { type ReactNode, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-import ThemeToggleButton from '@/Layout/components/ThemeToggleButton';
 import { useGetPosts } from '@/features/posts/archive/archive.hook';
 import HeroSection from '@/ui/Main/components/HeroSection';
 
@@ -208,13 +207,6 @@ const MainPage = () => {
         <RecentPostsSection />
         <ProjectSection />
       </main>
-
-      <footer className="text-muted-foreground border-border grid grid-cols-3 border-t px-6 py-8 text-center md:px-12">
-        <div>
-          <ThemeToggleButton />
-        </div>
-        <p>© {new Date().getFullYear()} Taeseok Lee. All Rights Reserved.</p>
-      </footer>
     </div>
   );
 };

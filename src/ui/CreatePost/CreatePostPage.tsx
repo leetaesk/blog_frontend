@@ -120,7 +120,7 @@ const CreatePostPage = () => {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
       <header className="mb-8">
         <h2 className="text-foreground text-3xl font-extrabold tracking-tight">
           새 글 작성하기 ✍️

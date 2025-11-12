@@ -116,7 +116,7 @@ const UpdatePostPage = () => {
   // --- 렌더링 ---
   // PostNewPage와 동일한 UI를 반환합니다.
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
       <header className="mb-8">
         <h2 className="text-foreground text-3xl font-extrabold tracking-tight">
           게시글 수정하기 ✍️

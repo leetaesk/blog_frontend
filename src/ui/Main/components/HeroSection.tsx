@@ -5,7 +5,6 @@ import { useGetPosts } from '@/features/posts/archive/archive.hook';
 const HeroSection = () => {
   const { posts } = useGetPosts({ page: 1, limit: 1 });
   if (!posts) return;
-  const thumbnail = posts[0].thumbnailUrl;
   return (
     <section className="flex min-h-screen w-full flex-col items-center px-6 md:px-12">
       <motion.div
@@ -76,7 +75,8 @@ const HeroSection = () => {
           {' '}
           {/* 컨테이너 */}
           <img
-            src={thumbnail || undefined}
+            // src={thumbnail || undefined}
+            src="https://leetaesk-blog-bucket.s3.ap-northeast-2.amazonaws.com/images/65e7bc3e-74a6-479a-aea5-d7e7bc3d80a5-blob"
             alt="최근 글 썸네일"
             className="animate-pan-vertical h-full w-full object-cover"
           />
