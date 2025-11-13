@@ -41,17 +41,24 @@ interface Pagination {
   isLastPage: boolean;
 }
 
-/**
- * GET /api/posts - 응답의 `result` 필드 타입
- * @description 게시글 목록 조회 API 응답의 실제 데이터 부분을 정의합니다.
- */
 export type GetPostsResultType = {
   posts: PostListItem[];
   pagination: Pagination;
 };
 
-/**
- * GET /api/posts - 최종 응답 타입
- * @description 게시글 목록 조회 API의 최종 응답 형태를 정의합니다.
- */
 export type GetPostsResponseDto = CommonResponseDto<GetPostsResultType>;
+
+//좋아요 한 글
+export interface GetPostsLikedByMeRequestDto {
+  page?: number;
+  limit?: number;
+  category?: string;
+  search?: string;
+}
+
+export type GetPostsLikedByMeResultType = {
+  posts: PostListItem[];
+  pagination: Pagination;
+};
+
+export type GetPostsLikedByMeResponseDto = CommonResponseDto<GetPostsLikedByMeResultType>;

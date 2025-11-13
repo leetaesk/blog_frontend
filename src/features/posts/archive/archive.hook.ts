@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getPosts } from '@/features/posts/archive/archive.api';
-import type { GetPostsRequestDto } from '@/features/posts/archive/archive.dto';
+import { getPosts, getPostsLikedByMe } from '@/features/posts/archive/archive.api';
+import type {
+  GetPostsLikedByMeRequestDto,
+  GetPostsRequestDto,
+} from '@/features/posts/archive/archive.dto';
 
-/**
- * 게시글 목록을 조회하는 useQuery 커스텀 훅
- * @param params page, limit, category를 포함하는 객체
- */
 export const useGetPosts = (params: GetPostsRequestDto) => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['posts', params.limit, params.page, params.category, params.search],
@@ -27,4 +26,18 @@ export const useGetPosts = (params: GetPostsRequestDto) => {
     isError,
     error,
   };
+};
+
+export const useGetPostsLikedByMe = (params: GetPostsLikedByMeRequestDto) => {
+  return useQuery({
+    queryKey: ['posts', 'LikedByMe', params.limit, params.page, params.category, params.search],
+    queryFn: () => getPostsLikedByMe(params),
+    select: (data) => ({
+      posts: data.posts,
+      pagination: data.pagination,
+    }),
+    // gcTime: 5 * 60 * 1000,
+    // staleTime: 3 * 60 * 1000,
+    // enabled: true,
+  });
 };

@@ -3,6 +3,8 @@ import { useState } from 'react';
 import ProfileImage from '@/components/ProfileImage';
 import { useKakaoLogoutMutation } from '@/features/Auth/kakaoAuth.hook';
 import useUserStore from '@/store/useUserStore';
+import ArchiveLikedByMeSection from '@/ui/Mypage/components/ArchiveLikedByMeSection';
+import CommentsCreatedByMeSection from '@/ui/Mypage/components/CommentsCreatedByMeSection';
 import OpenMenuBar from '@/ui/Mypage/components/OpenMenuBar';
 import UpdateProfileSection from '@/ui/Mypage/components/UpdateProfileSection';
 
@@ -62,7 +64,7 @@ const MyPage = () => {
               isOpen={isOpenLikedPost}
               onClick={setIsOpenLikedPost}
             >
-              <UpdateProfileSection />
+              <ArchiveLikedByMeSection />
             </OpenMenuBar>
           </li>
           <li>
@@ -71,7 +73,7 @@ const MyPage = () => {
               isOpen={isOpenpostedComment}
               onClick={setIsOpenpostedComment}
             >
-              <UpdateProfileSection />
+              <CommentsCreatedByMeSection />
             </OpenMenuBar>
           </li>
         </ul>
