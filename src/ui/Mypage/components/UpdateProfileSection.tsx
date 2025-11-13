@@ -1,35 +1,24 @@
-// [변경] RHF 관련 import 모두 제거
-// import { useForm } from 'react-hook-form';
-// import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 
-// React import 유지
 import { useNavigate } from 'react-router-dom';
 
 import ProfileImage from '@/components/ProfileImage';
 import { useUpdateMyProfile } from '@/features/users/users.hook';
-// [유지] Zod 스키마는 유효성 검사를 위해 계속 사용
 import { type UpdateProfileSchemaType, updateProfileSchema } from '@/features/users/users.schema';
 import useUserStore from '@/store/useUserStore';
 
-/**
- * 사용자 프로필 (닉네임, 프로필 이미지) 수정 페이지
- */
-const UpdateProfilePage = () => {
+const UpdateProfileSection = () => {
   const navigate = useNavigate();
   const userInfo = useUserStore((s) => s.userInfo);
 
-  // 1. 이미지 미리보기를 위한 로컬 상태
   const [imagePreview, setImagePreview] = useState<string | null>(
     userInfo?.profileImageUrl || null,
   );
 
-  // [변경] 2. RHF 대신 useState로 폼 상태 관리
   const [nickname, setNickname] = useState(userInfo?.nickname || '');
   const [imageFile, setImageFile] = useState<FileList | null | undefined>(undefined);
   const [profileAction, setProfileAction] = useState<'delete' | 'use_kakao' | undefined>(undefined);
 
-  // [변경] 2-1. Zod 유효성 검사 에러 상태
   const [errors, setErrors] = useState<{
     nickname?: string;
     image?: string;
@@ -40,7 +29,7 @@ const UpdateProfilePage = () => {
     // 1. onSuccess 콜백 (첫 번째 인자)
     (data) => {
       alert('프로필이 성공적으로 변경되었습니다.');
-      // [변경] 폼 상태를 서버에서 받은 최신 정보로 수동 리셋
+      // 폼 상태를 서버에서 받은 최신 정보로 수동 리셋
       setNickname(data.result.nickname);
       setImageFile(undefined);
       setProfileAction(undefined);
@@ -49,9 +38,7 @@ const UpdateProfilePage = () => {
       // 이미지 미리보기도 서버 응답 URL로 업데이트
       setImagePreview(data.result.profileImageUrl);
     },
-    // 2. onError 콜백 (두 번째 인자)
     (error) => {
-      // (기존 로직 동일)
       if (error && 'response' in error && error.response) {
         const apiError = error.response.data as { message?: string };
         alert(apiError.message || '프로필 변경에 실패했습니다.');
@@ -61,9 +48,6 @@ const UpdateProfilePage = () => {
     },
   );
 
-  // [변경] 4. 'image' 필드(FileList) 구독 대신 'imageFile' 상태 구독
-  // (RHF의 'watch' 대신 'imageFile' state 사용)
-  // 5. 'imageFile'이 변경될 때마다(새 파일 업로드 시) 미리보기 업데이트
   useEffect(() => {
     if (imageFile && imageFile.length > 0) {
       const file = imageFile[0];
@@ -71,7 +55,6 @@ const UpdateProfilePage = () => {
       setImagePreview(newPreviewUrl);
 
       // ⭐️ 새 파일이 업로드되면, 'profileAction'은 초기화
-      // [변경] RHF의 setValue 대신 setState 사용
       setProfileAction(undefined);
 
       // 컴포넌트 언마운트 또는 URL 변경 시 메모리 해제
@@ -146,7 +129,7 @@ const UpdateProfilePage = () => {
   const isMutationLoading = isPending;
 
   return (
-    <div className="bg-compWhite dark:bg-compDark mx-auto my-10 h-fit w-full max-w-4xl rounded-lg p-5 shadow-md md:p-8">
+    <div className="bg-compWhite dark:bg-compDark mx-auto h-fit w-full max-w-4xl rounded-lg p-5 shadow-md md:p-8">
       {/* 폼 태그 */}
       {/* [변경] RHF의 handleSubmit 제거, 기본 onSubmit 연결 */}
       <form onSubmit={onSubmit}>
@@ -255,4 +238,4 @@ const UpdateProfilePage = () => {
   );
 };
 
-export default UpdateProfilePage;
+export default UpdateProfileSection;

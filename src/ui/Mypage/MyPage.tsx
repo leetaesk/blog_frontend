@@ -1,13 +1,17 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 import ProfileImage from '@/components/ProfileImage';
 import { useKakaoLogoutMutation } from '@/features/Auth/kakaoAuth.hook';
 import useUserStore from '@/store/useUserStore';
-import UpdateProfilePage from '@/ui/Mypage/components/UpdateProfilePage';
+import OpenMenuBar from '@/ui/Mypage/components/OpenMenuBar';
+import UpdateProfileSection from '@/ui/Mypage/components/UpdateProfileSection';
 
 const MyPage = () => {
-  const userInfo = useUserStore((s) => s.userInfo);
-  const navigate = useNavigate();
+  const { userInfo } = useUserStore();
+
+  const [isOpenUpdateProfile, setIsOpenUpdateProfile] = useState<boolean>(false);
+  const [isOpenLikedPost, setIsOpenLikedPost] = useState<boolean>(false);
+  const [isOpenpostedComment, setIsOpenpostedComment] = useState<boolean>(false);
 
   const { mutate: kakaoLogout } = useKakaoLogoutMutation();
 
@@ -24,7 +28,7 @@ const MyPage = () => {
   return (
     <div className="bg-compWhite dark:bg-compDark mx-auto my-10 h-fit w-full max-w-4xl rounded-lg p-5 shadow-md">
       {/* 1. 프로필 정보 섹션 */}
-      <section className="mb-10 flex items-center gap-4 border-b border-gray-200 pb-6 dark:border-gray-700">
+      <section className="mb-10 flex items-center gap-6 border-b border-gray-200 pb-6 dark:border-gray-700">
         <div className="h-24 w-24 overflow-hidden rounded-full">
           <ProfileImage src={userInfo.profileImageUrl} alt={'프로필사진'} />
         </div>
@@ -43,31 +47,32 @@ const MyPage = () => {
       {/* 2. 메뉴 목록 섹션 */}
       <section>
         <ul className="space-y-2">
-          {/* [수정] 텍스트 및 호버 색상 통일 */}
-          <li
-            className="cursor-pointer rounded-md p-4 text-lg text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-            onClick={() => navigate('/mypage/edit-profile')}
-          >
-            프로필 수정
+          <li>
+            <OpenMenuBar
+              title={'프로필 수정'}
+              isOpen={isOpenUpdateProfile}
+              onClick={setIsOpenUpdateProfile}
+            >
+              <UpdateProfileSection />
+            </OpenMenuBar>
           </li>
-          <UpdateProfilePage />
-          <li
-            className="cursor-pointer rounded-md p-4 text-lg text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-            onClick={() => navigate('/mypage/posts')}
-          >
-            내가 쓴 글
+          <li>
+            <OpenMenuBar
+              title={'좋아요 한 글'}
+              isOpen={isOpenLikedPost}
+              onClick={setIsOpenLikedPost}
+            >
+              <UpdateProfileSection />
+            </OpenMenuBar>
           </li>
-          <li
-            className="cursor-pointer rounded-md p-4 text-lg text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-            onClick={() => navigate('/mypage/comments')}
-          >
-            내가 쓴 댓글
-          </li>
-          <li
-            className="cursor-pointer rounded-md p-4 text-lg text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-            onClick={() => navigate('/mypage/liked-posts')}
-          >
-            좋아요 한 글
+          <li>
+            <OpenMenuBar
+              title={'내가 쓴 댓글'}
+              isOpen={isOpenpostedComment}
+              onClick={setIsOpenpostedComment}
+            >
+              <UpdateProfileSection />
+            </OpenMenuBar>
           </li>
         </ul>
       </section>
@@ -76,7 +81,7 @@ const MyPage = () => {
       <div className="mt-10 border-t border-gray-200 pt-6 text-right dark:border-gray-700">
         <button
           onClick={handleLogout}
-          className="rounded-md border border-red-500 px-5 py-2 font-bold text-red-500 transition-colors duration-200 hover:bg-red-500 hover:text-white"
+          className="dark:text-textWhite dark:border-compWhite rounded-md border border-red-500 px-5 py-2 font-bold text-red-500 transition-colors duration-200 hover:bg-red-500 hover:text-white"
         >
           로그아웃
         </button>
