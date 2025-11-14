@@ -1,10 +1,8 @@
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
-// 👈 1. ReactNode 추가
-
 import clsx from 'clsx';
 
-import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
+import ChevronRightIcon from '@/assets/icons/ChevronRightIcon';
 
 interface OpenMenuBarProps {
   title: string;
@@ -18,9 +16,9 @@ const OpenMenuBar = ({ title, isOpen, onClick, children }: OpenMenuBarProps) => 
     <>
       <div
         onClick={() => onClick((prev) => !prev)} // 👈 5. onClick 수정
-        className="flex cursor-pointer items-center gap-4 rounded-md p-4 text-xl font-medium text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+        className="flex items-center gap-4 p-4 text-xl font-medium text-gray-700 transition-colors duration-200 rounded-md cursor-pointer hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
       >
-        <ArrowRightIcon
+        <ChevronRightIcon
           className={clsx(
             'transition-transform duration-300 ease-in-out', // transform에만 transition 적용
             isOpen && 'rotate-90',
