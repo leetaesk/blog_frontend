@@ -6,7 +6,7 @@ const HeroSection = () => {
   const { posts } = useGetPosts({ page: 1, limit: 1 });
   if (!posts) return;
   return (
-    <section className="flex min-h-screen w-full flex-col items-center px-6 md:px-12">
+    <section className="flex flex-col items-center w-full min-h-screen px-6 md:px-12">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -14,15 +14,15 @@ const HeroSection = () => {
         className="w-full"
       >
         {/* 히어로 텍스트 */}
-        <div className="mb-10 border-t-3 border-black py-10 dark:border-t-gray-200">
-          <h1 className="font-archivo text-foreground mb-4 w-full text-right text-7xl leading-none font-normal tracking-[-0.08em] sm:text-9xl md:text-[140px] lg:text-[180px] xl:text-[226px]">
+        <div className="py-10 mb-10 border-black border-t-3 dark:border-t-gray-200">
+          <h1 className="font-archivo text-foreground mb-4 w-full text-right text-7xl leading-none font-normal tracking-[-0.08em] sm:text-9xl md:text-[10rem] lg:text-[12rem] xl:text-[14rem]">
             ARCHIVE
           </h1>
         </div>
 
         {/* 밑에 박스 두개 */}
         <div className="font-archivo text-foreground grid grid-cols-2 gap-6 text-center text-xs leading-none font-bold tracking-[-0.03em] antialiased">
-          <div className="border-b-foreground/30 grid grid-cols-2 gap-6 border-t-3 border-b border-black py-2 text-left dark:border-t-gray-200">
+          <div className="grid grid-cols-2 gap-6 py-2 text-left border-b border-black border-b-foreground/30 border-t-3 dark:border-t-gray-200">
             <div>
               <p>
                 CINEMATOGRAPHY <br />
@@ -33,7 +33,7 @@ const HeroSection = () => {
               <p>DEVELOPER</p>
             </div>
           </div>
-          <div className="border-b-foreground/30 border-t-3 border-b border-black py-2 text-right dark:border-t-gray-200">
+          <div className="py-2 text-right border-b border-black border-b-foreground/30 border-t-3 dark:border-t-gray-200">
             <p>TAGS AND CATEGORIES</p>
           </div>
         </div>
@@ -49,7 +49,7 @@ const HeroSection = () => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-6 border-t-3 border-black py-3 dark:border-t-gray-200">
+          <div className="grid grid-cols-2 gap-6 py-3 border-black border-t-3 dark:border-t-gray-200">
             <div className="grid grid-cols-2">
               <h2 className="text-[23px] font-medium tracking-[-0.08em]">STORIES</h2>
               <div className="flex items-end justify-between">
@@ -63,22 +63,22 @@ const HeroSection = () => {
                 <div className="h-3.5 w-3.5 rounded-full bg-red-600" />
               </span>
               <span className="flex gap-[1px]">
-                <p className="border-foreground rounded-full border px-1">CREATIVE SCENE</p>
-                <p className="border-foreground rounded-full border px-1">STUDIO VIDEO</p>
+                <p className="px-1 border rounded-full border-foreground">CREATIVE SCENE</p>
+                <p className="px-1 border rounded-full border-foreground">STUDIO VIDEO</p>
               </span>
             </div>
           </div>
         </div>
 
         {/* 이미지 */}
-        <div className="relative mt-4 h-90 overflow-hidden">
+        <div className="relative mt-4 overflow-hidden h-90">
           {' '}
           {/* 컨테이너 */}
           <img
             // src={thumbnail || undefined}
             src="https://leetaesk-blog-bucket.s3.ap-northeast-2.amazonaws.com/images/65e7bc3e-74a6-479a-aea5-d7e7bc3d80a5-blob"
             alt="최근 글 썸네일"
-            className="animate-pan-vertical h-full w-full object-cover"
+            className="object-cover w-full h-full animate-pan-vertical"
           />
           {/* 2. 상단 그라데이션 오버레이 */}
           <div
@@ -89,7 +89,7 @@ const HeroSection = () => {
 
         {/* 맨 아래 박스 */}
         <div className="font-archivo text-foreground mt-13 flex items-end justify-between border-t-3 border-black py-3 text-xs leading-none font-bold tracking-[-0.03em] antialiased dark:border-t-gray-200">
-          <div className="max-w-2/3 break-words">
+          <div className="break-words max-w-2/3">
             A PLACE TO CREATE SPECIAL FILM SHOTS OR STUDIO PHOTOS WITH MULTIPLE LIGHTING SETTING.
             LARGE SURFACES PERFECT FOR YOUR OWN ARRANGEMENT. WAREHOUSE WITH NO LIMITS TO CREATE YOUR
             OWN FANTASY.

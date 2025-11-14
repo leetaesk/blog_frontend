@@ -21,15 +21,15 @@ const Layout = () => {
       {/* 정렬(max-w-7xl mx-auto) */}
       <div
         className={clsx(
-          'mx-auto flex min-h-screen w-full justify-center pt-32',
-          location.pathname !== '/' && 'max-w-7xl px-6 md:px-12',
+          'mx-auto flex min-h-screen w-[90%] justify-center pt-28 md:pt-32',
+          'max-w-7xl min-w-[90%]',
         )}
       >
         {isGlobalLoading && <BounceLoader />}
         <Navbar />
         <Outlet />
       </div>
-      <footer className="text-muted-foreground border-border grid grid-cols-3 border-t px-6 py-8 text-center md:px-12">
+      <footer className="grid grid-cols-3 px-6 py-8 text-center border-t text-muted-foreground border-border md:px-12">
         <div>
           <ThemeToggleButton />
         </div>

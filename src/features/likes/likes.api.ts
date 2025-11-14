@@ -3,7 +3,7 @@ import { axiosPrivateInstance } from '@/lib/axiosInstance';
 
 export const toggleLike = async (params: ToggleLikeRequestDto): Promise<ToggleLikeResponseDto> => {
   const response = await axiosPrivateInstance.post<ToggleLikeResponseDto>(
-    `api/likes/${params.postId}`,
+    `api/likes/post/${params.postId}`,
   );
 
   // 가드 클로저: isSuccess가 false이면 에러를 던지고 함수를 즉시 종료합니다.

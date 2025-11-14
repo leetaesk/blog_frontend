@@ -4,10 +4,9 @@ import CalendarIcon from '@/assets/icons/CalendarIcon';
 import EyeIcon from '@/assets/icons/EyeIcon';
 import ProfileImage from '@/components/ProfileImage';
 import { ROUTES, urlFor } from '@/constants/routes';
-import { useGetComments } from '@/features/comments/comments.hook';
 import { useDeletePost, useGetPostById } from '@/features/posts/posts.hook';
 import useUserStore from '@/store/useUserStore';
-import Comment, { mockCommentData } from '@/ui/PostDetail/components/Comment';
+import CommentSection from '@/ui/PostDetail/components/CommentSection';
 import LikeButton from '@/ui/PostDetail/components/LikeButton';
 import '@/ui/PostDetail/postDetail.css';
 
@@ -22,21 +21,19 @@ const PostDetailPage = () => {
   // postId가 유효한 숫자인 경우에만 쿼리를 실행합니다.
   const { data: post, isError } = useGetPostById({ postId, initialData: initialData });
   const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
-  const { data: comments } = useGetComments({ postId });
-  console.log(`comments:${comments}`);
 
   // if (isLoading) return;
   if (isError || !post) {
     return (
-      <div className="bg-bgWhite dark:bg-bgDark dark:text-textWhite text-textDark flex min-h-screen flex-col items-center justify-center px-4">
-        <h2 className="mb-4 text-center text-3xl font-bold">게시글을 찾을 수 없습니다.</h2>
+      <div className="flex flex-col items-center justify-center min-h-screen px-4 bg-bgWhite dark:bg-bgDark dark:text-textWhite text-textDark">
+        <h2 className="mb-4 text-3xl font-bold text-center">게시글을 찾을 수 없습니다.</h2>
         <p className="mb-8 text-center text-gray-500 dark:text-gray-400">
           요청하신 페이지가 존재하지 않거나, 서버에 문제가 발생했을 수 있습니다. 근데 사실 여기까진
           올수가 없죠 ㅋㅋ
         </p>
         <Link
           to={ROUTES.ARCHIVE}
-          className="rounded-lg bg-indigo-600 px-6 py-3 font-bold text-white transition-colors hover:bg-indigo-700"
+          className="px-6 py-3 font-bold text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700"
         >
           목록으로 돌아가기
         </Link>
@@ -55,43 +52,43 @@ const PostDetailPage = () => {
 
   // --- 데이터 로딩 성공 시 렌더링 ---
   return (
-    <div className="bg-bgWhite dark:bg-bgDark text-textDark dark:text-textWhite min-h-screen py-8 md:py-12">
-      <div className="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <div className="py-8 bg-bgWhite dark:bg-bgDark text-textDark dark:text-textWhite md:py-12">
+      <div className="w-full max-w-4xl px-4 mx-auto sm:px-6 lg:px-8">
         {isOwner && (
-          <div className="mb-4 flex justify-end gap-x-3">
+          <div className="flex justify-end mb-4 gap-x-3">
             <Link
               to={urlFor.editPost(post.id)}
-              className="rounded-md bg-gray-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-gray-700"
+              className="px-4 py-2 text-sm font-semibold text-white transition bg-gray-600 rounded-md hover:bg-gray-700"
             >
               수정
             </Link>
             <button
               onClick={handleDelete}
               disabled={isDeleting}
-              className="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700 disabled:opacity-50"
+              className="px-4 py-2 text-sm font-semibold text-white transition bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
             >
               {isDeleting ? '삭제 중...' : '삭제'}
             </button>
           </div>
         )}
-        <article className="bg-compWhite dark:bg-compDark rounded-2xl p-6 shadow-xl sm:p-8 md:p-12">
+        <article className="p-6 shadow-xl bg-compWhite dark:bg-compDark rounded-2xl sm:p-8 md:p-12">
           <header className="mb-8">
             {post.category && (
               <Link
                 to={urlFor.archive(post.category.name)}
-                className="mb-2 inline-block font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+                className="inline-block mb-2 font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
               >
                 {post.category.name}
               </Link>
             )}
-            <h1 className="text-3xl leading-tight font-extrabold tracking-tight md:text-5xl">
+            <h1 className="text-3xl font-extrabold leading-tight tracking-tight md:text-5xl">
               {post.title}
             </h1>
           </header>
 
-          <div className="mb-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-gray-200 py-4 text-gray-500 dark:border-gray-700 dark:text-gray-400">
+          <div className="flex flex-wrap items-center py-4 mb-8 text-gray-500 border-gray-200 gap-x-6 gap-y-2 border-y dark:border-gray-700 dark:text-gray-400">
             <div className="flex items-center">
-              <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
+              <div className="w-10 h-10 mr-3 overflow-hidden rounded-full">
                 <ProfileImage src={post.author.profileImageUrl} alt={post.author.nickname} />
               </div>
 
@@ -124,7 +121,7 @@ const PostDetailPage = () => {
           />
 
           {/* --- [수정됨] Tags & Like Section --- */}
-          <div className="mt-10 border-t border-gray-200 pt-6 dark:border-gray-700">
+          <div className="pt-6 mt-10 border-t border-gray-200 dark:border-gray-700">
             <div className="flex flex-wrap items-center justify-between gap-4">
               {/* LikeButton (Right) */}
               <div className="flex-shrink-0">
@@ -140,7 +137,7 @@ const PostDetailPage = () => {
                   post.tags.map((tag) => (
                     <div
                       key={tag.id}
-                      className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200"
+                      className="px-3 py-1 text-sm font-semibold text-indigo-800 bg-indigo-100 rounded-full dark:bg-indigo-900 dark:text-indigo-200"
                     >
                       # {tag.name}
                     </div>
@@ -150,18 +147,14 @@ const PostDetailPage = () => {
           </div>
         </article>
 
-        <div>
-          {comments?.comments === undefined ? (
-            <>댓글 없음 </>
-          ) : (
-            <Comment comment={mockCommentData} />
-          )}
+        <div className="mt-12">
+          <CommentSection postId={postId} />
         </div>
 
         <div className="mt-12 text-center">
           <Link
             to={ROUTES.ARCHIVE}
-            className="bg-compWhite dark:bg-compDark inline-block rounded-lg px-6 py-3 font-bold shadow-md transition-shadow hover:shadow-lg"
+            className="inline-block px-6 py-3 font-bold transition-shadow rounded-lg shadow-md bg-compWhite dark:bg-compDark hover:shadow-lg"
           >
             &larr; 목록으로 돌아가기
           </Link>

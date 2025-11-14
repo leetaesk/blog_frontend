@@ -24,8 +24,8 @@ export interface Comment {
 export type CommentByUser = Comment & {
   isOwner: boolean;
   isLiked: boolean;
-  replise: CommentByUser[]; // (수정) replise -> replies
-  repliseCount: number; // 답글 깊이는 1로 제한. 1차 답글의 개수 count
+  replies: CommentByUser[]; // (수정) replies -> replies
+  repliesCount: number; // 답글 깊이는 1로 제한. 1차 답글의 개수 count
 };
 
 export interface getCommentsResultType {
@@ -34,3 +34,42 @@ export interface getCommentsResultType {
 }
 
 export type getCommentsResponseDto = CommonResponseDto<getCommentsResultType>;
+
+export interface MyCommentResult {
+  id: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  likesCount: number;
+  isLiked: boolean; // 내가 내 댓글을 '좋아요' 했는지 여부
+  parentCommentId: number | null;
+
+  post: {
+    id: number;
+    title: string;
+    thumbnailUrl: string | null;
+  };
+}
+
+export interface getCommentsCreatedByMeResultType {
+  comments: MyCommentResult[]; // 👈 CommentByUser[] 대신 MyCommentResult[] 사용
+  commentCount: number;
+}
+
+export type getCommentsCreatedByMeResponseDto = CommonResponseDto<getCommentsCreatedByMeResultType>;
+
+export interface postCommentRequestDto {
+  postId: number;
+  content: string;
+  parentCommentId?: number;
+}
+
+export interface postCommentResultType {
+  id: number;
+  content: string;
+  userId: number;
+  createddAt: string;
+  parentCommentId: string | null;
+}
+
+export type postCommentResponseDto = CommonResponseDto<postCommentResultType>;

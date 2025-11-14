@@ -11,7 +11,7 @@ interface PostCardProps {
 const HeartIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-4 w-4" // 크기 조절 (h-5 w-5 등)
+    className="w-4 h-4" // 크기 조절 (h-5 w-5 등)
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -28,25 +28,25 @@ const HeartIcon = () => (
 const PostCard = ({ post }: PostCardProps) => {
   return (
     <Link to={urlFor.postDetail(post.id)} key={post.id}>
-      <article className="bg-compWhite dark:bg-compDark group flex h-full transform flex-col overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
+      <article className="flex flex-col w-full h-full overflow-hidden transition-transform duration-300 transform shadow-lg bg-compWhite dark:bg-compDark group rounded-xl hover:-translate-y-2">
         {/* 이미지 */}
         {post.thumbnailUrl && (
           <div className="h-48 overflow-hidden">
             <img
               src={post.thumbnailUrl}
               alt={`${post.title} 썸네일`}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+              className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
             />
           </div>
         )}
         {/* 텍스트박스 */}
-        <div className="flex flex-grow flex-col gap-1 px-6 py-3">
+        <div className="flex flex-col flex-grow gap-1 px-6 py-3">
           <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
             {post.category.name}
           </span>
-          <h2 className="line-clamp-2 text-lg leading-snug font-bold">{post.title}</h2>
+          <h2 className="text-lg font-bold leading-snug line-clamp-2">{post.title}</h2>
           <div className="flex-1">
-            <p className="my-1 line-clamp-3 text-xs text-gray-600 dark:text-gray-400">
+            <p className="my-1 text-xs text-gray-600 line-clamp-3 dark:text-gray-400">
               {post.summary}
             </p>
           </div>
@@ -58,7 +58,7 @@ const PostCard = ({ post }: PostCardProps) => {
               <span className="ml-1">{post.commentCount}</span>
             </div>
             {/* 좋아요 수 */}
-            <div className="ml-3 flex items-center">
+            <div className="flex items-center ml-3">
               <HeartIcon />
               <span className="ml-1">{post.likesCount}</span>
             </div>

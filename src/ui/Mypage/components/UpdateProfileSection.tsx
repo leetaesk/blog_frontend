@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { useNavigate } from 'react-router-dom';
-
 import ProfileImage from '@/components/ProfileImage';
 import { useUpdateMyProfile } from '@/features/users/users.hook';
 import { type UpdateProfileSchemaType, updateProfileSchema } from '@/features/users/users.schema';
 import useUserStore from '@/store/useUserStore';
 
 const UpdateProfileSection = () => {
-  const navigate = useNavigate();
   const userInfo = useUserStore((s) => s.userInfo);
 
   const [imagePreview, setImagePreview] = useState<string | null>(
@@ -116,9 +113,11 @@ const UpdateProfileSection = () => {
 
   // 9. 취소 버튼 핸들러 (기존 로직 동일)
   const handleCancel = () => {
-    if (window.confirm('변경 사항이 저장되지 않을 수 있습니다. 정말 나가시겠습니까?')) {
-      navigate(-1); // 이전 페이지로 이동
-    }
+    setNickname(userInfo?.nickname || '');
+    setProfileAction(undefined);
+    setImageFile(undefined);
+    // 미리보기를 null (기본 이미지)로 변경
+    setImagePreview(userInfo?.profileImageUrl || null);
   };
 
   if (!userInfo) {

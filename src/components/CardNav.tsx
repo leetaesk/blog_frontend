@@ -241,9 +241,9 @@ const CardNav: React.FC<CardNavProps> = ({
             />
           </div>
 
-          <div className="logo-container order-1 flex items-center md:absolute md:top-1/2 md:left-1/2 md:order-none md:-translate-x-1/2 md:-translate-y-1/2">
+          <div className="flex items-center order-1 logo-container md:absolute md:top-1/2 md:left-1/2 md:order-none md:-translate-x-1/2 md:-translate-y-1/2">
             {/* <div className="w-12 h-12"><Logo /></div> */}
-            <Link to={'/'} className="text-xl font-bold italic">
+            <Link to={'/'} className="text-xl italic font-bold">
               LeetaeSk
             </Link>
           </div>
@@ -284,7 +284,7 @@ const CardNav: React.FC<CardNavProps> = ({
                   >
                     <img
                       src={GoArrowUpRight}
-                      className="nav-card-link-icon h-4 shrink-0"
+                      className="h-4 nav-card-link-icon shrink-0"
                       aria-hidden="true"
                     />
                     {lnk.label}

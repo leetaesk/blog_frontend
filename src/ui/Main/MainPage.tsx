@@ -54,7 +54,7 @@ const ScrollReveal = ({ children, stagger = false }: ScrollRevealProps) => {
 const ArrowRightIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="ml-1 h-5 w-5 transition-transform group-hover:translate-x-1"
+    className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -109,24 +109,24 @@ const ArrowRightIcon = () => (
 const ProjectSection = () => (
   <section className="py-24">
     <ScrollReveal>
-      <div className="container mx-auto px-4">
-        <h2 className="text-foreground mb-12 text-center text-3xl font-bold md:text-4xl">
+      <div className="container px-4 mx-auto">
+        <h2 className="mb-12 text-3xl font-bold text-center text-foreground md:text-4xl">
           Featured Project
         </h2>
-        <div className="bg-card mx-auto max-w-4xl overflow-hidden rounded-xl shadow-lg md:flex">
+        <div className="max-w-4xl mx-auto overflow-hidden shadow-lg bg-card rounded-xl md:flex">
           <div className="md:w-1/2">
             <img
-              className="h-64 w-full object-cover md:h-full"
+              className="object-cover w-full h-64 md:h-full"
               src="https://placehold.co/800x600/7c3aed/ffffff?text=grabPT"
               alt="grabPT project screenshot"
             />
           </div>
           <div className="flex flex-col justify-center p-8 md:w-1/2">
-            <div className="text-primary text-sm font-semibold tracking-wide uppercase">
+            <div className="text-sm font-semibold tracking-wide uppercase text-primary">
               Front-end Lead
             </div>
-            <h3 className="text-card-foreground mt-1 text-2xl font-bold">grabPT</h3>
-            <p className="text-muted-foreground mt-2">
+            <h3 className="mt-1 text-2xl font-bold text-card-foreground">grabPT</h3>
+            <p className="mt-2 text-muted-foreground">
               사용자 맞춤형 PT 트레이너 매칭 서비스. React와 TypeScript를 사용하여 인터랙티브한
               UI/UX를 설계하고 구현을 리드했습니다.
             </p>
@@ -135,7 +135,7 @@ const ProjectSection = () => (
                 rel="noopener"
                 href="http://www.grabpt.com"
                 target="_blank"
-                className="text-primary group inline-flex items-center font-medium hover:underline"
+                className="inline-flex items-center font-medium text-primary group hover:underline"
               >
                 사이트 방문하기 <ArrowRightIcon />
               </a>
@@ -151,32 +151,32 @@ const RecentPostsSection = () => {
   const { posts, isLoading } = useGetPosts({ page: 1, limit: 4 });
 
   if (isLoading)
-    return <div className="text-muted-foreground py-24 text-center">Loading posts...</div>;
+    return <div className="py-24 text-center text-muted-foreground">Loading posts...</div>;
 
   return (
     <section className="w-full py-24">
-      <div className="container mx-auto px-4">
-        <h2 className="text-foreground mb-12 text-center text-3xl font-bold md:text-4xl">
+      <div className="container px-4 mx-auto">
+        <h2 className="mb-12 text-3xl font-bold text-center text-foreground md:text-4xl">
           Recent Posts
         </h2>
         <ScrollReveal stagger>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {posts?.map((post) => (
               <Link to={`/posts/${post.id}`} key={post.id}>
-                <article className="bg-card group flex h-full transform flex-col overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
+                <article className="flex flex-col h-full overflow-hidden transition-transform duration-300 transform shadow-lg bg-card group rounded-xl hover:-translate-y-2">
                   <div className="h-48 overflow-hidden">
                     <img
                       src={post.thumbnailUrl || undefined}
                       alt={`${post.title} 썸네일`}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
                     />
                   </div>
-                  <div className="flex flex-grow flex-col p-6">
-                    <span className="text-primary text-sm font-medium">{post.category.name}</span>
-                    <h3 className="text-card-foreground mt-2 flex-grow text-lg font-bold">
+                  <div className="flex flex-col flex-grow p-6">
+                    <span className="text-sm font-medium text-primary">{post.category.name}</span>
+                    <h3 className="flex-grow mt-2 text-lg font-bold text-card-foreground">
                       {post.title}
                     </h3>
-                    <p className="text-muted-foreground mt-4 text-sm">{post.createdAt}</p>
+                    <p className="mt-4 text-sm text-muted-foreground">{post.createdAt}</p>
                   </div>
                 </article>
               </Link>
@@ -186,7 +186,7 @@ const RecentPostsSection = () => {
         <div className="mt-12 text-center">
           <Link
             to="/archive"
-            className="text-primary group inline-flex items-center font-medium hover:underline"
+            className="inline-flex items-center font-medium text-primary group hover:underline"
           >
             모든 글 보기 <ArrowRightIcon />
           </Link>

@@ -1,6 +1,6 @@
 const SkeletonPostCard = () => {
   return (
-    <div className="bg-compWhite dark:bg-compDark flex h-full transform flex-col overflow-hidden rounded-xl shadow-lg">
+    <div className="bg-compWhite dark:bg-compDark flex h-full w-full transform flex-col overflow-hidden rounded-xl shadow-lg">
       {/* 썸네일 스켈레톤 */}
       <div className="h-48 animate-pulse bg-gray-200 dark:bg-gray-700" />
 
