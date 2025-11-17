@@ -5,12 +5,6 @@ export interface getCommentsRequestDto {
   postId: number;
 }
 
-// 백엔드 내 사용 dto
-export interface GetCommentsServiceDto {
-  postId: number;
-  userId?: number;
-}
-
 export interface Comment {
   id: number;
   content: string;
@@ -68,8 +62,35 @@ export interface postCommentResultType {
   id: number;
   content: string;
   userId: number;
-  createddAt: string;
-  parentCommentId: string | null;
+  createdAt: string;
+  parentCommentId: number | null;
 }
 
 export type postCommentResponseDto = CommonResponseDto<postCommentResultType>;
+
+export interface patchCommentRequestDto {
+  commentId: number;
+  content: string;
+}
+
+export interface patchCommentResultType {
+  id: number;
+  content: string;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+  parentCommentId: number | null;
+}
+
+export type patchCommentResponseDto = CommonResponseDto<patchCommentResultType>;
+
+// (추가) Delete 서비스 레이어로 전달되는 DTO
+export interface DeleteCommentRequestDto {
+  commentId: number;
+}
+
+export interface deleteCommentResultType {
+  id: number;
+}
+
+export type deleteCommentResponseDto = CommonResponseDto<deleteCommentResultType>;

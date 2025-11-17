@@ -2,22 +2,36 @@ import { useState } from 'react';
 
 import ProfileImage from '@/components/ProfileImage';
 import type { CommentByUser } from '@/features/comments/comments.dto';
+import CommentDeleteButton from '@/ui/PostDetail/components/CommentDeleteButton';
+import CommentForm from '@/ui/PostDetail/components/CommentForm';
 import { formatDate } from '@/utils/formatDate';
 
 interface CommentProps {
+  postId: number;
   comment: CommentByUser;
+  isReply?: boolean;
 }
 
-export const Comment = ({ comment }: CommentProps) => {
-  const [showReplies, setShowReplies] = useState(false);
+export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
+  const [showReplies, setShowReplies] = useState<boolean>(false);
+  const [showReplyForm, setShowReplyForm] = useState<boolean>(false);
 
-  const { author, content, createdAt, likesCount, repliesCount, replies, isLiked, isOwner } =
+  const { id, author, content, createdAt, likesCount, repliesCount, replies, isLiked, isOwner } =
     comment;
 
+  // (추가) 답글 목록과 폼을 함께 토글하는 핸들러
+  const handleToggleRepliesAndForm = () => {
+    // 다음 상태를 미리 계산
+    const nextShowState = !showReplies;
+    // 답글 목록과 답글 폼의 상태를 동기화
+    setShowReplies(nextShowState);
+    setShowReplyForm(nextShowState);
+  };
+
   return (
-    <div className="flex py-4 space-x-3 border-b border-gray-100 last:border-b-0">
+    <div className="flex space-x-3 border-b border-gray-100 py-4 last:border-b-0">
       {/* 1. 프로필 이미지 */}
-      <div className="flex-shrink-0 w-10 h-10 overflow-hidden rounded-full">
+      <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
         <ProfileImage src={author.profileImageUrl} alt={`${author.nickname} 프로필`} />
       </div>
 
@@ -29,12 +43,16 @@ export const Comment = ({ comment }: CommentProps) => {
               <span className="text-sm font-semibold">{author.nickname}</span>
               <span className="text-xs">{formatDate(createdAt)}</span>
             </div>
-            {isOwner && <div className="ml-auto"> 수정삭제버튼렌더링 </div>}
+            {isOwner && (
+              <div className="flex h-full justify-between gap-2">
+                <div className="ml-auto"> 수정버튼렌더링 </div>
+                <CommentDeleteButton commentId={comment.id} />
+              </div>
+            )}
           </div>
         </div>
 
         {/* 3. 댓글 내용 */}
-        {/* 'whitespace-pre-wrap'은 줄바꿈(\n)을 그대로 렌더링해줍니다. */}
         <p className="mt-1 mb-2 text-sm whitespace-pre-wrap">{content}</p>
 
         {/* 4. 댓글 하단 액션 (좋아요, 답글) */}
@@ -51,17 +69,23 @@ export const Comment = ({ comment }: CommentProps) => {
             {likesCount > 0 && <span className="font-medium">{likesCount}</span>}
           </button>
 
-          {/* TODO: 답글 달기 기능 연결 (클릭 시 답글 입력창 토글) */}
-          <button type="button" className="transition-colors cursor-pointer">
-            <span>답글 달기</span>
-          </button>
-
-          {/* 답글이 있을 경우에만 '답글 N개' 버튼 표시 */}
-          {repliesCount > 0 && (
+          {/* 1. 답글이 없는 경우: '답글 달기' 버튼 (폼만 토글) */}
+          {!isReply && repliesCount === 0 && (
             <button
               type="button"
-              className="transition-colors cursor-pointer"
-              onClick={() => setShowReplies(!showReplies)}
+              className="cursor-pointer transition-colors"
+              onClick={() => setShowReplyForm(!showReplyForm)}
+            >
+              <span>답글 달기</span>
+            </button>
+          )}
+
+          {/* 2. 답글이 있는 경우: '답글 N개' 버튼 (목록과 폼을 함께 토글) */}
+          {!isReply && repliesCount > 0 && (
+            <button
+              type="button"
+              className="cursor-pointer transition-colors"
+              onClick={handleToggleRepliesAndForm}
             >
               <span>{showReplies ? '답글 숨기기' : `답글 ${repliesCount}개`}</span>
             </button>
@@ -73,9 +97,20 @@ export const Comment = ({ comment }: CommentProps) => {
           <div className="mt-4 space-y-4">
             {replies.map((reply) => (
               // 답글도 동일한 Comment 컴포넌트를 재귀적으로 사용
-              <Comment key={reply.id} comment={reply} />
+              // 답글에 isReply를 true로 넘겨 조건부렌더링
+              <Comment postId={postId} key={reply.id} comment={reply} isReply={true} />
             ))}
           </div>
+        )}
+
+        {/* (수정) 'onSuccess' 핸들러를 추가하여 답글 작성 완료 시 폼을 닫습니다. */}
+        {showReplyForm && !isReply && (
+          <CommentForm
+            key={`replyCommentForm${id}`}
+            postId={postId}
+            parentCommentId={id}
+            onSuccess={() => setShowReplyForm(false)}
+          />
         )}
       </div>
     </div>

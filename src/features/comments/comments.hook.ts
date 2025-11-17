@@ -1,8 +1,16 @@
-import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { getComments, getCommentsCreatedByMe, postComment } from '@/features/comments/comments.api';
+import {
+  deleteComment,
+  getComments,
+  getCommentsCreatedByMe,
+  patchComment,
+  postComment,
+} from '@/features/comments/comments.api';
 import type {
+  DeleteCommentRequestDto,
   getCommentsRequestDto,
+  patchCommentRequestDto,
   postCommentRequestDto,
 } from '@/features/comments/comments.dto';
 
@@ -19,12 +27,11 @@ export const useGetCommentsCreatedByMe = () => {
   return useQuery({
     queryKey: ['comments', 'byMe'],
     queryFn: () => getCommentsCreatedByMe(),
-    // postId가 유효한 숫자일 때만 쿼리를 실행합니다.
   });
 };
 
 export const usePostComment = () => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (params: postCommentRequestDto) => postComment(params),
@@ -38,6 +45,46 @@ export const usePostComment = () => {
     // 5. 뮤테이션 실패 시 실행 (API가 에러를 throw 시)
     onError: (error) => {
       alert(`댓글 작성 실패, 콘솔 확인: ${error.message}`);
+      console.log(error);
+    },
+  });
+};
+
+export const usePatchComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (params: patchCommentRequestDto) => patchComment(params),
+
+    // 3. 뮤테이션 성공 시 실행 (API가 isSuccess: true 반환 시)
+    onSuccess: (data) => {
+      console.log(`patchComment 성공, commentId:${data.id}`);
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+
+    // 5. 뮤테이션 실패 시 실행 (API가 에러를 throw 시)
+    onError: (error) => {
+      alert(`댓글 수정 실패, 콘솔 확인: ${error.message}`);
+      console.log(error);
+    },
+  });
+};
+
+export const useDeleteComment = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (params: DeleteCommentRequestDto) => deleteComment(params),
+
+    // 3. 뮤테이션 성공 시 실행 (API가 isSuccess: true 반환 시)
+    onSuccess: (data) => {
+      console.log(`deleteComment 성공, commentId:${data.id}`);
+      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    },
+
+    // 5. 뮤테이션 실패 시 실행 (API가 에러를 throw 시)
+    onError: (error) => {
+      alert(`댓글 삭제 실패, 콘솔 확인: ${error.message}`);
       console.log(error);
     },
   });
