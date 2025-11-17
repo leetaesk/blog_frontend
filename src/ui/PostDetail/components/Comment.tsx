@@ -3,6 +3,7 @@ import { useState } from 'react';
 import ProfileImage from '@/components/ProfileImage';
 import type { CommentByUser } from '@/features/comments/comments.dto';
 import CommentDeleteButton from '@/ui/PostDetail/components/CommentDeleteButton';
+import CommentEditForm from '@/ui/PostDetail/components/CommentEditForm';
 import CommentForm from '@/ui/PostDetail/components/CommentForm';
 import { formatDate } from '@/utils/formatDate';
 
@@ -15,6 +16,7 @@ interface CommentProps {
 export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
   const [showReplies, setShowReplies] = useState<boolean>(false);
   const [showReplyForm, setShowReplyForm] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const { id, author, content, createdAt, likesCount, repliesCount, replies, isLiked, isOwner } =
     comment;
@@ -45,7 +47,14 @@ export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
             </div>
             {isOwner && (
               <div className="flex h-full justify-between gap-2">
-                <div className="ml-auto"> 수정버튼렌더링 </div>
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(!isEditing)}
+                  className="rounded-md bg-transparent px-3 py-1 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:text-gray-400 disabled:hover:bg-transparent"
+                  aria-label="댓글수정"
+                >
+                  수정
+                </button>
                 <CommentDeleteButton commentId={comment.id} />
               </div>
             )}
@@ -53,7 +62,16 @@ export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
         </div>
 
         {/* 3. 댓글 내용 */}
-        <p className="mt-1 mb-2 text-sm whitespace-pre-wrap">{content}</p>
+        {isEditing ? (
+          <CommentEditForm
+            commentId={id}
+            originalContent={content}
+            onSuccess={() => setIsEditing(false)}
+            onCancel={() => setIsEditing(false)}
+          />
+        ) : (
+          <p className="mt-1 mb-2 text-sm whitespace-pre-wrap">{content}</p>
+        )}
 
         {/* 4. 댓글 하단 액션 (좋아요, 답글) */}
         <div className="flex items-center space-x-4 text-xs">
