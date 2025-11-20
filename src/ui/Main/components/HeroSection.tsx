@@ -39,7 +39,7 @@ const HeroSection = () => {
 
   if (!posts) return;
   return (
-    <section className="flex flex-col items-center w-full px-6 md:px-12">
+    <section className="flex w-full flex-col items-center px-6 md:px-12">
       {/* --- ⬇️ 최상위 컨테이너 ⬇️ --- */}
       {/* 기존 애니메이션 제거, containerVariants 적용 */}
       <motion.div
@@ -52,7 +52,7 @@ const HeroSection = () => {
         {/* ⬇️ motion.div로 변경 + itemVariants 적용 ⬇️ */}
         <motion.div
           variants={itemVariants}
-          className="py-10 mb-10 border-black border-t-3 dark:border-t-gray-200"
+          className="mb-10 border-t-3 border-black py-10 dark:border-t-gray-200"
         >
           <h1 className="font-archivo text-foreground mb-4 w-full text-right text-7xl leading-none font-normal tracking-[-0.08em] sm:text-9xl md:text-[10rem] lg:text-[12rem] xl:text-[14rem]">
             ARCHIVE
@@ -68,7 +68,7 @@ const HeroSection = () => {
           {/* ⬇️ itemVariants 적용 (왼쪽 박스) ⬇️ */}
           <motion.div
             variants={itemVariants}
-            className="grid grid-cols-2 gap-6 py-2 text-left border-b border-black border-b-foreground/30 border-t-3 dark:border-t-gray-200"
+            className="border-b-foreground/30 grid grid-cols-2 gap-6 border-t-3 border-b border-black py-2 text-left dark:border-t-gray-200"
           >
             <div>
               <p>
@@ -83,7 +83,7 @@ const HeroSection = () => {
           {/* ⬇️ itemVariants 적용 (오른쪽 박스) ⬇️ */}
           <motion.div
             variants={itemVariants}
-            className="py-2 text-right border-b border-black border-b-foreground/30 border-t-3 dark:border-t-gray-200"
+            className="border-b-foreground/30 border-t-3 border-b border-black py-2 text-right dark:border-t-gray-200"
           >
             <p>TAGS AND CATEGORIES</p>
           </motion.div>
@@ -108,7 +108,7 @@ const HeroSection = () => {
           {/* ⬇️ itemVariants 적용 (두 번째 줄) ⬇️ */}
           <motion.div
             variants={itemVariants}
-            className="grid grid-cols-2 gap-6 py-3 border-black border-t-3 dark:border-t-gray-200"
+            className="grid grid-cols-2 gap-6 border-t-3 border-black py-3 dark:border-t-gray-200"
           >
             <div className="grid grid-cols-2">
               <h2 className="text-[23px] font-medium tracking-[-0.08em]">STORIES</h2>
@@ -123,8 +123,8 @@ const HeroSection = () => {
                 <div className="h-3.5 w-3.5 rounded-full bg-red-600" />
               </span>
               <span className="flex gap-[1px]">
-                <p className="px-1 border rounded-full border-foreground">CREATIVE SCENE</p>
-                <p className="px-1 border rounded-full border-foreground">STUDIO VIDEO</p>
+                <p className="border-foreground rounded-full border px-1">CREATIVE SCENE</p>
+                <p className="border-foreground rounded-full border px-1">STUDIO VIDEO</p>
               </span>
             </div>
           </motion.div>
@@ -132,18 +132,18 @@ const HeroSection = () => {
 
         {/* 이미지 (블록 4) */}
         {/* ⬇️ motion.div로 변경 + itemVariants 적용 ⬇️ */}
-        <motion.div variants={itemVariants} className="relative mt-4 overflow-hidden h-90">
+        <motion.div variants={itemVariants} className="relative mt-4 h-90 overflow-hidden">
           {' '}
           {/* 컨테이너 */}
           <img
             // src={thumbnail || undefined}
             src="https://leetaesk-blog-bucket.s3.ap-northeast-2.amazonaws.com/images/65e7bc3e-74a6-479a-aea5-d7e7bc3d80a5-blob"
             alt="최근 글 썸네일"
-            className="object-cover w-full h-full animate-pan-vertical"
+            className="animate-pan-vertical h-full w-full object-cover"
           />
           {/* 2. 상단 그라데이션 오버레이 */}
           <div
-            className="dark:from-compDark pointer-events-none absolute inset-0 bg-gradient-to-b from-white from-0% to-transparent to-100%"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white from-0% to-transparent to-100% dark:from-[#262626]"
             aria-hidden="true"
           />
         </motion.div>
@@ -154,7 +154,7 @@ const HeroSection = () => {
           variants={itemVariants}
           className="font-archivo text-foreground mt-13 flex items-end justify-between border-t-3 border-black py-3 text-xs leading-none font-bold tracking-[-0.03em] antialiased dark:border-t-gray-200"
         >
-          <div className="break-words max-w-2/3">
+          <div className="max-w-2/3 break-words">
             A PLACE TO CREATE SPECIAL FILM SHOTS OR STUDIO PHOTOS WITH MULTIPLE LIGHTING SETTING.
             LARGE SURFACES PERFECT FOR YOUR OWN ARRANGEMENT. WAREHOUSE WITH NO LIMITS TO CREATE YOUR
             OWN FANTASY.

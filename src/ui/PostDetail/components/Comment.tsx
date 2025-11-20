@@ -50,7 +50,7 @@ export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
                 <button
                   type="button"
                   onClick={() => setIsEditing(!isEditing)}
-                  className="rounded-md bg-transparent px-3 py-1 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:text-gray-400 disabled:hover:bg-transparent"
+                  className="rounded-md bg-transparent px-3 py-1 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:text-gray-400 disabled:hover:bg-transparent"
                   aria-label="댓글수정"
                 >
                   수정

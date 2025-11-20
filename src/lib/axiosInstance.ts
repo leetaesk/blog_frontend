@@ -2,8 +2,8 @@ import axios from 'axios';
 
 import useUserStore from '@/store/useUserStore';
 
-// 제공해주신 스토어 경로
-const baseURL = 'http://localhost:3000';
+// baseUrl
+const baseURL = import.meta.env.VITE_API_URL;
 
 // 로그인 불필요 API용 인스턴스
 export const axiosInstance = axios.create({
