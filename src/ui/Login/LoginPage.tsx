@@ -25,7 +25,7 @@ const LoginPage = () => {
 
     // 3. code가 있다면, 백엔드에 로그인 요청을 보냅니다.
     if (code) {
-      kakaoLogin({ code });
+      kakaoLogin({ code, redirectURI: REDIRECT_URI });
       // 뒤로가기 시 코드가 재사용되는 것을 방지하기 위해 URL에서 코드를 제거합니다.
       window.history.replaceState({}, '', window.location.pathname);
     }

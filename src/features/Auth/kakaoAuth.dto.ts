@@ -2,6 +2,7 @@ import type { CommonResponseDto } from '@/types/CommonResponseDto';
 
 export interface KakaoLoginRequestDto {
   code: string;
+  redirectURI: string;
 }
 
 export type User = 'user' | 'admin';
