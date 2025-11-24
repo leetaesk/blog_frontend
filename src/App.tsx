@@ -4,6 +4,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Layout from '@/Layout/Layout';
 import { ROUTES } from '@/constants/routes';
 import { getPostByIdLoader } from '@/features/posts/posts.loader';
+import AboutMePage from '@/ui/AboutMe/AboutMePage';
 import ArchivePage from '@/ui/Archive/ArchivePage';
 import CreatePostPage from '@/ui/CreatePost/CreatePostPage';
 import LoginPage from '@/ui/Login/LoginPage';
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <MainPage />,
+      },
+      {
+        path: ROUTES.ABOUTME,
+        element: <AboutMePage />,
       },
       {
         path: ROUTES.ARCHIVE, // '/archive'

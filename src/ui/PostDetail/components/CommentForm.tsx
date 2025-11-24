@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
+import ProfileImage from '@/components/ProfileImage';
 import type { postCommentRequestDto } from '@/features/comments/comments.dto';
 import { usePostComment } from '@/features/comments/comments.hook';
+import useUserStore from '@/store/useUserStore';
 
 interface CommentFormProps {
   postId: number;
@@ -21,6 +23,7 @@ const CommentForm = ({ postId, parentCommentId = null, onSuccess }: CommentFormP
   const placeholder = isReply ? '답글을 입력하세요...' : '댓글을 입력하세요...';
   const buttonText = isReply ? '답글 등록' : '댓글 등록';
 
+  const profileImageUrl = useUserStore((s) => s.userInfo?.profileImageUrl);
   /**
    * 폼 제출(등록 버튼 클릭) 시 실행되는 핸들러
    */
@@ -54,15 +57,21 @@ const CommentForm = ({ postId, parentCommentId = null, onSuccess }: CommentFormP
 
   return (
     <form onSubmit={handleSubmit} className="my-4 w-full">
-      <textarea
-        className="w-full rounded-lg border border-gray-300 p-3 shadow-sm transition-shadow focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        rows={3}
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder={placeholder}
-        disabled={isPending} // 로딩 중일 때 입력 방지
-        aria-label={placeholder}
-      />
+      <div className="flex gap-2 pl-2">
+        <div className="h-10 w-10 overflow-hidden rounded-full">
+          <ProfileImage src={profileImageUrl || null} alt={'프로필사진'} />
+        </div>
+
+        <textarea
+          className="w-full flex-1 rounded-lg border border-gray-300 p-3 shadow-sm transition-shadow focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          rows={3}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder={placeholder}
+          disabled={isPending} // 로딩 중일 때 입력 방지
+          aria-label={placeholder}
+        />
+      </div>
       <div className="mt-2 flex justify-end">
         <button
           type="submit"

@@ -4,15 +4,18 @@ import { gsap } from 'gsap';
 import { Link, type To, useLocation, useNavigate } from 'react-router-dom';
 
 import GoArrowUpRight from '@/assets/Arrow_up-right.svg';
-import Logo from '@/components/Logo';
+import ALogoBlack from '@/assets/images/ALogoBlack.svg';
+import ALogoWhite from '@/assets/images/ALogoWhite.svg';
 import { ROUTES } from '@/constants/routes';
 import useThemeStore from '@/store/themeStore';
 import useUserStore from '@/store/useUserStore';
 
-type CardNavLink = {
+export type CardNavLink = {
   label: string;
-  to: To;
+  to: string;
   ariaLabel: string;
+  //외부링크 타고갈수있게 커스텀 optional
+  isExternal?: boolean;
 };
 
 export type CardNavItem = {
@@ -35,8 +38,6 @@ export interface CardNavProps {
 }
 
 const CardNav: React.FC<CardNavProps> = ({
-  logo,
-  logoAlt = 'Logo',
   items,
   className = '',
   ease = 'power3.out',
@@ -52,6 +53,8 @@ const CardNav: React.FC<CardNavProps> = ({
   const navRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const theme = useThemeStore((s) => s.theme);
+  const Logo = theme === 'dark' ? ALogoWhite : ALogoBlack;
 
   // --- ⬇️ 스크롤 감지 로직 추가 ⬇️ ---
   const [isVisible, setIsVisible] = useState(true);
@@ -241,10 +244,12 @@ const CardNav: React.FC<CardNavProps> = ({
             />
           </div>
 
-          <div className="flex items-center order-1 logo-container md:absolute md:top-1/2 md:left-1/2 md:order-none md:-translate-x-1/2 md:-translate-y-1/2">
+          <div className="logo-container order-1 flex items-center md:absolute md:top-1/2 md:left-1/2 md:order-none md:-translate-x-1/2 md:-translate-y-1/2">
             {/* <div className="w-12 h-12"><Logo /></div> */}
-            <Link to={'/'} className="text-xl italic font-bold">
-              LeetaeSk
+            <Link to={'/'} className="flex items-center justify-center gap-2">
+              {/* <img src={LogoBlack} alt="로고" className="h-24" /> */}
+              <img src={Logo} alt="로고" className="h-12" />
+              <span className="font-archivo font-semibold">LTK's ARCHIVE</span>
             </Link>
           </div>
 
@@ -275,21 +280,49 @@ const CardNav: React.FC<CardNavProps> = ({
                 {item.label}
               </div>
               <div className="nav-card-links mt-auto flex flex-col gap-[2px]">
-                {item.links?.map((lnk, i) => (
-                  <Link
-                    key={`${lnk.label}-${i}`}
-                    className="nav-card-link inline-flex cursor-pointer items-center gap-[6px] text-[15px] no-underline transition-opacity duration-300 hover:opacity-75 md:text-[16px]"
-                    to={lnk.to}
-                    aria-label={lnk.ariaLabel}
-                  >
-                    <img
-                      src={GoArrowUpRight}
-                      className="h-4 nav-card-link-icon shrink-0"
-                      aria-hidden="true"
-                    />
-                    {lnk.label}
-                  </Link>
-                ))}
+                {item.links?.map((lnk, i) => {
+                  // 공통 클래스 및 내부 요소 정의
+                  const commonClasses =
+                    'nav-card-link inline-flex cursor-pointer items-center gap-[6px] text-[15px] no-underline transition-opacity duration-300 hover:opacity-75 md:text-[16px]';
+
+                  const content = (
+                    <>
+                      <img
+                        src={GoArrowUpRight}
+                        className="nav-card-link-icon h-4 shrink-0"
+                        aria-hidden="true"
+                      />
+                      {lnk.label}
+                    </>
+                  );
+
+                  // ✨ 분기 처리: 외부 링크면 <a>, 내부 링크면 <Link>
+                  if (lnk.isExternal) {
+                    return (
+                      <a
+                        key={`${lnk.label}-${i}`}
+                        href={lnk.to}
+                        className={commonClasses}
+                        aria-label={lnk.ariaLabel}
+                        target="_blank" // 새 탭 열기
+                        rel="noopener noreferrer" // 보안
+                      >
+                        {content}
+                      </a>
+                    );
+                  }
+
+                  return (
+                    <Link
+                      key={`${lnk.label}-${i}`}
+                      className={commonClasses}
+                      to={lnk.to}
+                      aria-label={lnk.ariaLabel}
+                    >
+                      {content}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           ))}
