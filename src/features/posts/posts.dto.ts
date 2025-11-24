@@ -1,5 +1,5 @@
 // ===== ✨ 게시글 상세 조회 API DTO 추가 ===== //
-import type { CommonResponseDto } from '@/types/CommoasdfnResponseDto';
+import type { CommonResponseDto } from '@/types/CommonResponseDto';
 
 export interface PostData {
   title: string;

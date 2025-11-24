@@ -1,4 +1,4 @@
-import type { CommonResponseDto } from '@/types/CommoasdfnResponseDto';
+import type { CommonResponseDto } from '@/types/CommonResponseDto';
 
 export interface CategoryWithPostCount {
   id: number;

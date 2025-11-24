@@ -1,4 +1,4 @@
-import type { CommonResponseDto } from '@/types/CommoasdfnResponseDto';
+import type { CommonResponseDto } from '@/types/CommonResponseDto';
 
 /**
  * GET /api/posts - 요청 DTO (Query Parameters)
