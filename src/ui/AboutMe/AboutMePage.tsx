@@ -155,13 +155,13 @@ const AboutMePage = () => {
         <div>
           <ModelViewer
             url={
-              'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/ToyCar/glTF-Binary/ToyCar.glb'
+              'https://cdn.jsdelivr.net/gh/leetaesk/assets@main/man%20in%20blazer%203d%20model%20(2).compressed.glb'
             }
             width={400}
             height={400}
             defaultRotationX={-50}
             defaultRotationY={20}
-            environmentPreset="forest"
+            // environmentPreset="forest"
             autoRotate
             autoRotateSpeed={0.5}
             // maxZoomDistance={100}
