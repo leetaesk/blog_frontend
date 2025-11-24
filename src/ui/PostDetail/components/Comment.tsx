@@ -5,6 +5,7 @@ import type { CommentByUser } from '@/features/comments/comments.dto';
 import CommentDeleteButton from '@/ui/PostDetail/components/CommentDeleteButton';
 import CommentEditForm from '@/ui/PostDetail/components/CommentEditForm';
 import CommentForm from '@/ui/PostDetail/components/CommentForm';
+import CommentLikeButton from '@/ui/PostDetail/components/CommentLikeButton';
 import { formatDate } from '@/utils/formatDate';
 
 interface CommentProps {
@@ -18,8 +19,17 @@ export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
   const [showReplyForm, setShowReplyForm] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  const { id, author, content, createdAt, likesCount, repliesCount, replies, isLiked, isOwner } =
-    comment;
+  const {
+    id: commentId,
+    author,
+    content,
+    createdAt,
+    likesCount,
+    repliesCount,
+    replies,
+    isLiked,
+    isOwner,
+  } = comment;
 
   // (추가) 답글 목록과 폼을 함께 토글하는 핸들러
   const handleToggleRepliesAndForm = () => {
@@ -64,7 +74,7 @@ export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
         {/* 3. 댓글 내용 */}
         {isEditing ? (
           <CommentEditForm
-            commentId={id}
+            commentId={commentId}
             originalContent={content}
             onSuccess={() => setIsEditing(false)}
             onCancel={() => setIsEditing(false)}
@@ -75,17 +85,11 @@ export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
 
         {/* 4. 댓글 하단 액션 (좋아요, 답글) */}
         <div className="flex items-center space-x-4 text-xs">
-          <button
-            type="button"
-            className={`flex cursor-pointer items-center space-x-1 transition-colors hover:text-blue-600 ${
-              isLiked ? 'font-bold text-blue-600' : ''
-            }`}
-            aria-label={`좋아요 ${likesCount}개`}
-          >
-            {/* TODO: 좋아요 아이콘 (예: SVG) */}
-            <span>좋아요</span>
-            {likesCount > 0 && <span className="font-medium">{likesCount}</span>}
-          </button>
+          <CommentLikeButton
+            commentId={commentId}
+            initialLikesCount={likesCount}
+            initialIsLiked={isLiked}
+          />
 
           {/* 1. 답글이 없는 경우: '답글 달기' 버튼 (폼만 토글) */}
           {!isReply && repliesCount === 0 && (
@@ -124,9 +128,9 @@ export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
         {/* (수정) 'onSuccess' 핸들러를 추가하여 답글 작성 완료 시 폼을 닫습니다. */}
         {showReplyForm && !isReply && (
           <CommentForm
-            key={`replyCommentForm${id}`}
+            key={`replyCommentForm${commentId}`}
             postId={postId}
-            parentCommentId={id}
+            parentCommentId={commentId}
             onSuccess={() => setShowReplyForm(false)}
           />
         )}
