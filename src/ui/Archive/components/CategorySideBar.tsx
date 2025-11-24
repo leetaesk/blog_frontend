@@ -47,12 +47,12 @@ const CategorySideBar = () => {
           >
             <span>전체</span>
             <span className="text-sm font-light">
-              {categories?.reduce((acc, cur) => acc + cur.postCount, 0)}
+              {categories?.reduce((acc: any, cur: any) => acc + cur.postCount, 0)}
             </span>
           </Link>
         </li>
 
-        {categories?.map((cat) => (
+        {categories?.map((cat: any) => (
           <li key={cat.id}>
             <Link
               to={`/archive?category=${cat.name}`}

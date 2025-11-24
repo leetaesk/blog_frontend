@@ -86,7 +86,7 @@ const CategoryInput = ({ value, onChange }: CategoryInputProps) => {
             className="bg-card text-foreground rounded-lg-md border-border focus:ring-ring flex-1 border p-3 transition focus:ring-2 focus:outline-none"
           >
             <option value="">카테고리 선택</option>
-            {categories?.map((cat) => (
+            {categories?.map((cat: any) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name} ({cat.postCount})
               </option>
