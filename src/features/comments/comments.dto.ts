@@ -1,5 +1,5 @@
 import type { Author } from '@/features/posts/posts.dto';
-import type { CommonResponseDto } from '@/types/CommonResponseDto';
+import type { CommonResponseDto } from '@/types/CommoasdfnResponseDto';
 
 export interface getCommentsRequestDto {
   postId: number;

@@ -1,4 +1,4 @@
-import type { CommonResponseDto } from '@/types/CommonResponseDto';
+import type { CommonResponseDto } from '@/types/CommoasdfnResponseDto';
 
 // 1. 서버 응답 DTO (백엔드와 동일)
 export interface UpdateProfileResultType {

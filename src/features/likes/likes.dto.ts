@@ -1,4 +1,4 @@
-import type { CommonResponseDto } from '@/types/CommonResponseDto';
+import type { CommonResponseDto } from '@/types/CommoasdfnResponseDto';
 
 export interface TogglePostLikeRequestDto {
   postId: number;
