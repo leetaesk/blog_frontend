@@ -1,10 +1,7 @@
-import { Link } from 'react-router-dom';
-
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
 import AlogoBlack from '@/assets/images/ALogoBlack.svg';
 import AlogoWhite from '@/assets/images/ALogoWhite.svg';
 import grapPt from '@/assets/images/GrabPTLogo.svg';
-import { ROUTES } from '@/constants/routes';
 import useThemeStore from '@/store/themeStore';
 
 const ProjectSection = () => {

@@ -12,8 +12,6 @@ export const formatDate = (dateString: string) => {
     // 만약 서버 시간이 항상 KST 기준이라면, 아래와 같이 파싱하는 것이 더 안전합니다.
 
     // "YYYY-MM-DD HH:MM:SS" 형식을 "YYYY-MM-DDTHH:MM:SS"로 변경
-    const safeDateString = dateString.replace(' ', 'T');
-    const safeDate = new Date(safeDateString);
 
     // KST가 아닌 UTC나 다른 시간대로 해석될 경우를 대비
     // 하지만 "YYYY-MM-DD HH:MM:SS"는 new Date()에서 로컬 시간대로 해석하는 경향이 있습니다.

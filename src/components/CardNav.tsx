@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { gsap } from 'gsap';
-import { Link, type To, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import GoArrowUpRight from '@/assets/Arrow_up-right.svg';
 import ALogoBlack from '@/assets/images/ALogoBlack.svg';
