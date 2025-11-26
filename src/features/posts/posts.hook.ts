@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
+import { QUERY_KEY } from '@/constants/queryKey';
 import { ROUTES, urlFor } from '@/constants/routes';
 import {
   deletePostById,
@@ -13,28 +15,26 @@ import type {
   DeletePostRequestDto,
   GetPostByIdRequestDto,
   GetPostForEditRequestDto,
-  PostPostRequestDto,
   UpdatePostRequestDto,
 } from '@/features/posts/posts.dto';
 import { DRAFT_STORAGE_KEY } from '@/ui/CreatePost/CreatePostPage';
 
 /**
- * 게시글 상세를 조회하는 useQuery 커스텀 훅
- * @param params postId를 포함하는 객체
+ * 게시글 상세 조회
+ * loader 사용 - params에 initial Data 추가
  */
 export const useGetPostById = (params: GetPostByIdRequestDto) => {
   return useQuery({
-    queryKey: ['post', params.postId],
+    queryKey: QUERY_KEY.posts.BY_POST_ID(params.postId),
     queryFn: () => getPostById(params),
     initialData: params.initialData,
-    // gcTime: 5 * 60 * 1000,
-    // staleTime: 3 * 60 * 1000,
-    // postId가 유효한 숫자일 때만 쿼리를 실행합니다.
     enabled: !!params.postId && !isNaN(params.postId),
-    refetchOnWindowFocus: false,
   });
 };
 
+/**
+ * 게시글 수정
+ */
 export const useUpdatePost = () => {
   const queryClient = useQueryClient();
 
@@ -43,20 +43,22 @@ export const useUpdatePost = () => {
 
     onSuccess: (data) => {
       // 게시글 쿼리 갱신
-      queryClient.invalidateQueries({ queryKey: ['post', data.postId] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.posts.BY_POST_ID(data.postId) });
       // archive 갱신
       queryClient.invalidateQueries({ queryKey: ['posts'] });
       // alert 후 archive로 이동
       alert(`게시글 수정 성공: ${data.postId}`);
       window.location.href = ROUTES.ARCHIVE;
     },
-    onError: (error) => {
-      console.error('게시글 수정 중 오류 발생:', error);
-      alert('수정 실패, 콘솔 확인');
+    onError: () => {
+      alert('게시글 수정 실패');
     },
   });
 };
 
+/**
+ * 게시글 삭제
+ */
 export const useDeletePost = () => {
   const queryClient = useQueryClient();
 
@@ -65,43 +67,45 @@ export const useDeletePost = () => {
 
     onSuccess: (data) => {
       // 삭제된 게시글의 상세 쿼리 캐시를 즉시삭제
-      queryClient.removeQueries({ queryKey: ['post', data.postId] });
+      queryClient.removeQueries({ queryKey: QUERY_KEY.posts.BY_POST_ID(data.postId) });
 
-      // archive 쿼리 캐시를 무효화
+      // archive 갱신
       queryClient.invalidateQueries({ queryKey: ['posts'] });
       alert(`게시글 삭제 성공: ${data.postId}`);
       window.location.href = ROUTES.ARCHIVE;
     },
-    onError: (error) => {
-      console.error('게시글 삭제 중 오류 발생:', error);
-      alert('게시글 삭제 오류 발생. 콘솔 확인');
+    onError: () => {
+      alert('게시글 삭제 중 오류 발생');
     },
   });
 };
 
+/**
+ * 수정용 post get
+ */
 export const useGetPostForEdit = (params: GetPostForEditRequestDto) => {
   return useQuery({
-    queryKey: ['post', 'edit', params.postId],
+    queryKey: QUERY_KEY.posts.FOR_EDIT(params.postId),
     queryFn: () => getPostForEdit(params),
-    gcTime: 5 * 60 * 1000,
-    staleTime: 3 * 60 * 1000,
     enabled: !!params.postId && !isNaN(params.postId),
   });
 };
 
+/**
+ * 게시글 작성
+ */
 export const usePostPost = () => {
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: (params: PostPostRequestDto) => postPost(params),
+    mutationFn: postPost,
 
-    // 3. 뮤테이션 성공 시 실행 (API가 isSuccess: true 반환 시)
     onSuccess: (data) => {
-      alert(`postpost 성공, postId:${data.postId}`);
-      sessionStorage.removeItem(DRAFT_STORAGE_KEY);
+      toast.success(`게시글 작성이 완료되었습니다!`);
+      // 로컬스토리지에 저장된 임시글 삭제
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
       navigate(urlFor.postDetail(data.postId));
     },
 
-    // 5. 뮤테이션 실패 시 실행 (API가 에러를 throw 시)
     onError: (error) => {
       alert(`게시글 등록에 실패했습니다: ${error.message}`);
     },

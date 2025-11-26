@@ -3,7 +3,7 @@ const DefaultProfileIcon = () => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      fill="currentColor" // 'currentColor'로 설정하면 부모 요소의 text 색상을 상속받습니다.
+      fill="currentColor"
       aria-hidden="true"
     >
       <path

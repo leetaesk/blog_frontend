@@ -82,12 +82,7 @@ const ArchivePage = () => {
           {/* Sidebar */}
           <aside className="w-full min-w-48 md:w-1/3 2xl:w-1/4">
             <div className="sticky top-24 space-y-8">
-              {/* 자식 컴포넌트 수정 불필요! 
-                  inputValue(보여주기용)와 handleSearchChange(로직용)를 전달 
-              */}
               <SearchSideBar searchValue={inputValue} setSearchValue={handleSearchChange} />
-
-              {/* Categories */}
               <ArchiveSideBar />
             </div>
           </aside>

@@ -7,17 +7,18 @@ import type { KakaoLoginRequestDto } from '@/features/Auth/kakaoAuth.dto';
 import useUserStore from '@/store/useUserStore';
 
 /**
- * @description 카카오 로그인 뮤테이션 훅
+ * 카카오 로그인 훅
+ * 성공 시 홈으로 리다이렉트
+ * 에러 시 로그이능로 리다이렉트 / alert
  */
 export const useKakaoLoginMutation = () => {
   const navigate = useNavigate();
-  const { userInfo, setUser } = useUserStore.getState();
+  const setUser = useUserStore((s) => s.setUser);
 
   return useMutation({
     mutationFn: (params: KakaoLoginRequestDto) => kakaoLogIn(params),
 
     onSuccess: (data) => {
-      // ⭐️ 변경점: 스토어의 userInfo 객체 구조에 맞게 데이터를 조립합니다.
       setUser({
         accessToken: data.accessToken,
         userId: data.userId,
@@ -28,8 +29,6 @@ export const useKakaoLoginMutation = () => {
           kakaoProfileImageUrl: data.userKakaoProfileImageUrl,
         },
       });
-      console.log('로그인 성공');
-      console.log(userInfo);
       navigate(ROUTES.HOME);
     },
 
@@ -42,12 +41,14 @@ export const useKakaoLoginMutation = () => {
 };
 
 /**
- * @description 카카오 로그아웃 뮤테이션 훅 (변경 필요 없음)
+ * 카카오 로그아웃 뮤테이션 훅
+ * 성공 시 홈으로
+ * 에러 시 프론트단 로그아웃 optimistic
  */
 export const useKakaoLogoutMutation = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { clearUser } = useUserStore.getState();
+  const clearUser = useUserStore((s) => s.clearUser);
 
   return useMutation({
     mutationFn: kakaoLogOut,
@@ -59,9 +60,9 @@ export const useKakaoLogoutMutation = () => {
     },
     onError: (error) => {
       console.error('로그아웃에 실패했습니다:', error);
+      // 서버 로그아웃 실패여도 프론트에서는 로그아웃 처리가 된것처럼 : optimistic
       clearUser();
       queryClient.clear();
-      alert('로그아웃 처리 중 오류가 발생했습니다.');
       navigate(ROUTES.HOME);
     },
   });

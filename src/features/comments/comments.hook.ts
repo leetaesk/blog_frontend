@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
+import { QUERY_KEY } from '@/constants/queryKey';
 import {
   deleteComment,
   getComments,
@@ -7,16 +9,11 @@ import {
   patchComment,
   postComment,
 } from '@/features/comments/comments.api';
-import type {
-  DeleteCommentRequestDto,
-  getCommentsRequestDto,
-  patchCommentRequestDto,
-  postCommentRequestDto,
-} from '@/features/comments/comments.dto';
+import type { getCommentsRequestDto } from '@/features/comments/comments.dto';
 
 export const useGetComments = (params: getCommentsRequestDto) => {
   return useQuery({
-    queryKey: ['comments', params.postId],
+    queryKey: QUERY_KEY.comments.BY_POST_ID(params.postId),
     queryFn: () => getComments(params),
     // postId가 유효한 숫자일 때만 쿼리를 실행합니다.
     enabled: !!params.postId && !isNaN(params.postId),
@@ -25,7 +22,7 @@ export const useGetComments = (params: getCommentsRequestDto) => {
 
 export const useGetCommentsCreatedByMe = () => {
   return useQuery({
-    queryKey: ['comments', 'byMe'],
+    queryKey: QUERY_KEY.comments.BY_ME,
     queryFn: () => getCommentsCreatedByMe(),
   });
 };
@@ -34,18 +31,16 @@ export const usePostComment = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (params: postCommentRequestDto) => postComment(params),
+    mutationFn: postComment,
 
-    // 3. 뮤테이션 성공 시 실행 (API가 isSuccess: true 반환 시)
-    onSuccess: (data) => {
-      console.log(`postComment 성공, commentId:${data.id}`);
+    onSuccess: () => {
+      // postComment에서 댓글에 해당하는 게시물 id를 주지 않아서 전체 comments를 초기화 중
+      // Todo: 백에서 postComment에 게시물id 리턴 => queryKey에 추가
       queryClient.invalidateQueries({ queryKey: ['comments'] });
     },
 
-    // 5. 뮤테이션 실패 시 실행 (API가 에러를 throw 시)
     onError: (error) => {
-      alert(`댓글 작성 실패, 콘솔 확인: ${error.message}`);
-      console.log(error);
+      toast.error(`댓글 작성 실패: ${error.message}`);
     },
   });
 };
@@ -54,18 +49,16 @@ export const usePatchComment = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (params: patchCommentRequestDto) => patchComment(params),
+    mutationFn: patchComment,
 
-    // 3. 뮤테이션 성공 시 실행 (API가 isSuccess: true 반환 시)
-    onSuccess: (data) => {
-      console.log(`patchComment 성공, commentId:${data.id}`);
+    onSuccess: () => {
+      // postComment에서 댓글에 해당하는 게시물 id를 주지 않아서 전체 comments를 초기화 중
+      // Todo: 백에서 postComment에 게시물id 리턴 => queryKey에 추가
       queryClient.invalidateQueries({ queryKey: ['comments'] });
     },
 
-    // 5. 뮤테이션 실패 시 실행 (API가 에러를 throw 시)
     onError: (error) => {
-      alert(`댓글 수정 실패, 콘솔 확인: ${error.message}`);
-      console.log(error);
+      toast.error(`댓글 수정 실패: ${error.message}`);
     },
   });
 };
@@ -74,18 +67,16 @@ export const useDeleteComment = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (params: DeleteCommentRequestDto) => deleteComment(params),
+    mutationFn: deleteComment,
 
-    // 3. 뮤테이션 성공 시 실행 (API가 isSuccess: true 반환 시)
-    onSuccess: (data) => {
-      console.log(`deleteComment 성공, commentId:${data.id}`);
+    onSuccess: () => {
+      // postComment에서 댓글에 해당하는 게시물 id를 주지 않아서 전체 comments를 초기화 중
+      // Todo: 백에서 postComment에 게시물id 리턴 => queryKey에 추가
       queryClient.invalidateQueries({ queryKey: ['comments'] });
     },
 
-    // 5. 뮤테이션 실패 시 실행 (API가 에러를 throw 시)
     onError: (error) => {
-      alert(`댓글 삭제 실패, 콘솔 확인: ${error.message}`);
-      console.log(error);
+      toast.error(`댓글 삭제 실패, 콘솔 확인: ${error.message}`);
     },
   });
 };

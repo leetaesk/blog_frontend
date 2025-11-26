@@ -13,7 +13,7 @@ import CategoryInput from '@/ui/PostDetail/components/CategoryInput';
 export const DRAFT_STORAGE_KEY = 'create-post-draft';
 
 const getInitialDraft = () => {
-  const savedDraft = sessionStorage.getItem(DRAFT_STORAGE_KEY);
+  const savedDraft = localStorage.getItem(DRAFT_STORAGE_KEY);
   if (savedDraft) {
     try {
       // JSON 파싱에 실패할 경우를 대비해 try...catch
@@ -23,7 +23,7 @@ const getInitialDraft = () => {
     } catch (e) {
       console.error('임시 저장된 글을 불러오는 데 실패했습니다.', e);
       // 잘못된 데이터가 저장되어 있으면 삭제
-      sessionStorage.removeItem(DRAFT_STORAGE_KEY);
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
       return null;
     }
   }
@@ -68,7 +68,7 @@ const CreatePostPage = () => {
       tagsInput,
     };
     // 현재 폼 상태를 JSON 문자열로 변환하여 저장
-    sessionStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
   }, [title, content, categoryId, summary, thumbnailUrl, tagsInput]); // 👈 감시할 상태들
 
   const handleSave = () => {
@@ -120,12 +120,12 @@ const CreatePostPage = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl px-4 py-10 mx-auto sm:px-6 md:px-8">
+    <div className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 md:px-8">
       <header className="mb-8">
-        <h2 className="text-3xl font-extrabold tracking-tight text-foreground">
+        <h2 className="text-foreground text-3xl font-extrabold tracking-tight">
           새 글 작성하기 ✍️
         </h2>
-        <p className="mt-2 text-md text-muted-foreground">
+        <p className="text-md text-muted-foreground mt-2">
           새로운 아이디어를 공유하고 멋진 글을 완성해보세요.
         </p>
       </header>
@@ -144,7 +144,7 @@ const CreatePostPage = () => {
             placeholder="제목을 입력하세요"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-4 text-2xl font-semibold transition border bg-card text-foreground placeholder:text-muted-foreground rounded-lg-md border-border focus:ring-ring focus:ring-2 focus:outline-none"
+            className="bg-card text-foreground placeholder:text-muted-foreground rounded-lg-md border-border focus:ring-ring w-full border p-4 text-2xl font-semibold transition focus:ring-2 focus:outline-none"
           />
         </div>
 
@@ -153,7 +153,7 @@ const CreatePostPage = () => {
         <div>
           <label
             htmlFor="thumbnailUrl"
-            className="block mb-2 text-lg font-semibold text-foreground"
+            className="text-foreground mb-2 block text-lg font-semibold"
           >
             썸네일 URL
           </label>
@@ -163,19 +163,19 @@ const CreatePostPage = () => {
             placeholder="이미지 URL을 직접 입력하세요 (예: https://...)"
             value={thumbnailUrl}
             onChange={(e) => setThumbnailUrl(e.target.value)}
-            className="w-full p-3 transition border bg-card text-foreground placeholder:text-muted-foreground rounded-lg-md border-border focus:ring-ring focus:ring-2 focus:outline-none"
+            className="bg-card text-foreground placeholder:text-muted-foreground rounded-lg-md border-border focus:ring-ring w-full border p-3 transition focus:ring-2 focus:outline-none"
           />
           {/* 이미지 URL 입력 시 간단한 미리보기 */}
           {thumbnailUrl && (
             <div className="mt-4">
-              <p className="mb-2 text-sm text-muted-foreground">이미지 미리보기:</p>
-              <div className="h-48 overflow-hidden w-72">
+              <p className="text-muted-foreground mb-2 text-sm">이미지 미리보기:</p>
+              <div className="h-48 w-72 overflow-hidden">
                 <img
                   src={thumbnailUrl}
                   alt="썸네일 미리보기"
                   onError={(e) => (e.currentTarget.style.display = 'none')} // URL이 잘못되면 숨김
                   onLoad={(e) => (e.currentTarget.style.display = 'block')} // 로드되면 표시
-                  className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
               </div>
             </div>
@@ -206,7 +206,7 @@ const CreatePostPage = () => {
 
         {/* 4. 요약 (summary) */}
         <div>
-          <label htmlFor="summary" className="block mb-2 text-lg font-semibold text-foreground">
+          <label htmlFor="summary" className="text-foreground mb-2 block text-lg font-semibold">
             요약
           </label>
           <textarea
@@ -215,13 +215,13 @@ const CreatePostPage = () => {
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
             rows={3}
-            className="w-full p-3 transition border bg-card text-foreground placeholder:text-muted-foreground rounded-lg-md border-border focus:ring-ring focus:ring-2 focus:outline-none"
+            className="bg-card text-foreground placeholder:text-muted-foreground rounded-lg-md border-border focus:ring-ring w-full border p-3 transition focus:ring-2 focus:outline-none"
           />
         </div>
 
         {/* 5. 태그 (tags) */}
         <div>
-          <label htmlFor="tags" className="block mb-2 text-lg font-semibold text-foreground">
+          <label htmlFor="tags" className="text-foreground mb-2 block text-lg font-semibold">
             태그
           </label>
           <input
@@ -230,7 +230,7 @@ const CreatePostPage = () => {
             placeholder="태그를 쉼표(,)로 구분하여 입력하세요"
             value={tagsInput}
             onChange={(e) => setTagsInput(e.target.value)}
-            className="w-full p-3 transition border bg-card text-foreground placeholder:text-muted-foreground rounded-lg-md border-border focus:ring-ring focus:ring-2 focus:outline-none"
+            className="bg-card text-foreground placeholder:text-muted-foreground rounded-lg-md border-border focus:ring-ring w-full border p-3 transition focus:ring-2 focus:outline-none"
           />
         </div>
 
@@ -244,17 +244,17 @@ const CreatePostPage = () => {
             //임마는 undefined 필요하대 ;;
             onChange={(value) => setContent(value || '')}
             height={800}
-            className="border rounded-lg-md border-border"
+            className="rounded-lg-md border-border border"
           />
         </div>
       </div>
 
       {/* 액션 버튼 */}
-      <div className="flex justify-end gap-4 mt-8">
+      <div className="mt-8 flex justify-end gap-4">
         <button
           type="button"
           onClick={handleCancel}
-          className="px-6 py-2 font-semibold transition-colors rounded-lg-md bg-secondary text-secondary-foreground hover:bg-muted"
+          className="rounded-lg-md bg-secondary text-secondary-foreground hover:bg-muted px-6 py-2 font-semibold transition-colors"
         >
           취소
         </button>
@@ -262,7 +262,7 @@ const CreatePostPage = () => {
           type="button"
           onClick={handleSave}
           disabled={isPending} // 🔽 요청이 진행 중일 때 버튼 비활성화
-          className="px-6 py-2 font-semibold transition-opacity rounded-lg-md bg-primary text-primary-foreground hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg-md bg-primary text-primary-foreground px-6 py-2 font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isPending ? '저장 중...' : '저장하기'}
         </button>

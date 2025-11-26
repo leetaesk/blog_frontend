@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { darkColors, lightColors, useNavItems } from '@/Layout/data/NavbarItem';
-import logo from '@/assets/Arrow_up-right.svg';
+import logo from '@/assets/images/Arrow_up-right.svg';
 import CardNav from '@/components/CardNav';
 import useThemeStore from '@/store/themeStore';
 

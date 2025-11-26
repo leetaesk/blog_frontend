@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import KakaoIcon from '@/assets/KakaoIcon.svg';
+import KakaoIcon from '@/assets/images/KakaoIcon.svg';
 import { useKakaoLoginMutation } from '@/features/Auth/kakaoAuth.hook';
 
 const LoginPage = () => {

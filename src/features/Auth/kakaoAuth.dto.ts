@@ -1,17 +1,19 @@
 import type { CommonResponseDto } from '@/types/CommonResponseDto';
+import type { User } from '@/types/CommonTypes';
 
-export interface KakaoLoginRequestDto {
+// 로그인
+export type KakaoLoginRequestDto = {
+  /**
+   * 인가코드
+   */
   code: string;
+  /**
+   * env에서 추출하여 넣어주기
+   */
   redirectURI: string;
-}
+};
 
-export type User = 'user' | 'admin';
-
-/**
- * @description 서버 -> 클라이언트: 로그인 성공 시 응답
- */
-
-export interface KakaoLoginResultType {
+export type KakaoLoginResultType = {
   accessToken: string;
   refreshToken: string;
   userId: number; // 우리 서비스의 고유 사용자 ID
@@ -19,15 +21,12 @@ export interface KakaoLoginResultType {
   userNickname: string;
   userProfileImageUrl: string;
   userKakaoProfileImageUrl: string;
-}
+};
 
 export type KakaoLoginResponseDto = CommonResponseDto<KakaoLoginResultType>;
 
-// ✨ ===== 로그아웃 응답 DTO 추가 ===== ✨
-/**
- * @description 서버 -> 클라이언트: 로그아웃 성공 시 응답
- */
-export interface KakaoLogoutResultType {
+// 로그아웃
+export type KakaoLogoutResultType = {
   message: string;
-}
+};
 export type KakaoLogoutResponseDto = CommonResponseDto<KakaoLogoutResultType>;
