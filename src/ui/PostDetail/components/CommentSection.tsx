@@ -8,14 +8,14 @@ interface CommentSectionProps {
 
 const CommentSection = ({ postId }: CommentSectionProps) => {
   const { data: comments } = useGetComments({ postId });
-  console.log(`comments:${comments}`);
   return (
     <div className="bg-compWhite dark:bg-compDark text-textDark dark:text-textWhite rounded-2xl p-6 shadow-xl sm:p-8 md:p-12">
       {comments?.commentCount === 0 ? (
-        <>댓글없음 </>
+        // Todo: 이거꾸미셈
+        <>댓글이 없습니다. 작성해보세요 </>
       ) : (
-        comments?.comments.map((comment) => {
-          return <Comment postId={postId} comment={comment} key={comment.id} />;
+        comments?.comments.map((com, idx) => {
+          return <Comment postId={postId} comment={com} key={`${com.id} - ${idx}`} />;
         })
       )}
       <CommentForm postId={postId} />

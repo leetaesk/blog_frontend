@@ -1,4 +1,5 @@
 import type { CommonResponseDto } from '@/types/CommonResponseDto';
+import type { Comment } from '@/types/CommonTypes';
 
 /**
  * getComments 댓글 타입

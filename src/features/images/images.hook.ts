@@ -6,6 +6,6 @@ import { uploadImage } from '@/features/images/images.api';
 export const useUploadImage = () => {
   return useMutation({
     mutationFn: uploadImage,
-    onError: (err) => toast.error(`${err}`),
+    onError: (err) => toast.error(`${err.message}`),
   });
 };

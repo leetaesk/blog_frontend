@@ -24,9 +24,10 @@ export const useCreateCategory = () => {
     mutationFn: createCategory,
 
     // 성공 시 get카테고리 초기화
-    onSuccess: (res) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEY.category.INDEX });
-      toast.success(`카테고리가 생성되었습니다 : ${res.categoryId}`);
+      // 리턴값은 categoryId라 요청 보낼 때 보낸 category이름을 toast로 보여주기
+      toast.success(`카테고리가 생성되었습니다 : ${variables.category}`);
     },
 
     // 생성 실패 시 toast

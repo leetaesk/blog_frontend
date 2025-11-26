@@ -1,4 +1,4 @@
-import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
+import { QueryCache, QueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
 
@@ -41,7 +41,7 @@ function handleError(error: unknown, meta?: Record<string, unknown>) {
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 1,
+      retry: 0,
       refetchOnWindowFocus: false,
     },
   },
@@ -56,9 +56,10 @@ export const queryClient = new QueryClient({
     },
   }),
   // 2. MutationCache: POST, PATCH, DELETE 요청 실패 시 전역 핸들링
-  mutationCache: new MutationCache({
-    onError: (error, _variables, _context, mutation) => {
-      handleError(error, mutation.meta);
-    },
-  }),
+  // 훅마다 다른 토스트 띄우고 있어서 일단 잠가
+  // mutationCache: new MutationCache({
+  //   onError: (error, _variables, _context, mutation) => {
+  //     handleError(error, mutation.meta);
+  //   },
+  // }),
 });

@@ -37,9 +37,10 @@ export const useUpdateMyProfile = () => {
         nickname: data.nickname,
         profileImageUrl: data.profileImageUrl,
       });
+      toast.success('프로필이 변경되었습니다.');
     },
-    onError: () => {
-      toast.error('프로필 업데이트 실패:');
+    onError: (err) => {
+      toast.error(`프로필 업데이트 실패:${err.message}`);
     },
   });
 };

@@ -1,12 +1,6 @@
 import { type Variants, motion } from 'framer-motion';
 
-// 👈 Variants 타입을 import 합니다.
-
-import { useGetPosts } from '@/features/posts/archive/archive.hook';
-
 const HeroSection = () => {
-  const { posts } = useGetPosts({ page: 1, limit: 1 });
-
   // --- ⬇️ 애니메이션 Variants 정의 ⬇️ ---
   /**
    * 자식 요소들을 순차적으로 실행시키는 컨테이너 Variant
@@ -37,7 +31,6 @@ const HeroSection = () => {
   };
   // --- ⬆️ 애니메이션 Variants 정의 ⬆️ ---
 
-  if (!posts) return;
   return (
     <section className="flex w-full flex-col items-center px-6 md:px-12">
       {/* --- ⬇️ 최상위 컨테이너 ⬇️ --- */}

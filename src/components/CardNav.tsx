@@ -26,8 +26,6 @@ export type CardNavItem = {
 };
 
 export interface CardNavProps {
-  logo: string;
-  logoAlt?: string;
   items: CardNavItem[];
   className?: string;
   ease?: string;
@@ -63,7 +61,7 @@ const CardNav: React.FC<CardNavProps> = ({
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // 페이지 최상단에서는 항상 표시
+      // 페이지 최상단에서는 항상 표시 - 40정도...
       if (currentScrollY <= 40) {
         setIsVisible(true);
         // 아래로 스크롤하면 숨김

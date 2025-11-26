@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 
 import { darkColors, lightColors, useNavItems } from '@/Layout/data/NavbarItem';
-import logo from '@/assets/images/Arrow_up-right.svg';
 import CardNav from '@/components/CardNav';
 import useThemeStore from '@/store/themeStore';
 
@@ -20,9 +19,7 @@ const Navbar = () => {
 
   return (
     <CardNav
-      key={theme} //'light' 또는 'dark'
-      logo={logo}
-      logoAlt="Company Logo"
+      key={theme} //key로 theme을 지정해서 theme 바뀔떄마다 리렌더링
       items={themedItems}
       ease="power3.out"
       baseColor={theme === 'dark' ? '#333333' : '#fff'}

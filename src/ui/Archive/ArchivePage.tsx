@@ -13,50 +13,38 @@ import SkeletonPostCard from '@/ui/Archive/components/SkeletonPostCard';
 const ArchivePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // 1. URL에서 값 가져오기 (API 요청의 기준값)
+  // 1. URL 파라미터 가져오기
   const page = parseInt(searchParams.get('page') || '1', 10);
   const category = searchParams.get('category');
   const urlSearchQuery = searchParams.get('search') || '';
 
-  // 2. [UI State] 입력창 표시용 (즉각 반응)
-  // 초기값을 URL 파라미터로 설정하여 새로고침해도 검색어 유지
+  // 2. 검색창 input
   const [inputValue, setInputValue] = useState<string>(urlSearchQuery);
 
-  // 3. 뒤로가기 등으로 URL이 밖에서 변했을 때, 입력창도 동기화
   useEffect(() => {
     setInputValue(urlSearchQuery);
   }, [urlSearchQuery]);
 
-  // 4. [Debounce] 0.3초 뒤에 URL을 변경하는 함수
   const debouncedUpdateUrl = useDebounce((query: string) => {
     const newSearchParams = new URLSearchParams(searchParams);
+    if (query) newSearchParams.set('search', query);
+    else newSearchParams.delete('search');
 
-    if (query) {
-      newSearchParams.set('search', query);
-    } else {
-      newSearchParams.delete('search');
-    }
-
-    // ★ 검색어가 바뀌면 무조건 1페이지로 리셋
-    newSearchParams.set('page', '1');
-
+    newSearchParams.set('page', '1'); // 검색 시 1페이지 리셋
     setSearchParams(newSearchParams);
   }, 300);
 
-  // 5. [Handler] 자식에게 내려줄 함수
   const handleSearchChange = (newValue: string) => {
-    // UI는 즉시 변경 (렉 없음)
     setInputValue(newValue);
-    // URL 변경은 천천히 (API 요청 제어)
     debouncedUpdateUrl(newValue);
   };
 
-  // 6. [API Hook] URL 파라미터(urlSearchQuery)를 감지하여 자동 호출
-  const { posts, pagination, isLoading, isError, error } = useGetPosts({
+  // 3. API Hook
+  const { data, isLoading, isError, error } = useGetPosts({
     page,
     limit: 12,
     category: category || undefined,
-    search: urlSearchQuery, // inputValue가 아니라 이걸 넣어야 함!
+    search: urlSearchQuery,
   });
 
   const handlePageChange = (newPage: number) => {
@@ -65,9 +53,19 @@ const ArchivePage = () => {
     setSearchParams(newSearchParams);
   };
 
+  // 로딩 중이 아닐 때만 에러 화면을 보여줍니다.
   if (isError) {
-    return <div className="flex h-screen items-center justify-center">Error: {error?.message}</div>;
+    return (
+      <div className="flex h-screen items-center justify-center text-red-500">
+        Error: {error?.message || '게시글을 불러올 수 없습니다.'}
+      </div>
+    );
   }
+
+  // 5. 데이터 할당 (옵셔널 체이닝 필수)
+  // isLoading일 때 data는 undefined이므로 안전하게 접근
+  const posts = data?.posts || [];
+  const pagination = data?.pagination;
 
   return (
     <div className="bg-bgWhite dark:bg-bgDark text-textDark dark:text-textWhite min-h-screen w-full max-w-6xl">
@@ -87,25 +85,33 @@ const ArchivePage = () => {
             </div>
           </aside>
 
-          {/* Main Content: Post Grid */}
+          {/* Main Content */}
           <main className="w-full">
             <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {/* isLoading이 true이면 스켈레톤을 보여줍니다.
+                isLoading이 false이고 데이터가 있으면 카드를 보여줍니다.
+              */}
               {isLoading ? (
-                Array.from({ length: 3 }).map((_, index) => <SkeletonPostCard key={index} />)
-              ) : posts && posts.length > 0 ? (
+                Array.from({ length: 12 }).map((_, index) => <SkeletonPostCard key={index} />)
+              ) : posts.length > 0 ? (
                 posts.map((post) => <PostCard post={post} key={post.id} />)
               ) : (
-                <p className="col-span-full text-center text-gray-500">게시글이 없습니다.</p>
+                <p className="col-span-full py-20 text-center text-gray-500">
+                  게시글이 존재하지 않습니다.
+                </p>
               )}
             </div>
 
             {/* Pagination */}
-            {pagination && (
-              <Pagination
-                currentPage={pagination.currentPage}
-                totalPage={pagination.totalPage}
-                onPageChange={handlePageChange}
-              />
+            {/* 로딩 중이 아니고 페이지네이션 데이터가 있을 때만 표시 */}
+            {!isLoading && pagination && (
+              <div className="mt-12">
+                <Pagination
+                  currentPage={pagination.currentPage}
+                  totalPage={pagination.totalPage}
+                  onPageChange={handlePageChange}
+                />
+              </div>
             )}
           </main>
         </div>

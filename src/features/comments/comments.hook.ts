@@ -33,10 +33,11 @@ export const usePostComment = () => {
   return useMutation({
     mutationFn: postComment,
 
-    onSuccess: () => {
-      // postComment에서 댓글에 해당하는 게시물 id를 주지 않아서 전체 comments를 초기화 중
-      // Todo: 백에서 postComment에 게시물id 리턴 => queryKey에 추가
-      queryClient.invalidateQueries({ queryKey: ['comments'] });
+    onSuccess: (_, variables) => {
+      //request body에 있던 postId 갖다 씀
+      // Todo: 백에서 postId 리턴하도록 수정 후 variables 삭제
+      const postId = variables.postId;
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.comments.BY_POST_ID(postId) });
     },
 
     onError: (error) => {
@@ -55,6 +56,7 @@ export const usePatchComment = () => {
       // postComment에서 댓글에 해당하는 게시물 id를 주지 않아서 전체 comments를 초기화 중
       // Todo: 백에서 postComment에 게시물id 리턴 => queryKey에 추가
       queryClient.invalidateQueries({ queryKey: ['comments'] });
+      toast.success('댓글 수정 완료!');
     },
 
     onError: (error) => {
@@ -73,10 +75,11 @@ export const useDeleteComment = () => {
       // postComment에서 댓글에 해당하는 게시물 id를 주지 않아서 전체 comments를 초기화 중
       // Todo: 백에서 postComment에 게시물id 리턴 => queryKey에 추가
       queryClient.invalidateQueries({ queryKey: ['comments'] });
+      toast.success('댓글이 삭제되었습니다.');
     },
 
     onError: (error) => {
-      toast.error(`댓글 삭제 실패, 콘솔 확인: ${error.message}`);
+      toast.error(`댓글 삭제 실패 : ${error.message}`);
     },
   });
 };

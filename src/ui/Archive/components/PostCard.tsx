@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import ChatBubbleIcon from '@/assets/icons/ChatBubbleIcon';
 import { urlFor } from '@/constants/routes';
-import type { PostListItem } from '@/features/posts/archive/archive.dto';
+import type { PostListItem } from '@/types/CommonTypes';
 
 interface PostCardProps {
   post: PostListItem;

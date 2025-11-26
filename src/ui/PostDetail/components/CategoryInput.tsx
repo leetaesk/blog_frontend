@@ -8,7 +8,7 @@ interface CategoryInputProps {
 }
 
 const CategoryInput = ({ value, onChange }: CategoryInputProps) => {
-  const { categories } = useGetCategories(); // 카테고리 목록 조회
+  const { data: categories } = useGetCategories(); // 카테고리 목록 조회
   const { mutate: createCategory, isPending } = useCreateCategory(); // 카테고리 생성
 
   // 2. "새 카테고리 추가" UI를 토글하기 위한 상태

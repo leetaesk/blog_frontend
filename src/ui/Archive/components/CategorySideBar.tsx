@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useGetCategories } from '@/features/category/category.hook';
 
 const CategorySideBar = () => {
-  const { categories, isLoading, isError } = useGetCategories();
+  const { data: categories, isLoading, isError } = useGetCategories();
   const [searchParams] = useSearchParams();
   const currentCategory = searchParams.get('category');
 
