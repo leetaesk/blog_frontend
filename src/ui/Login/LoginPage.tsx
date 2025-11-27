@@ -2,9 +2,13 @@ import { useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import KakaoIcon from '@/assets/KakaoIcon.svg';
+import KakaoIcon from '@/assets/images/KakaoIcon.svg';
 import { useKakaoLoginMutation } from '@/features/Auth/kakaoAuth.hook';
 
+/**
+ * 로그인페이지 - authCallbackPage를 따로 두지 않았음
+ * 로그인 페이지가 다시 보일 때 사용자 경험이 별로긴 함 Todo
+ */
 const LoginPage = () => {
   const navigate = useNavigate();
 
@@ -15,7 +19,6 @@ const LoginPage = () => {
   const { mutate: kakaoLogin } = useKakaoLoginMutation();
 
   const handleKakaoLogin = () => {
-    console.log('Redirect to Kakao login...');
     window.location.href = KAKAO_AUTH_URL;
   };
 

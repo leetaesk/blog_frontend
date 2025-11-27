@@ -11,6 +11,10 @@ interface FuzzyTextProps {
   hoverIntensity?: number;
 }
 
+/**
+ * 텍스트 지지직 - ReactBitz에서 다운받음
+ * 404페이지 (NotFoundPage.tsx)에서 사용 중
+ */
 const FuzzyText: React.FC<FuzzyTextProps> = ({
   children,
   fontSize = 'clamp(2rem, 8vw, 8rem)',

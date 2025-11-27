@@ -1,47 +1,14 @@
 import { type ChangeEvent, useRef, useState } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import imageCompression from 'browser-image-compression';
+import toast from 'react-hot-toast';
 
-import { axiosPrivateInstance } from '@/lib/axiosInstance';
+import { useUploadImage } from '@/features/images/images.hook';
+import { compressImage } from '@/features/images/images.util';
 
-// --- API 통신 함수 ---
-const uploadImageAPI = async (file: File) => {
-  const formData = new FormData();
-  formData.append('image', file);
-
-  const { data } = await axiosPrivateInstance.post('/api/images', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
-
-  return data.data.imageUrl as string;
-};
-
-// --- 이미지 압축 헬퍼 함수 ---
-const compressImage = async (file: File): Promise<File> => {
-  console.log(`📁 원본 파일: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
-
-  const options = {
-    maxSizeMB: 0.5,
-    maxWidthOrHeight: 800,
-    useWebWorker: true,
-  };
-
-  try {
-    const compressedFile = await imageCompression(file, options);
-    console.log(
-      `📁 압축된 파일: ${compressedFile.name} (${(compressedFile.size / 1024 / 1024).toFixed(2)} MB)`,
-    );
-    console.log(`📊 압축률: ${((1 - compressedFile.size / file.size) * 100).toFixed(1)}%`);
-    return compressedFile;
-  } catch (error) {
-    console.error('이미지 압축에 실패했습니다.', error);
-    throw error;
-  }
-};
-
-// --- 컴포넌트 ---
+/**
+ * 이미지업로더 컴포넌트
+ * s3 업로드 후 ur반환해줌
+ */
 const ImageUploader = () => {
   // --- 상태 관리 ---
   const [isCopied, setIsCopied] = useState<boolean>(false);
@@ -50,37 +17,46 @@ const ImageUploader = () => {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(null);
 
-  // --- TanStack Query 뮤테이션 ---
-  const { mutate, isPending, isError, error } = useMutation({
-    mutationFn: uploadImageAPI,
-    onSuccess: (newUrl: string) => {
-      console.log('이미지 업로드 성공!');
-      setUploadedImages((prev) => [...prev, newUrl]); // 목록에 추가
-      setSelectedImageUrl(newUrl); // 방금 올린 이미지 선택
-    },
-    onError: (err: AxiosError) => {
-      console.error('뮤테이션 에러:', err.response?.data);
-    },
-  });
+  const { mutate, isPending } = useUploadImage();
 
-  // --- 이벤트 핸들러 ---
-
-  /** (공통 로직) 파일 압축 및 업로드를 실행하는 함수 */
+  /** 파일 압축 및 업로드 함수 */
+  /**
+   * 파일 압축 및 업로드 함수
+   * @param file
+   * @returns 없음
+   */
   const processAndUploadFile = async (file: File) => {
+    // 파일 없으면 리턴
     if (!file) return;
 
     // 이미지 파일이 아니면 처리 중단
     if (!file.type.startsWith('image/')) {
-      console.warn('이미지 파일만 업로드할 수 있습니다.');
+      toast.error('이미지 파일만 업로드할 수 있습니다.');
       return;
     }
 
+    //압축시작
     setIsCompressing(true);
     try {
+      //압축 후 전송
       const compressedFile = await compressImage(file);
-      mutate(compressedFile);
-    } catch (err) {
-      console.error('압축/업로드 과정에서 에러가 발생했습니다.', err);
+      //전송훅 실행. 동기임에 주의
+      mutate(compressedFile, {
+        onSuccess: (imageUrl) => {
+          setUploadedImages((prev) => [...prev, imageUrl]);
+          setSelectedImageUrl(imageUrl);
+          setIsCopied(false);
+        },
+      });
+    } catch (error) {
+      // 비동기인 compressImage만 여기 catch블록에서 잡히고, mutate 에러는 중앙으로 넘어감
+      // error 가 Error타입이 아닐 수 있음 -> type Narrowing
+      if (error instanceof Error) {
+        toast.error(`압축 실패: ${error.message}`);
+      } else {
+        // 에러가 Error 객체가 아닐 경우 (매우 드묾)
+        toast.error('압축 중 알 수 없는 오류가 발생했습니다.');
+      }
     } finally {
       setIsCompressing(false);
     }
@@ -104,10 +80,9 @@ const ImageUploader = () => {
       if (items[i].kind === 'file' && items[i].type.startsWith('image/')) {
         const file = items[i].getAsFile();
         if (file) {
-          console.log('클립보드에서 이미지 감지:', file.name);
           processAndUploadFile(file);
-          event.preventDefault(); // 기본 붙여넣기 동작 방지
-          return; // 첫 번째 이미지만 처리
+          event.preventDefault();
+          return;
         }
       }
     }
@@ -127,7 +102,6 @@ const ImageUploader = () => {
     setIsCopied(false); // 복사 상태 초기화
   };
 
-  // --- 렌더링 ---
   return (
     <div
       className="mx-auto my-6 max-w-xl rounded-lg border-2 border-dashed border-gray-300 p-6 text-center outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-300"
@@ -151,21 +125,12 @@ const ImageUploader = () => {
       <button
         onClick={() => fileInputRef.current?.click()}
         className="inline-block cursor-pointer rounded-lg bg-blue-500 px-6 py-2 font-bold text-white transition hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-400"
-        disabled={isCompressing || isPending} // 압축 또는 업로드 중 비활성화
+        disabled={isCompressing || isPending}
       >
         {isCompressing ? '압축 중...' : isPending ? '업로드 중...' : '이미지 선택'}
       </button>
 
       <p className="mt-2 text-sm text-gray-500">(또는 스크린샷/이미지 복사 후 여기에 붙여넣기)</p>
-
-      {/* 에러 메시지 표시 영역 */}
-      <div className="mt-4 h-5 text-sm">
-        {isError && (
-          <p className="text-red-500">
-            ❌ 업로드 실패: {error?.message || '서버에 문제가 발생했습니다.'}
-          </p>
-        )}
-      </div>
 
       {/* 선택된 이미지 미리보기 및 URL 복사 */}
       {selectedImageUrl && (

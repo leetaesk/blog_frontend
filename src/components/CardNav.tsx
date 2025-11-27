@@ -3,9 +3,9 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import GoArrowUpRight from '@/assets/Arrow_up-right.svg';
 import ALogoBlack from '@/assets/images/ALogoBlack.svg';
 import ALogoWhite from '@/assets/images/ALogoWhite.svg';
+import GoArrowUpRight from '@/assets/images/Arrow_up-right.svg';
 import { ROUTES } from '@/constants/routes';
 import useThemeStore from '@/store/themeStore';
 import useUserStore from '@/store/useUserStore';
@@ -26,8 +26,6 @@ export type CardNavItem = {
 };
 
 export interface CardNavProps {
-  logo: string;
-  logoAlt?: string;
   items: CardNavItem[];
   className?: string;
   ease?: string;
@@ -63,7 +61,7 @@ const CardNav: React.FC<CardNavProps> = ({
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // 페이지 최상단에서는 항상 표시
+      // 페이지 최상단에서는 항상 표시 - 40정도...
       if (currentScrollY <= 40) {
         setIsVisible(true);
         // 아래로 스크롤하면 숨김

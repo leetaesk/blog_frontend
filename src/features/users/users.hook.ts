@@ -1,16 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
 
-import type { UpdateProfileResponseDto } from '@/features/users/users.dto';
 import type { UpdateProfileSchemaType } from '@/features/users/users.schema';
 import useUserStore from '@/store/useUserStore';
 
 import { updateProfile } from './users.api';
 
-export const useUpdateMyProfile = (
-  onSuccess?: (data: UpdateProfileResponseDto) => void,
-  onError?: (error: AxiosError | Error) => void,
-) => {
+export const useUpdateMyProfile = () => {
   const updateUserInfo = useUserStore((s) => s.updateUserInfo);
 
   const mutationFn = async (data: UpdateProfileSchemaType) => {
@@ -34,23 +30,17 @@ export const useUpdateMyProfile = (
     return updateProfile(formData);
   };
 
-  return useMutation<
-    UpdateProfileResponseDto, // 성공 시 반환 타입
-    AxiosError | Error, // 실패 시 에러 타입
-    UpdateProfileSchemaType // mutationFn의 인자(폼 값) 타입
-  >({
+  return useMutation({
     mutationFn,
     onSuccess: (data) => {
-      //세션스토리지 업데이트
       updateUserInfo({
-        nickname: data.result.nickname,
-        profileImageUrl: data.result.profileImageUrl,
+        nickname: data.nickname,
+        profileImageUrl: data.profileImageUrl,
       });
-      onSuccess?.(data);
+      toast.success('프로필이 변경되었습니다.');
     },
-    onError: (error) => {
-      console.error('프로필 업데이트 실패:', error);
-      onError?.(error);
+    onError: (err) => {
+      toast.error(`프로필 업데이트 실패:${err.message}`);
     },
   });
 };

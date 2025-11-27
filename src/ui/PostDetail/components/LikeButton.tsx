@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
+import { confirm } from '@/components/ConfirmToast';
 import { ROUTES } from '@/constants/routes';
 import { useTogglePostLike } from '@/features/likes/likes.hook';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -48,12 +49,17 @@ const LikeButton = ({ postId, initialLikesCount, initialIsLiked }: LikeButtonPro
     }
   }, 300);
 
-  const handleLikeClick = () => {
+  const handleLikeClick = async () => {
     if (!isLoggedIn) {
-      if (!window.confirm('로그인이 필요한 서비스입니다. 로그인하시겠습니까?')) {
-        return;
+      const result = await confirm(
+        '로그인이 필요한 서비스입니다. 로그인하시겠습니까?',
+        '로그아웃',
+        '취소',
+      );
+
+      if (result) {
+        navigate(ROUTES.LOGIN);
       }
-      navigate(ROUTES.LOGIN);
       return;
     }
 

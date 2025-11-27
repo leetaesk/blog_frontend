@@ -61,7 +61,7 @@ export const postPostSchema = z.object({
     })
     .url({ message: '유효한 URL 형식이 아닙니다.' }),
 
-  // tags: 문자열 배열 타입이며, 선택적(optional) 항목입니다. (없어도 통과)
+  // tags?: string[]
   tags: z.array(z.string()).optional(),
 });
 

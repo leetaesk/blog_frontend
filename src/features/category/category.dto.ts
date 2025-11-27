@@ -1,23 +1,20 @@
 import type { CommonResponseDto } from '@/types/CommonResponseDto';
+import type { CategoryWithPostCount } from '@/types/CommonTypes';
 
-export interface CategoryWithPostCount {
-  id: number;
-  name: string;
-  postCount: number;
-}
-
-export interface GetCategoriesResultType {
+// get categories dto
+export type GetCategoriesResultType = {
   categories: CategoryWithPostCount[];
-}
+};
 
 export type GetCategoriesResponseDto = CommonResponseDto<GetCategoriesResultType>;
 
-export interface createCategoryRequestDto {
+// create categories dto
+export type createCategoryRequestDto = {
   category: string;
-}
+};
 
-export interface createCategoryResultType {
+export type createCategoryResultType = {
   categoryId: number;
-}
+};
 
 export type createCategoryResponseDto = CommonResponseDto<createCategoryResultType>;

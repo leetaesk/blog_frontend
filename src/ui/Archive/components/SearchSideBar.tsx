@@ -15,7 +15,7 @@ const SearchSideBar = ({ searchValue, setSearchValue }: SearchSideBarProps) => {
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
         placeholder="검색어를 입력해주세요"
-        className="bg-secondWhite text-textDark w-full rounded-lg border-2 border-transparent py-2 pr-2 pl-4 text-xs transition-all duration-300 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-0 focus:outline-none"
+        className="bg-secondWhite text-textDark w-full rounded-lg border-2 border-transparent py-2 pr-2 pl-4 text-xs transition-all duration-300 placeholder:text-gray-400 focus:border-gray-200 focus:ring-0 focus:outline-none"
       />
     </div>
   );

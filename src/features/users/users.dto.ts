@@ -1,18 +1,19 @@
 import type { CommonResponseDto } from '@/types/CommonResponseDto';
 
-// 1. 서버 응답 DTO (백엔드와 동일)
-export interface UpdateProfileResultType {
+export type UpdateProfileResultType = {
   id: number;
   nickname: string;
   profileImageUrl: string | null;
   role: string;
-}
+};
 
 export type UpdateProfileResponseDto = CommonResponseDto<UpdateProfileResultType>;
 
-// 2. ⭐️ React Hook Form의 폼 값 타입
-export interface UpdateProfileFormValues {
+/**
+ * 프로필 수정 시 폼밸류
+ */
+export type UpdateProfileFormValues = {
   nickname?: string;
-  image?: FileList; // <input type="file" />의 기본 값
+  image?: FileList;
   profileAction?: 'delete' | 'use_kakao';
-}
+};

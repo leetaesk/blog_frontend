@@ -1,39 +1,38 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
+import { QUERY_KEY } from '@/constants/queryKey';
 import { createCategory, getCategories } from '@/features/category/category.api';
-import type { createCategoryRequestDto } from '@/features/category/category.dto';
 
 /**
  * 카테고리 싹 다 가져오깅
  * return타입 {data, isLoading, isError, error} 4개
  */
 export const useGetCategories = () => {
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ['categories'],
+  return useQuery({
+    queryKey: QUERY_KEY.category.INDEX,
     queryFn: getCategories,
-    gcTime: 5 * 60 * 1000,
-    staleTime: 3 * 60 * 1000,
     select: (data) => data.result.categories, // result.categories만 추출하여 반환
   });
-
-  return { categories: data, isLoading, isError, error };
 };
 
 export const useCreateCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (params: createCategoryRequestDto) => createCategory(params),
+    mutationFn: createCategory,
 
-    // 3. 뮤테이션 성공 시 실행 (API가 isSuccess: true 반환 시)
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    // 성공 시 get카테고리 초기화
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.category.INDEX });
+      // 리턴값은 categoryId라 요청 보낼 때 보낸 category이름을 toast로 보여주기
+      toast.success(`카테고리가 생성되었습니다 : ${variables.category}`);
     },
 
-    // 5. 뮤테이션 실패 시 실행 (API가 에러를 throw 시)
+    // 생성 실패 시 toast
     onError: (error) => {
-      console.error('카테고리 생성 실패:', error);
+      toast.error(`카테고리 생성 실패 : ${error.message}`);
     },
   });
 };

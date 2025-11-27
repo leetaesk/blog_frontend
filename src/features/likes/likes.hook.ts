@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 import { toggleCommentLike, togglePostLike } from '@/features/likes/likes.api';
 import type {
@@ -11,16 +12,13 @@ export const useTogglePostLike = () => {
   return useMutation({
     mutationFn: (params: TogglePostLikeRequestDto) => togglePostLike(params),
 
-    // 3. 뮤테이션 성공 시 실행
     onSuccess: (data) => {
-      console.log(data.message);
       queryClient.invalidateQueries({ queryKey: ['posts'] });
       queryClient.invalidateQueries({ queryKey: ['post', data.result.postId] });
     },
 
-    // 5. 뮤테이션 실패 시 실행
     onError: (error) => {
-      console.error(`좋아요 요청 실패: ${error.message}`);
+      toast.error(`좋아요 요청 실패: ${error.message}`);
     },
   });
 };
@@ -30,16 +28,13 @@ export const useToggleCommentLike = () => {
   return useMutation({
     mutationFn: (params: ToggleCommentLikeRequestDto) => toggleCommentLike(params),
 
-    // 3. 뮤테이션 성공 시 실행
-    onSuccess: (data) => {
-      console.log(data.message);
+    onSuccess: () => {
+      // Todo: 좋아요 누른 댓글이 있는 게시글 postId 필요함 -> 쿼리키 넣어야 함
       queryClient.invalidateQueries({ queryKey: ['comments'] });
-      queryClient.invalidateQueries({ queryKey: ['comments', data.result.commentId] });
     },
 
-    // 5. 뮤테이션 실패 시 실행
     onError: (error) => {
-      console.error(`좋아요 요청 실패: ${error.message}`);
+      toast.error(`좋아요 요청 실패: ${error.message}`);
     },
   });
 };

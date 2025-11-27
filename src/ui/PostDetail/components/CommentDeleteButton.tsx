@@ -1,3 +1,4 @@
+import { confirm } from '@/components/ConfirmToast';
 import { useDeleteComment } from '@/features/comments/comments.hook';
 
 interface CommentDeleteButtonProps {
@@ -7,14 +8,16 @@ interface CommentDeleteButtonProps {
 const CommentDeleteButton = ({ commentId }: CommentDeleteButtonProps) => {
   const { mutate: deleteComment, isPending } = useDeleteComment();
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     if (isPending) return; // 중복 클릭 방지
 
-    const isConfirmed = window.confirm(
-      '정말로 이 댓글을 삭제하시겠습니까?\n답글이 있는 경우, 답글도 함께 삭제됩니다.',
+    const result = await confirm(
+      '정말 이 댓글을 삭제하시겠습니까?\n답글이 있는 경우, 답글도 함께 삭제됩니다.',
+      '삭제',
+      '취소',
     );
 
-    if (!isConfirmed) {
+    if (result) {
       return;
     }
 

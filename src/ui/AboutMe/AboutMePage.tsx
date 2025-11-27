@@ -1,96 +1,12 @@
-import { type ReactNode, useEffect, useState } from 'react';
-
-import clsx from 'clsx';
-
 import github from '@/assets/images/githubLogo.png';
 import instagram from '@/assets/images/instagramLogo.png';
 import threads from '@/assets/images/threadsLogo.png';
 import velog from '@/assets/images/velogLogo.jpg';
 import ModelViewer from '@/components/ModelViewer';
+import ExternalLink from '@/ui/AboutMe/components/ExternalLink';
 import ProjectSection from '@/ui/AboutMe/components/ProjectSection';
-
-interface ExternalLinkProps {
-  href: string;
-  children: React.ReactNode;
-  className?: string;
-}
-
-const ExternalLink = ({ href, children, className }: ExternalLinkProps) => {
-  return (
-    <a
-      href={href}
-      target="_blank" // 새 탭에서 열기
-      rel="noopener noreferrer" // 보안 필수 옵션 (성능 향상 + 보안)
-      className={className}
-    >
-      {children}
-    </a>
-  );
-};
-
-interface SectionTitleBoxProps {
-  children: ReactNode;
-}
-
-const SectionTitleBox = ({ children }: SectionTitleBoxProps) => {
-  return (
-    <div
-      className={clsx(
-        // 1. 기본 레이아웃
-        'relative grid grid-cols-2 gap-6 py-2 text-left',
-
-        // 2. 상단 그라데이션 선 (Before)
-        'before:absolute before:top-0 before:left-0 before:h-[3px] before:w-full',
-        'before:bg-gradient-to-r before:from-gray-600 before:to-transparent',
-
-        // 3. 하단 그라데이션 선 (After)
-        'after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full',
-        'after:bg-gradient-to-r after:from-gray-600 after:to-transparent',
-
-        // 4. 다크모드
-        'before:dark:from-gray-400 after:dark:from-gray-400',
-      )}
-    >
-      {children}
-    </div>
-  );
-};
-
-interface SkillBarProps {
-  skill: string;
-  percentage: number;
-}
-
-const SkillBar = ({ skill, percentage }: SkillBarProps) => {
-  const [width, setWidth] = useState<number>(0);
-
-  useEffect(() => {
-    // 컴포넌트가 화면에 나타난 뒤 약간의 딜레이를 두고 width를 변경해야
-    // CSS transition 애니메이션이 작동합니다.
-    const timer = setTimeout(() => {
-      setWidth(percentage);
-    }, 200); // 0.2초 뒤 실행
-
-    return () => clearTimeout(timer);
-  }, [percentage]);
-
-  return (
-    <div className="mb-5">
-      <div className="mb-1 flex justify-between px-1">
-        <span className="text-base font-medium">{skill}</span>
-        <span className="text-sm">{percentage}%</span>
-      </div>
-      {/* 회색 배경 바 */}
-      <div className="h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
-        {/* 실제 데이터 바 (애니메이션 적용) */}
-        <div
-          className="h-2.5 rounded-full bg-gray-800 transition-all duration-1000 ease-out dark:bg-gray-200"
-          style={{ width: `${width}%` }}
-        ></div>
-      </div>
-    </div>
-  );
-};
+import SectionTitleBox from '@/ui/AboutMe/components/SectionTitileBox';
+import SkillBar from '@/ui/AboutMe/components/SkillBar';
 
 const AboutMePage = () => {
   const mySkills = [
@@ -103,6 +19,7 @@ const AboutMePage = () => {
     { skill: 'AWS', percentage: 5 },
     { skill: 'Docker', percentage: 20 },
   ];
+
   return (
     <div className="font-archivo mb-8 w-full max-w-7xl p-4">
       <div className="flex justify-between gap-12">

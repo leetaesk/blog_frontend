@@ -24,5 +24,5 @@ export const updateProfileSchema = z.object({
   profileAction: z.enum(['delete', 'use_kakao']).optional(),
 });
 
-// ⭐️ 폼 값 타입을 zod 스키마로부터 추론 (UpdateProfileFormValues와 동일)
+// 폼 값 타입을 zod 스키마로부터 추론 (UpdateProfileFormValues와 동일)
 export type UpdateProfileSchemaType = z.infer<typeof updateProfileSchema>;

@@ -23,20 +23,15 @@ export const getComments = async (
     `/api/comments/${params.postId}`,
   );
 
-  if (!response.data.isSuccess) {
-    throw new Error(`API Error: ${response.data.code} - ${response.data.message}`);
-  }
-
   return response.data.result;
 };
 
+/**
+ * @description 내가 쓴 댓글 목록 가져오기
+ */
 export const getCommentsCreatedByMe = async (): Promise<getCommentsCreatedByMeResultType> => {
   const response =
     await axiosPrivateInstance.get<getCommentsCreatedByMeResponseDto>(`/api/comments/me`);
-
-  if (!response.data.isSuccess) {
-    throw new Error(`API Error: ${response.data.code} - ${response.data.message}`);
-  }
 
   return response.data.result;
 };
@@ -45,10 +40,6 @@ export const postComment = async (
   params: postCommentRequestDto,
 ): Promise<postCommentResultType> => {
   const response = await axiosPrivateInstance.post<postCommentResponseDto>(`/api/comments`, params);
-
-  if (!response.data.isSuccess) {
-    throw new Error(`API Error: ${response.data.code} - ${response.data.message}`);
-  }
 
   return response.data.result;
 };
@@ -61,10 +52,6 @@ export const patchComment = async (
     { content: params.content },
   );
 
-  if (!response.data.isSuccess) {
-    throw new Error(`API Error: ${response.data.code} - ${response.data.message}`);
-  }
-
   return response.data.result;
 };
 
@@ -74,10 +61,6 @@ export const deleteComment = async (
   const response = await axiosPrivateInstance.delete<deleteCommentResponseDto>(
     `/api/comments/${params.commentId}`,
   );
-
-  if (!response.data.isSuccess) {
-    throw new Error(`API Error: ${response.data.code} - ${response.data.message}`);
-  }
 
   return response.data.result;
 };

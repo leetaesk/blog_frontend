@@ -1,6 +1,10 @@
 import { useGetPostsLikedByMe } from '@/features/posts/archive/archive.hook';
 import PostCard from '@/ui/Archive/components/PostCard';
 
+/**
+ * 좋아요 누른 게시글들
+ * 페이지로 뺄까 고민 중
+ */
 const ArchiveLikedByMeSection = () => {
   const { data, isLoading, isError, error } = useGetPostsLikedByMe({ page: 1, limit: 12 });
 

@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
+import { confirm } from '@/components/ConfirmToast';
 import { ROUTES } from '@/constants/routes';
 import { useToggleCommentLike } from '@/features/likes/likes.hook';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -56,10 +57,15 @@ const CommentLikeButton = ({
     }
   }, 300); // 300ms 디바운스
 
-  const handleLikeClick = () => {
+  const handleLikeClick = async () => {
     // 1. 로그인 가드
     if (!isLoggedIn) {
-      if (!window.confirm('로그인이 필요한 서비스입니다. 로그인하시겠습니까?')) {
+      const result = await confirm(
+        '로그인이 필요한 서비스입니다. 로그인하시겠습니까?',
+        '로그인',
+        '취소',
+      );
+      if (result) {
         return;
       }
       navigate(ROUTES.LOGIN);

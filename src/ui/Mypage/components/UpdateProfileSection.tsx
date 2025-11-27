@@ -21,29 +21,7 @@ const UpdateProfileSection = () => {
     image?: string;
   }>({});
 
-  // 3. React Query Mutation 훅 (RHF의 'reset' 대신 수동 리셋으로 변경)
-  const { mutate: updateProfileMutate, isPending } = useUpdateMyProfile(
-    // 1. onSuccess 콜백 (첫 번째 인자)
-    (data) => {
-      alert('프로필이 성공적으로 변경되었습니다.');
-      // 폼 상태를 서버에서 받은 최신 정보로 수동 리셋
-      setNickname(data.result.nickname);
-      setImageFile(undefined);
-      setProfileAction(undefined);
-      // 에러 메시지 초기화
-      setErrors({});
-      // 이미지 미리보기도 서버 응답 URL로 업데이트
-      setImagePreview(data.result.profileImageUrl);
-    },
-    (error) => {
-      if (error && 'response' in error && error.response) {
-        const apiError = error.response.data as { message?: string };
-        alert(apiError.message || '프로필 변경에 실패했습니다.');
-      } else {
-        alert(error.message || '프로필 변경에 실패했습니다.');
-      }
-    },
-  );
+  const { mutate: updateProfileMutate, isPending } = useUpdateMyProfile();
 
   useEffect(() => {
     if (imageFile && imageFile.length > 0) {
@@ -51,7 +29,7 @@ const UpdateProfileSection = () => {
       const newPreviewUrl = URL.createObjectURL(file);
       setImagePreview(newPreviewUrl);
 
-      // ⭐️ 새 파일이 업로드되면, 'profileAction'은 초기화
+      //  새 파일이 업로드되면, 'profileAction'은 초기화
       setProfileAction(undefined);
 
       // 컴포넌트 언마운트 또는 URL 변경 시 메모리 해제
@@ -88,9 +66,18 @@ const UpdateProfileSection = () => {
     // 6-3. 유효성 검사 성공 시: 에러 초기화 및 뮤테이션 호출
     setErrors({});
 
-    // ⭐️ mutation 훅이 {nickname, image, profileAction} 객체를 받아
-    // FormData로 변환해 주므로, Zod가 검증한 'validationResult.data'를 전달합니다.
-    updateProfileMutate(validationResult.data as UpdateProfileSchemaType);
+    updateProfileMutate(validationResult.data as UpdateProfileSchemaType, {
+      onSuccess: (data) => {
+        // 폼 상태를 서버에서 받은 최신 정보로 수동 리셋
+        setNickname(data.nickname);
+        setImageFile(undefined);
+        setProfileAction(undefined);
+        // 에러 메시지 초기화
+        setErrors({});
+        // 이미지 미리보기도 서버 응답 URL로 업데이트
+        setImagePreview(data.profileImageUrl);
+      },
+    });
   };
 
   // [변경] 7. "카카오 프로필 사용" 버튼 핸들러
