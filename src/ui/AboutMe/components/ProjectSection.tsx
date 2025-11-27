@@ -20,9 +20,12 @@ const ProjectSection = () => {
             <span className="text-xl">원하는 가격·방식으로 나만의 PT 매칭</span>
           </h3>
           <div className="text-primary text-sm font-semibold tracking-wide">FRONT-END LEAD</div>
-          <p className="text-muted-foreground mt-2 leading-4">
-            사용자 맞춤형 PT 트레이너 매칭 서비스. <br /> React와 TypeScript를 사용하여 인터랙티브한
-            UI/UX를 설계하고 구현을 리드했습니다.
+          <p className="text-muted-foreground mt-2 text-sm leading-4">
+            <p className="text-[#003efb]">
+              Grab the weight. <br />
+              Grab the challenge. <br />
+              Grab the life you deserve <br />
+            </p>
           </p>
           <div className="group mt-4 flex cursor-pointer items-center text-[1rem]">
             <a
@@ -52,7 +55,7 @@ const ProjectSection = () => {
           <div className="text-primary text-sm font-semibold tracking-wide">Personal Project</div>
           <p className="text-muted-foreground mt-2 leading-4">
             React, Node.JS와 express를 활용하여 개인 블로그를 제작했습니다. <br />
-            빌드부터 배포까지 전 과정을 직접 제작해씀
+            주로 기술적인 이야기를 다룹니다.
           </p>
           <div className="group mt-4 flex cursor-pointer items-center text-[1rem]">
             <a

@@ -41,8 +41,12 @@ function handleError(error: unknown, meta?: Record<string, unknown>) {
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 0,
+      // 개발땐 0이 편한데 배포는 1로 해야 함 근데 걍 1로 쓰자
+      retry: 1,
+      // 꺼삐자
       refetchOnWindowFocus: false,
+      // 이거 켜줘야 ErrorBoundary로 에러 던집니다~
+      throwOnError: true,
     },
   },
   // QueryCache: GET 요청 실패 시 전역 핸들링

@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom';
 
 import FuzzyText from '@/components/FuzzyText';
 
+/**
+ * 404 페이지
+ */
 const NotFoundPage = () => {
   return (
     <div className="bg-compDark flex min-h-screen flex-col items-center justify-center">
@@ -10,7 +13,6 @@ const NotFoundPage = () => {
           baseIntensity={0.3}
           hoverIntensity={0.5}
           enableHover={true}
-          // 이제 너비는 부모 div가 제어하므로, 폰트 크기만 적절히 조절합니다.
           fontSize="clamp(5rem, 18vw, 15rem)"
         >
           404

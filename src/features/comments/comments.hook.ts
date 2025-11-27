@@ -10,6 +10,7 @@ import {
   postComment,
 } from '@/features/comments/comments.api';
 import type { getCommentsRequestDto } from '@/features/comments/comments.dto';
+import useUserStore from '@/store/useUserStore';
 
 export const useGetComments = (params: getCommentsRequestDto) => {
   return useQuery({
@@ -21,9 +22,11 @@ export const useGetComments = (params: getCommentsRequestDto) => {
 };
 
 export const useGetCommentsCreatedByMe = () => {
+  const userInfo = useUserStore((s) => s.userInfo);
   return useQuery({
     queryKey: QUERY_KEY.comments.BY_ME,
     queryFn: () => getCommentsCreatedByMe(),
+    enabled: !!userInfo,
   });
 };
 

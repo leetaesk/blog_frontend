@@ -6,6 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 html {
+  /* 너무 커서 좀 줄였음 */
   font-size: 14px;
 }
 
@@ -59,12 +60,9 @@ html {
   --color-secondWhite: #f2f2f2;
   --color-textDark: #202020;
   --color-textWhite: #fff;
+  /* 누런색 - 안 쓸걸 이거 */
   --color-main: #f5f4f0;
-  /* fontFamily: {
-    archivo:
-      [ 'Archivo',
-      'sans-serif'];
-  } */
+  /* 메인화면 폰트 */
   --font-archivo: 'Archivo', 'sans-serif';
 }
 
@@ -107,23 +105,17 @@ html {
 }
 
 .dark {
-  /* [수정] #2b2b2b 색상을 기준으로 재조정 (oklch(0.27 0 0)) */
   --background: oklch(0.27 0 0);
 
-  /* Google 머티리얼 디자인의 기본 텍스트 색상(#E8EAED)과 유사한 값 */
   --foreground: oklch(0.93 0 0);
 
-  /* [수정] 배경보다 한 단계 밝은 표면 색상(#333333)과 유사한 값으로 변경 */
   --card: oklch(0.31 0 0);
   --card-foreground: oklch(0.93 0 0);
 
-  /* 카드와 동일 레벨 컴포넌트 색상 통일 */
   --popover: oklch(0.31 0 0);
   --popover-foreground: oklch(0.93 0 0);
 
-  /* Google의 기본 버튼 색상(#8AB4F8)과 유사한 포인트 색상 */
   --primary: oklch(0.77 0.1 235);
-  /* 포인트 색상 위의 텍스트 색상 (#202124) */
   --primary-foreground: oklch(0.23 0 0);
 
   --secondary: oklch(0.269 0 0);
@@ -137,7 +129,6 @@ html {
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
 
-  /* 테두리 색상을 조금 더 잘 보이도록 조정 */
   --border: oklch(1 0 0 / 15%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
@@ -147,7 +138,6 @@ html {
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
 
-  /* 카드와 동일 레벨 컴포넌트 색상 통일 */
   --sidebar: oklch(0.31 0 0);
   --sidebar-foreground: oklch(0.93 0 0);
 
@@ -190,6 +180,7 @@ html {
     }
   }
 
+  /* 메인에 이미지 움직이는 애니메이션 */
   .animate-pan-vertical {
     /* 20초 동안, 부드럽게(ease-in-out), 무한반복, 역방향(alternate)으로 재생 */
     animation: pan-vertical 7s ease-in-out infinite alternate;

@@ -52,8 +52,7 @@ export const useKakaoLogoutMutation = () => {
 
   return useMutation({
     mutationFn: kakaoLogOut,
-    onSuccess: (data) => {
-      console.log(data.message);
+    onSuccess: () => {
       clearUser();
       queryClient.clear();
       navigate(ROUTES.HOME);

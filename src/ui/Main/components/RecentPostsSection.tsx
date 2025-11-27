@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
 import { useGetPosts } from '@/features/posts/archive/archive.hook';
-import { ScrollReveal } from '@/ui/Main/MainPage';
+import ScrollReveal from '@/ui/Main/components/ScrollReveal';
 
 const RecentPostsSection = () => {
   const { data, isLoading } = useGetPosts({ page: 1, limit: 4 });

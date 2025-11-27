@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import MDEditor from '@uiw/react-md-editor';
+import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ZodError } from 'zod';
 
@@ -11,6 +12,9 @@ import { postPostSchema } from '@/features/posts/posts.schema';
 import useThemeStore from '@/store/themeStore';
 import CategoryInput from '@/ui/PostDetail/components/CategoryInput';
 
+/**
+ * 게시글 수정 페이지
+ */
 const UpdatePostPage = () => {
   const navigate = useNavigate();
   const { postId: postIdStr } = useParams<{ postId: string }>();
@@ -18,20 +22,10 @@ const UpdatePostPage = () => {
 
   const currentTheme = useThemeStore((s) => s.theme);
 
-  // --- 데이터 페칭 ---
-  // 1. 수정할 게시글의 원본 데이터를 가져옵니다.
-  const {
-    data: post,
-    isLoading: isFetching, // ❗️ 로딩 상태
-    isError, // ❗️ 에러 상태
-  } = useGetPostForEdit({ postId });
+  const { data: post, isLoading, isError } = useGetPostForEdit({ postId });
 
-  // --- 뮤테이션 ---
-  // 2. 게시글 수정을 위한 mutation 훅을 가져옵니다.
   const { mutate: updatePost, isPending } = useUpdatePost();
 
-  // --- 상태 관리 ---
-  // PostNewPage와 동일한 상태들을 선언합니다.
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [categoryId, setCategoryId] = useState<number>(0);
@@ -39,7 +33,6 @@ const UpdatePostPage = () => {
   const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
   const [tagsInput, setTagsInput] = useState('');
 
-  // ❗️ 3. (가장 중요) 데이터 로딩이 완료되면, 폼 상태를 초기화합니다.
   useEffect(() => {
     if (post) {
       setTitle(post.title);
@@ -75,17 +68,16 @@ const UpdatePostPage = () => {
       // 3. Zod 스키마로 데이터 유효성 검증
       const validatedData = postPostSchema.parse(postData);
 
-      // ❗️ 4. 검증 통과 시, '수정' 뮤테이션 함수 호출
+      // 훅 실행
       updatePost(
         { postId, ...validatedData },
         {
           onSuccess: (data) => {
-            // ❗️ 훅에 정의된 onSuccess(archive로 이동)를 덮어쓰고
-            // ❗️ 수정된 상세 페이지로 이동합니다.
+            toast.success('게시글 수정이 완료되었습니다.');
             navigate(urlFor.postDetail(data.postId));
           },
-          onError: () => {
-            // 훅에 이미 alert가 정의되어 있습니다.
+          onError: (err) => {
+            alert(`수정 실패: ${err.message}`);
           },
         },
       );
@@ -93,24 +85,16 @@ const UpdatePostPage = () => {
       // 5. 유효성 검증 실패 시 에러 처리
       if (error instanceof ZodError) {
         const firstErrorMessage = error.message;
-        console.error('폼 데이터 검증 오류:', error.flatten().fieldErrors);
+        toast.error('폼 데이터 검증 오류:', error.flatten().fieldErrors);
         alert(firstErrorMessage);
       } else {
-        console.error('알 수 없는 오류 발생:', error);
-        alert('알 수 없는 오류가 발생했습니다.');
+        toast.error('알 수 없는 오류가 발생했습니다.');
       }
     }
   };
 
-  /**
-   * '취소' 버튼 클릭 시
-   */
-  const handleCancel = () => {
-    navigate(-1); // 이전 페이지로 이동
-  };
-
   // --- 로딩 및 에러 처리 ---
-  if (isFetching) return <div>게시글 정보를 불러오는 중...</div>;
+  if (isLoading) return <div>게시글 정보를 불러오는 중...</div>;
   if (isError || !post) return <div>게시글을 찾을 수 없거나 오류가 발생했습니다.</div>;
 
   // --- 렌더링 ---
@@ -225,7 +209,7 @@ const UpdatePostPage = () => {
       <div className="mt-8 flex justify-end gap-4">
         <button
           type="button"
-          onClick={handleCancel}
+          onClick={() => navigate(-1)}
           className="rounded-lg-md bg-secondary text-secondary-foreground hover:bg-muted px-6 py-2 font-semibold transition-colors"
         >
           취소

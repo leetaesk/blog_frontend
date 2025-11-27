@@ -39,14 +39,6 @@ const CreatePostPage = () => {
   // getInitialDraft()를 한 번만 호출해서 초기 데이터를 가져옴
   const initialDraft = getInitialDraft();
 
-  // // 1. DTO에 매핑되는 상태들
-  // const [title, setTitle] = useState<string>('');
-  // const [content, setContent] = useState<string>('**새로운 글을 작성해보세요!**');
-  // const [categoryId, setCategoryId] = useState<number>(0);
-  // const [summary, setSummary] = useState<string>('');
-  // const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
-  // const [tagsInput, setTagsInput] = useState(''); // 태그는 쉼표로 구분된 문자열로 우선 받습니다.
-
   // 1. DTO에 매핑되는 상태들
   const [title, setTitle] = useState<string>(() => initialDraft?.title || '');
   const [content, setContent] = useState<string>(
@@ -57,7 +49,7 @@ const CreatePostPage = () => {
   const [thumbnailUrl, setThumbnailUrl] = useState<string>(() => initialDraft?.thumbnailUrl || '');
   const [tagsInput, setTagsInput] = useState<string>(() => initialDraft?.tagsInput || '');
 
-  // 👈 4. 폼 상태가 변경될 때마다 sessionStorage에 자동 저장
+  // 👈 4. 폼 상태가 변경될 때마다 localStorage에 자동 저장
   useEffect(() => {
     const draft = {
       title,
@@ -182,27 +174,8 @@ const CreatePostPage = () => {
           )}
         </div>
 
-        {/* 3. 카테고리 (categoryId) */}
         {/* 3. 🔽 카테고리 (categoryId) - 기존 select 로직을 통째로 교체 */}
         <CategoryInput value={categoryId} onChange={setCategoryId} />
-        {/* <div>
-          <label htmlFor="category" className="block mb-2 text-lg font-semibold text-foreground">
-            카테고리
-          </label>
-          <select
-            id="category"
-            value={categoryId || ''}
-            onChange={(e) => setCategoryId(Number(e.target.value))}
-            className="w-full p-3 transition border bg-card text-foreground rounded-lg-md border-border focus:ring-ring focus:ring-2 focus:outline-none"
-          >
-            <option value="">카테고리 선택</option>
-            {categories?.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-        </div> */}
 
         {/* 4. 요약 (summary) */}
         <div>

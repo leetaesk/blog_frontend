@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import { QUERY_KEY } from '@/constants/queryKey';
-import { ROUTES, urlFor } from '@/constants/routes';
+import { urlFor } from '@/constants/routes';
 import {
   deletePostById,
   getPostById,
@@ -47,8 +47,6 @@ export const useUpdatePost = () => {
       // archive 갱신
       queryClient.invalidateQueries({ queryKey: ['posts'] });
       // alert 후 archive로 이동
-      alert(`게시글 수정 성공: ${data.postId}`);
-      window.location.href = ROUTES.ARCHIVE;
     },
     onError: () => {
       alert('게시글 수정 실패');
@@ -71,8 +69,6 @@ export const useDeletePost = () => {
 
       // archive 갱신
       queryClient.invalidateQueries({ queryKey: ['posts'] });
-      alert(`게시글 삭제 성공: ${data.postId}`);
-      window.location.href = ROUTES.ARCHIVE;
     },
     onError: () => {
       alert('게시글 삭제 중 오류 발생');

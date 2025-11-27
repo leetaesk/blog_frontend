@@ -21,7 +21,6 @@ const UpdateProfileSection = () => {
     image?: string;
   }>({});
 
-  // 3. React Query Mutation 훅 (RHF의 'reset' 대신 수동 리셋으로 변경)
   const { mutate: updateProfileMutate, isPending } = useUpdateMyProfile();
 
   useEffect(() => {

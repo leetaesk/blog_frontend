@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { confirm } from '@/components/ConfirmToast';
 import ProfileImage from '@/components/ProfileImage';
 import { useKakaoLogoutMutation } from '@/features/Auth/kakaoAuth.hook';
 import useUserStore from '@/store/useUserStore';
@@ -17,31 +18,36 @@ const MyPage = () => {
 
   const { mutate: kakaoLogout } = useKakaoLogoutMutation();
 
-  const handleLogout = () => {
-    if (window.confirm('정말 로그아웃 하시겠습니까?')) {
+  // handleLogout 함수에 async를 붙여야 합니다.
+  const handleLogout = async () => {
+    // 사용법이 window.confirm과 똑같지만 await를 씁니다.
+    const result = await confirm('정말 로그아웃 하시겠습니까?', '로그아웃', '취소');
+
+    if (result) {
       kakaoLogout();
     }
   };
 
-  if (!userInfo) {
-    return <>로그인하고오세여</>; // 또는 null
-  }
+  // if (!userInfo) {
+  //   window.location.href = ROUTES.LOGIN;
+  //   return;
+  // }
 
   return (
     <div className="bg-compWhite dark:bg-compDark mx-auto my-10 h-fit w-full max-w-4xl rounded-lg p-5 shadow-md">
       {/* 1. 프로필 정보 섹션 */}
       <section className="mb-10 flex items-center gap-6 border-b border-gray-200 pb-6 dark:border-gray-700">
         <div className="h-24 w-24 overflow-hidden rounded-full">
-          <ProfileImage src={userInfo.profileImageUrl} alt={'프로필사진'} />
+          <ProfileImage src={userInfo?.profileImageUrl} alt={'프로필사진'} />
         </div>
 
         <div className="flex flex-col items-baseline">
           {/* [수정] dark:text-gray-100 -> dark:text-textWhite */}
           <h2 className="dark:text-textWhite text-3xl font-bold text-gray-800">
-            {userInfo.nickname}
+            {userInfo?.nickname}
           </h2>
           <p className="mt-1 text-lg text-gray-500 capitalize dark:text-gray-400">
-            {userInfo.role}
+            {userInfo?.role}
           </p>
         </div>
       </section>

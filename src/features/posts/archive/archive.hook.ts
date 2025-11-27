@@ -6,6 +6,7 @@ import type {
   GetPostsLikedByMeRequestDto,
   GetPostsRequestDto,
 } from '@/features/posts/archive/archive.dto';
+import useUserStore from '@/store/useUserStore';
 
 export const useGetPosts = (params: GetPostsRequestDto) => {
   return useQuery({
@@ -19,9 +20,11 @@ export const useGetPosts = (params: GetPostsRequestDto) => {
 };
 
 export const useGetPostsLikedByMe = (params: GetPostsLikedByMeRequestDto) => {
+  const userInfo = useUserStore((s) => s.userInfo);
   return useQuery({
     queryKey: QUERY_KEY.posts.ARCHIVE_LIKED_BY_ME(params),
     queryFn: () => getPostsLikedByMe(params),
+    enabled: !!userInfo,
     select: (data) => ({
       posts: data.posts,
       pagination: data.pagination,

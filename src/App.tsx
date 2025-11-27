@@ -1,11 +1,13 @@
-import { QueryClient, QueryErrorResetBoundary } from '@tanstack/react-query';
+import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Toaster } from 'react-hot-toast';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import Layout from '@/Layout/Layout';
+import { GlobalConfirmModal } from '@/components/ConfirmToast';
 import { ROUTES } from '@/constants/routes';
 import { getPostByIdLoader } from '@/features/posts/posts.loader';
+import { queryClient } from '@/lib/react-query';
 import AboutMePage from '@/ui/AboutMe/AboutMePage';
 import ArchivePage from '@/ui/Archive/ArchivePage';
 import CreatePostPage from '@/ui/CreatePost/CreatePostPage';
@@ -15,9 +17,7 @@ import MyPage from '@/ui/Mypage/MyPage';
 import NotFoundPage from '@/ui/NotFoundPage';
 import PostDetailPage from '@/ui/PostDetail/PostDetailPage';
 import UpdatePostPage from '@/ui/UpdatePost/UpdatePostPage';
-import { isAdminLoader, isGuestLoader } from '@/utils/userRoleLoader';
-
-const queryClient = new QueryClient();
+import { isAdminLoader, isGuestLoader, isLoginLoader } from '@/utils/userRoleLoader';
 
 const router = createBrowserRouter([
   {
@@ -55,6 +55,7 @@ const router = createBrowserRouter([
       {
         path: ROUTES.MYPAGE,
         element: <MyPage />,
+        loader: isLoginLoader,
       },
     ],
   },
@@ -66,7 +67,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-// ErrorFallback 컴포넌트: 에러 발생 시 보여줄 예쁜(?) UI
 const ErrorFallback = ({
   error,
   resetErrorBoundary,
@@ -98,6 +98,7 @@ function App() {
 
           {/* 전역 토스트 위치 (react-hot-toast) */}
           <Toaster position="top-center" />
+          <GlobalConfirmModal />
         </ErrorBoundary>
       )}
     </QueryErrorResetBoundary>

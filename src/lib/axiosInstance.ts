@@ -86,8 +86,8 @@ axiosPrivateInstance.interceptors.response.use(
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         return axiosPrivateInstance(originalRequest);
       } catch (refreshError) {
-        alert('로그인이 만료되었습니다.');
         useUserStore.getState().clearUser();
+        alert('로그인이 만료되었습니다.');
         window.location.href = '/login';
         return Promise.reject(refreshError);
       }
