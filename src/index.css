@@ -17,6 +17,13 @@ html {
   font-size: 14px;
 }
 
+/* 1563px 이상인 대형 화면에서는 16px로 확대 */
+/* @media (min-width: 1563px) {
+  html {
+    font-size: 16px;
+  }
+} */
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
