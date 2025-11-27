@@ -28,10 +28,12 @@ const HeartIcon = () => (
 const PostCard = ({ post }: PostCardProps) => {
   return (
     <Link to={urlFor.postDetail(post.id)} key={post.id}>
+      {/* 기본적으로 w,h-full 카드 */}
       <article className="bg-compWhite dark:bg-compDark group flex h-full w-full transform flex-col overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:-translate-y-2">
         {/* 이미지 */}
         {post.thumbnailUrl && (
-          <div className="h-48 overflow-hidden">
+          // 이미지 h-48 -> 모바일에서 줄임
+          <div className="h-12 overflow-hidden sm:h-48">
             <img
               src={post.thumbnailUrl}
               alt={`${post.title} 썸네일`}

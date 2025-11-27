@@ -1,7 +1,13 @@
-const ArrowRightIcon = () => (
+import { cn } from '@/utils/utils';
+
+interface ArrowRightIconProps {
+  className?: string;
+}
+
+const ArrowRightIcon = ({ className }: ArrowRightIconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1"
+    className={cn('ml-1 h-5 w-5 transition-transform group-hover:translate-x-1', className)}
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"

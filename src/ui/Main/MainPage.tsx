@@ -3,15 +3,14 @@ import RecentPostsSection from '@/ui/Main/components/RecentPostsSection';
 
 /**
  * 메인페이지
+ * max-w-7xl (80rem: 1280px)
  */
 const MainPage = () => {
   return (
-    <div className="bg-background text-foreground w-full max-w-[1480px]">
-      <main>
-        <HeroSection />
-        <RecentPostsSection />
-      </main>
-    </div>
+    <main className="bg-background text-foreground w-full max-w-7xl">
+      <HeroSection />
+      <RecentPostsSection />
+    </main>
   );
 };
 
