@@ -18,10 +18,9 @@ const CommentDeleteButton = ({ commentId }: CommentDeleteButtonProps) => {
     );
 
     if (result) {
-      return;
+      deleteComment({ commentId });
     }
-
-    deleteComment({ commentId });
+    return;
   };
 
   return (

@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/constants/routes';
@@ -55,6 +56,7 @@ export const useKakaoLogoutMutation = () => {
     onSuccess: () => {
       clearUser();
       queryClient.clear();
+      toast.success('로그아웃되었습니다.');
       navigate(ROUTES.HOME);
     },
     onError: (error) => {

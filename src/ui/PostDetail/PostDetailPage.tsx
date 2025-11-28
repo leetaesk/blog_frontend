@@ -1,4 +1,5 @@
-import { Link, useLoaderData, useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
 import CalendarIcon from '@/assets/icons/CalendarIcon';
 import EyeIcon from '@/assets/icons/EyeIcon';
@@ -15,6 +16,7 @@ import '@/ui/PostDetail/postDetail.css';
  * 게시글 상세 페이지 - 심장
  */
 const PostDetailPage = () => {
+  const navigate = useNavigate();
   const { postId: postIdStr } = useParams<{ postId: string }>();
   const postId = parseInt(postIdStr || '', 10);
   const userId = useUserStore((s) => s.userId);
@@ -50,7 +52,15 @@ const PostDetailPage = () => {
   const handleDelete = async () => {
     const result = await confirm('정말 이 게시글을 삭제하시겠습니까?', '삭제', '취소');
     if (result) {
-      deletePost({ postId });
+      deletePost(
+        { postId },
+        {
+          onSuccess: (data) => {
+            navigate(ROUTES.ARCHIVE);
+            toast.success(`${data.postId}번 게시글이 삭제되었습니다.`);
+          },
+        },
+      );
     }
   };
 
