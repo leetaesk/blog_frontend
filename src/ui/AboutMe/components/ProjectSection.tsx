@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom';
+
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
 import grapPt from '@/assets/images/GrabPTLogo.svg';
 import LogoImage from '@/components/LogoImage';
+import { ROUTES } from '@/constants/routes';
 
 const ProjectSection = () => {
   return (
@@ -62,14 +65,9 @@ const ProjectSection = () => {
             주로 기술적인 이야기를 다룹니다.
           </p>
           <div className="group mt-4 hidden cursor-pointer items-center text-[1rem] sm:flex">
-            <a
-              rel="noopener"
-              href="http://www.grabpt.com"
-              target="_blank"
-              className="text-primary group font-medium group-hover:underline"
-            >
+            <Link className="text-primary group font-medium group-hover:underline" to={ROUTES.HOME}>
               사이트 방문하기
-            </a>
+            </Link>
             <ArrowRightIcon />
           </div>
         </div>

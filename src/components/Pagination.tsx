@@ -32,7 +32,7 @@ const Pagination = ({ currentPage, totalPage, onPageChange }: PaginationProps) =
   if (totalPage <= 1) return null;
 
   return (
-    <nav className="mt-12 flex justify-center" aria-label="페이지네이션">
+    <nav className="flex justify-center sm:mt-12" aria-label="페이지네이션">
       <ul className="flex h-10 items-center -space-x-px text-base">
         {/* 이전 그룹 버튼 */}
         <li>
