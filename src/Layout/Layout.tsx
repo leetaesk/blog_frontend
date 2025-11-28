@@ -10,12 +10,12 @@ import useScrollToTop from '@/hooks/useScrollToTop';
 import useUiStore from '@/store/useUiStore';
 
 const Layout = () => {
+  // location바뀌면 항상 맨 위로 스크롤 => search파라미터 입력 시 이거 막아야 함
   const location = useLocation();
   useScrollToTop(location);
 
   const { isGlobalLoading, showGlobalLoading, hideGlobalLoading } = useUiStore();
 
-  // 너 왜 여깄니??
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -34,12 +34,7 @@ const Layout = () => {
       <Navbar />
 
       {/* // Navbar 공간(pt-32) + 반응형 좌우 패딩(px-6 md:px-12) + 최대 너비 제한 및 중앙 */}
-      <main
-        className={clsx(
-          'mx-auto flex min-h-dvh w-[90%] justify-center pt-28 md:pt-32',
-          'max-w-7xl',
-        )}
-      >
+      <main className={clsx('mx-auto flex min-h-dvh w-[90%] justify-center md:pt-32', 'max-w-7xl')}>
         {/* 로딩 중일 때 바운스로더 */}
         {isGlobalLoading && <BounceLoader />}
         <Outlet />
@@ -47,10 +42,11 @@ const Layout = () => {
 
       {/* 푸터 */}
       <footer className="text-muted-foreground border-border grid grid-cols-3 border-t px-6 py-8 text-center md:px-12">
-        <div>
-          <ThemeToggleButton />
-        </div>
-        <p>© {new Date().getFullYear()} Taeseok Lee. All Rights Reserved.</p>
+        <ThemeToggleButton />
+        <p>
+          © {new Date().getFullYear()} Taeseok Lee.{' '}
+          <p className="hidden md:block">All Rights Reserved.</p>
+        </p>
       </footer>
     </>
   );
