@@ -53,7 +53,7 @@ export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
           <div className="flex items-center justify-between space-x-2">
             <div className="flex items-end gap-2">
               <span className="text-sm font-semibold">{author.nickname}</span>
-              <span className="text-xs">{formatDate(createdAt)}</span>
+              <span className="text-xs">{formatDate({ dateString: createdAt })}</span>
             </div>
             {isOwner && (
               <div className="flex h-full justify-between gap-2">

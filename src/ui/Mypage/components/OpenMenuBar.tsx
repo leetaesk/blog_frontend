@@ -16,7 +16,7 @@ const OpenMenuBar = ({ title, isOpen, onClick, children }: OpenMenuBarProps) => 
     <>
       <div
         onClick={() => onClick((prev) => !prev)}
-        className="flex cursor-pointer items-center gap-4 rounded-md p-4 text-xl font-medium text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
+        className="text-textDark dark:text-textWhite flex cursor-pointer items-center gap-4 rounded-md p-4 text-2xl font-semibold transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
       >
         <ChevronRightIcon
           className={clsx('transition-transform duration-300 ease-in-out', isOpen && 'rotate-90')}

@@ -15,8 +15,8 @@ const ArchiveLikedByMeSection = () => {
   if (!data) return <>데이터없음</>;
 
   return (
-    <section className="bg-compWhite dark:bg-compDark mx-auto h-fit w-full max-w-4xl rounded-lg p-5 shadow-md md:p-8">
-      <div className="grid grid-cols-3 gap-2">
+    <section className="bg-compWhite dark:bg-compDark mx-auto h-fit w-full max-w-4xl rounded-lg px-5 py-0 shadow-md sm:p-5 md:p-8">
+      <div className="gap-2 md:grid md:grid-cols-3">
         {data.posts.map((post) => {
           return <PostCard post={post} />;
         })}
