@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import KakaoIcon from '@/assets/images/KakaoIcon.svg';
+import LogoImage from '@/components/LogoImage';
 import { useKakaoLoginMutation } from '@/features/Auth/kakaoAuth.hook';
 
 /**
@@ -46,10 +47,15 @@ const LoginPage = () => {
         >
           ←
         </button>
-        <div className="flex h-full w-full flex-col md:flex-row">
+        <div className="flex h-full w-full flex-col sm:flex-row">
           {/* 1. 좌측 섹션 (소개 문구) */}
-          <div className="order-2 flex h-full flex-col justify-center border-r-2 border-gray-400 p-8 text-center md:order-1 md:w-1/2 md:p-12 lg:p-16">
+          <div className="hidden h-full w-1/2 flex-col justify-center border-r-2 border-gray-400 p-8 text-center sm:flex md:p-12 lg:p-16">
             <div className="mx-auto max-w-md">
+              <div className="flex items-center justify-center">
+                <div className="w-1/2">
+                  <LogoImage />
+                </div>
+              </div>
               <h2 className="text-foreground mb-4 text-3xl font-bold">
                 Dive into the World of Code
               </h2>
@@ -61,7 +67,7 @@ const LoginPage = () => {
           </div>
 
           {/* 2. 우측 섹션 (로그인) */}
-          <div className="order-1 flex flex-col items-center justify-center p-8 md:order-2 md:w-1/2 md:p-12 lg:p-16">
+          <div className="flex h-full flex-col items-center justify-center p-8 md:w-1/2 md:p-12 lg:p-16">
             <div className="w-full max-w-xs">
               <h1 className="text-foreground mb-4 text-center text-3xl font-bold tracking-tight">
                 시작하기
@@ -80,9 +86,8 @@ const LoginPage = () => {
                 <span>카카오로 시작하기</span>
               </button>
               <p className="text-muted-foreground/80 mt-6 text-center text-xs">
-                로그인은 개인정보보호정책 및 서비스 약관에 동의하는 것을 의미하며,
-                <br />
-                서비스 이용을 위해 이메일과 프로필 정보를 수집합니다.
+                로그인은 개인정보보호정책 및 서비스 약관에 동의하는 것을 의미하며, 서비스 이용을
+                위해 이메일과 프로필 정보를 수집합니다.
               </p>
             </div>
           </div>

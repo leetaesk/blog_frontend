@@ -18,9 +18,7 @@ const MyPage = () => {
 
   const { mutate: kakaoLogout } = useKakaoLogoutMutation();
 
-  // handleLogout 함수에 async를 붙여야 합니다.
   const handleLogout = async () => {
-    // 사용법이 window.confirm과 똑같지만 await를 씁니다.
     const result = await confirm('정말 로그아웃 하시겠습니까?', '로그아웃', '취소');
 
     if (result) {
@@ -28,15 +26,10 @@ const MyPage = () => {
     }
   };
 
-  // if (!userInfo) {
-  //   window.location.href = ROUTES.LOGIN;
-  //   return;
-  // }
-
   return (
-    <div className="bg-compWhite dark:bg-compDark mx-auto my-10 h-fit w-full max-w-4xl rounded-lg p-5 shadow-md">
+    <div className="bg-compWhite dark:bg-compDark mx-auto h-fit w-full max-w-4xl rounded-lg p-5 shadow-md sm:my-10">
       {/* 1. 프로필 정보 섹션 */}
-      <section className="mb-10 flex items-center gap-6 border-b border-gray-200 pb-6 dark:border-gray-700">
+      <section className="mb-2 flex items-center gap-6 border-b border-gray-200 pb-6 sm:mb-10 dark:border-gray-700">
         <div className="h-24 w-24 overflow-hidden rounded-full">
           <ProfileImage src={userInfo?.profileImageUrl} alt={'프로필사진'} />
         </div>

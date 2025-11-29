@@ -87,7 +87,7 @@ axiosPrivateInstance.interceptors.response.use(
         return axiosPrivateInstance(originalRequest);
       } catch (refreshError) {
         useUserStore.getState().clearUser();
-        alert('로그인이 만료되었습니다.');
+        alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
         window.location.href = '/login';
         return Promise.reject(refreshError);
       }

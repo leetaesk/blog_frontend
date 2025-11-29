@@ -1,9 +1,14 @@
+interface formatDateProps {
+  dateString: string;
+  onlyDay?: boolean;
+}
+
 /**
  * 날짜 문자열을 "YYYY. MM. DD. HH:MM" 형식으로 포맷팅하는 헬퍼 함수
  * @param dateString - ISO 8601 또는 호환되는 날짜 문자열
  * @returns 포맷팅된 날짜 문자열
  */
-export const formatDate = (dateString: string) => {
+export const formatDate = ({ dateString, onlyDay }: formatDateProps) => {
   try {
     const date = new Date(dateString);
     // 한국 시간(KST)에 맞게 조정 (UTC+9)
@@ -19,14 +24,21 @@ export const formatDate = (dateString: string) => {
 
     // 일단은 new Date()가 KST로 잘 해석한다고 가정하고 진행합니다.
 
-    return new Intl.DateTimeFormat('ko-KR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    }).format(date);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hour = String(date.getHours()).padStart(2, '0');
+    const minute = String(date.getMinutes()).padStart(2, '0');
+
+    if (onlyDay) {
+      return new Intl.DateTimeFormat('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      }).format(date);
+    }
+
+    return `${year}.${month}.${day}. ${hour}:${minute}`;
   } catch (error) {
     console.warn('Invalid date string:', dateString);
     return dateString; // 오류 발생 시 원본 반환

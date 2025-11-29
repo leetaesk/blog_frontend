@@ -3,6 +3,8 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
+import NavSerachBar from '@/Layout/components/NavSerachBar';
+import SearchIcon from '@/assets/icons/SearchIcon';
 import ALogoBlack from '@/assets/images/ALogoBlack.svg';
 import ALogoWhite from '@/assets/images/ALogoWhite.svg';
 import GoArrowUpRight from '@/assets/images/Arrow_up-right.svg';
@@ -207,7 +209,8 @@ const CardNav: React.FC<CardNavProps> = ({
     <div
       // --- ⬇️ 동적 클래스 추가 ⬇️ ---
       // isVisible 상태에 따라 Y축 위치 변경, transition으로 부드러운 효과 적용
-      className={`card-nav-container fixed top-[1.2em] left-1/2 z-[99] w-[90%] max-w-[800px] -translate-x-1/2 transition-transform duration-300 ease-in-out md:top-[2em] ${
+      // className={`card-nav-container fixed top-[1.2em] left-1/2 z-[99] w-[90%] max-w-[800px] -translate-x-1/2 transition-transform duration-300 ease-in-out md:top-[2em] ${
+      className={`card-nav-container itesm-center top-0 left-0 z-[99] flex w-dvw justify-center transition-transform duration-300 ease-in-out md:fixed md:top-[2em] md:left-1/2 md:w-[90%] md:max-w-[800px] md:-translate-x-1/2 ${
         isVisible ? 'translate-y-0' : '-translate-y-[160%]' // 150%로 설정하여 확실히 화면 밖으로 이동
       } ${className}`}
       // --- ⬆️ 동적 클래스 추가 ⬆️ ---
@@ -216,45 +219,69 @@ const CardNav: React.FC<CardNavProps> = ({
         ref={navRef}
         className={`card-nav ${
           isExpanded ? 'open' : ''
-        } relative block h-[60px] overflow-hidden rounded-xl p-0 shadow-md will-change-[height]`}
+        } relative block h-[60px] w-[90%] overflow-hidden rounded-xl p-0 will-change-[height] md:w-full md:shadow-md`}
         style={{ backgroundColor: baseColor }}
       >
-        <div className="card-nav-top absolute inset-x-0 top-0 z-[2] flex h-[60px] items-center justify-between p-2 pl-[1.1rem]">
-          <div
-            className={`hamburger-menu ${
-              isHamburgerOpen ? 'open' : ''
-            } group order-2 flex h-full cursor-pointer flex-col items-center justify-center gap-[6px] md:order-none`}
-            onClick={toggleMenu}
-            role="button"
-            aria-label={isExpanded ? 'Close menu' : 'Open menu'}
-            tabIndex={0}
-            style={{ color: menuColor || '#000' }}
-          >
+        {/* 세개를 감싼 div */}
+        <div className="card-nav-top absolute inset-x-0 top-0 z-[2] flex h-[60px] items-center justify-between p-0 md:p-2 md:pl-[1.1rem]">
+          {/* 검색&햄버거 */}
+          <div className="order-2 flex items-center gap-3 md:order-1">
             <div
-              className={`hamburger-line h-[2px] w-[30px] [transform-origin:50%_50%] bg-current transition-all duration-200 ease-linear ${
-                isHamburgerOpen ? 'translate-y-[4px] rotate-45' : ''
-              } group-hover:opacity-75`}
-            />
+              className="md:hidden"
+              onClick={
+                isHamburgerOpen
+                  ? () => {
+                      return;
+                    }
+                  : toggleMenu
+              }
+            >
+              <SearchIcon className="h-6 w-6" strokeWidth={2.5} />
+            </div>
             <div
-              className={`hamburger-line h-[2px] w-[30px] [transform-origin:50%_50%] bg-current transition-all duration-200 ease-linear ${
-                isHamburgerOpen ? '-translate-y-[4px] -rotate-45' : ''
-              } group-hover:opacity-75`}
-            />
+              className={`hamburger-menu ${
+                isHamburgerOpen ? 'open' : ''
+              } group mr-0 flex h-full cursor-pointer flex-col items-center justify-center gap-[6px]`}
+              onClick={toggleMenu}
+              role="button"
+              aria-label={isExpanded ? 'Close menu' : 'Open menu'}
+              tabIndex={0}
+              style={{ color: menuColor || '#000' }}
+            >
+              <div
+                className={`hamburger-line h-[2px] w-[30px] [transform-origin:50%_50%] bg-current transition-all duration-200 ease-linear ${
+                  isHamburgerOpen ? 'translate-y-[4px] rotate-45' : ''
+                } group-hover:opacity-75`}
+              />
+              <div
+                className={`hamburger-line h-[2px] w-[30px] [transform-origin:50%_50%] bg-current transition-all duration-200 ease-linear md:hidden ${
+                  isHamburgerOpen ? 'hidden' : ''
+                } group-hover:opacity-75`}
+              />
+              <div
+                className={`hamburger-line h-[2px] w-[30px] [transform-origin:50%_50%] bg-current transition-all duration-200 ease-linear ${
+                  isHamburgerOpen ? '-translate-y-[4px] -rotate-45' : ''
+                } group-hover:opacity-75`}
+              />
+            </div>
           </div>
 
-          <div className="logo-container order-1 flex items-center md:absolute md:top-1/2 md:left-1/2 md:order-none md:-translate-x-1/2 md:-translate-y-1/2">
-            {/* <div className="w-12 h-12"><Logo /></div> */}
-            <Link to={'/'} className="flex items-center justify-center gap-2">
-              {/* <img src={LogoBlack} alt="로고" className="h-24" /> */}
+          {/* 로고&이름 */}
+          <div className="logo-container order-1 flex items-center md:absolute md:top-1/2 md:left-1/2 md:order-2 md:-translate-x-1/2 md:-translate-y-1/2">
+            <Link to={'/'} className="flex items-center justify-center gap-1 md:gap-2">
               <img src={Logo} alt="로고" className="h-12" />
-              <span className="font-archivo font-semibold">LTK's ARCHIVE</span>
+              <span className="font-archivo text-lg font-black tracking-tighter md:text-base md:font-semibold">
+                LTK's ARCHIVE
+              </span>
             </Link>
           </div>
 
+          {/* 버튼 */}
           <button
             type="button"
             onClick={handleAuthButton}
-            className="card-nav-cta-button flex h-full cursor-pointer items-center justify-center rounded-[calc(0.75rem-0.2rem)] border-0 px-4 font-medium transition-colors duration-300 md:inline-flex"
+            // md이상에서만 보임
+            className="card-nav-cta-button hidden h-full cursor-pointer items-center justify-center rounded-[calc(0.75rem-0.2rem)] border-0 px-4 font-medium transition-colors duration-300 md:order-1 md:inline-flex"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
           >
             {accessToken ? 'My Profile' : 'Get Started'}
@@ -267,6 +294,17 @@ const CardNav: React.FC<CardNavProps> = ({
           } md:flex-row md:items-end md:gap-[12px]`}
           // aria-hidden={!isExpanded}
         >
+          <div className="flex justify-between gap-2 md:hidden">
+            <NavSerachBar />
+            <button
+              type="button"
+              onClick={handleAuthButton}
+              className="card-nav-cta-button inline-flex h-full cursor-pointer items-center justify-center rounded-[calc(0.75rem-0.2rem)] border-0 px-4 font-medium transition-colors duration-300"
+              style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+            >
+              {accessToken ? 'My Profile' : 'Get Started'}
+            </button>
+          </div>
           {(items || []).slice(0, 3).map((item, idx) => (
             <div
               key={`${item.label}-${idx}`}

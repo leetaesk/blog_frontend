@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import Pagination from '@/components/Pagination';
 import { useGetPosts } from '@/features/posts/archive/archive.hook';
 import { useDebounce } from '@/hooks/useDebounce';
-import ArchiveSideBar from '@/ui/Archive/components/CategorySideBar';
+import CategorySideBar from '@/ui/Archive/components/CategorySideBar';
 import PostCard from '@/ui/Archive/components/PostCard';
 import SearchSideBar from '@/ui/Archive/components/SearchSideBar';
 import SkeletonPostCard from '@/ui/Archive/components/SkeletonPostCard';
@@ -69,25 +69,27 @@ const ArchivePage = () => {
 
   return (
     <div className="bg-bgWhite dark:bg-bgDark text-textDark dark:text-textWhite min-h-screen w-full max-w-6xl">
-      <div className="mx-auto w-full py-12">
-        <header className="mb-12 text-center">
-          <h1 className="font-archivo text-right text-2xl font-extrabold tracking-tight md:text-4xl">
+      {/* 모바일에서 py 삭제 */}
+      <div className="mx-auto w-full py-0 sm:py-12">
+        {/* 모바일에서 헤더 삭제 */}
+        <header className="mb-12 hidden text-center sm:block">
+          <h1 className="font-archivo text-right text-2xl font-extrabold tracking-tight sm:text-4xl">
             LEETAESK'S ARCHIVE
           </h1>
         </header>
 
-        <div className="flex flex-col gap-12 md:flex-row">
+        <div className="flex flex-col gap-4 sm:flex-row sm:gap-12">
           {/* Sidebar */}
-          <aside className="w-full min-w-48 md:w-1/3 2xl:w-1/4">
+          <aside className="w-full min-w-48 sm:w-1/3 2xl:w-1/4">
             <div className="sticky top-24 space-y-8">
               <SearchSideBar searchValue={inputValue} setSearchValue={handleSearchChange} />
-              <ArchiveSideBar />
+              <CategorySideBar />
             </div>
           </aside>
 
           {/* Main Content */}
           <main className="w-full">
-            <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
               {/* isLoading이 true이면 스켈레톤을 보여줍니다.
                 isLoading이 false이고 데이터가 있으면 카드를 보여줍니다.
               */}
@@ -105,7 +107,7 @@ const ArchivePage = () => {
             {/* Pagination */}
             {/* 로딩 중이 아니고 페이지네이션 데이터가 있을 때만 표시 */}
             {!isLoading && pagination && (
-              <div className="mt-12">
+              <div className="my-8 mt-4 sm:mt-12">
                 <Pagination
                   currentPage={pagination.currentPage}
                   totalPage={pagination.totalPage}

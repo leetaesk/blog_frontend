@@ -63,9 +63,11 @@ export const useDeletePost = () => {
   return useMutation({
     mutationFn: (params: DeletePostRequestDto) => deletePostById(params),
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       // 삭제된 게시글의 상세 쿼리 캐시를 즉시삭제
-      queryClient.removeQueries({ queryKey: QUERY_KEY.posts.BY_POST_ID(data.postId) });
+      // 삭제 시 쿼리 제거 => 존재하지 않는 post Get 요청 에러로 인해 removeQuery 제거
+      // 메모리에 잠시 남아있지만 페이지 재접속시 refetch => 에러 뜨면 리다이렉트 플로우
+      // queryClient.removeQueries({ queryKey: QUERY_KEY.posts.BY_POST_ID(data.postId) });
 
       // archive 갱신
       queryClient.invalidateQueries({ queryKey: ['posts'] });

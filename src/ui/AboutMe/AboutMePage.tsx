@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react';
+
 import github from '@/assets/images/githubLogo.png';
 import instagram from '@/assets/images/instagramLogo.png';
 import threads from '@/assets/images/threadsLogo.png';
@@ -9,6 +11,38 @@ import SectionTitleBox from '@/ui/AboutMe/components/SectionTitileBox';
 import SkillBar from '@/ui/AboutMe/components/SkillBar';
 
 const AboutMePage = () => {
+  const [dimensions, setDimensions] = useState({ width: 400, height: 400 });
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    // 1. 미디어 쿼리 리스트 정의
+    const mmMd = window.matchMedia('(min-width: 768px)'); // md
+    const mmLg = window.matchMedia('(min-width: 1024px)'); // lg
+
+    // 2. 사이즈 결정 함수
+    const updateSize = () => {
+      if (mmLg.matches) {
+        setDimensions({ width: 400, height: 400 }); // lg 이상
+      } else if (mmMd.matches) {
+        setDimensions({ width: 320, height: 320 }); // md 이상
+      } else {
+        setDimensions({ width: 240, height: 240 }); // 그 외 (모바일)
+      }
+    };
+
+    // 3. 초기 실행
+    updateSize();
+
+    // 4. 이벤트 리스너 등록 (화면 크기 변경 감지)
+    // resize 이벤트보다 훨씬 효율적입니다.
+    mmMd.addEventListener('change', updateSize);
+    mmLg.addEventListener('change', updateSize);
+
+    // 5. 뒷정리
+    return () => {
+      mmMd.removeEventListener('change', updateSize);
+      mmLg.removeEventListener('change', updateSize);
+    };
+  }, []);
   const mySkills = [
     { skill: 'JavaScript / TypeScript', percentage: 90 },
     { skill: 'React', percentage: 85 },
@@ -22,11 +56,12 @@ const AboutMePage = () => {
 
   return (
     <div className="font-archivo mb-8 w-full max-w-7xl p-4">
-      <div className="flex justify-between gap-12">
+      <div className="flex justify-between gap-12" ref={containerRef}>
         <div>
           <div className="my-4 border-l-2 border-gray-400 px-4">
-            <h1 className="text-6xl font-bold">Lee Tae Seok</h1>
-            <h2 className="text-2xl font-semibold">FrontEnd Developer</h2>
+            {/* md~834 글씨 잘리는데 걍 냅둠 */}
+            <h1 className="text-5xl font-bold md:text-6xl">Lee Tae Seok</h1>
+            <h2 className="text-xl font-semibold sm:text-2xl">FrontEnd Developer</h2>
             <br />
             <div>
               <span>
@@ -69,13 +104,13 @@ const AboutMePage = () => {
             </span>
           </div>
         </div>
-        <div>
+        <div className="hidden sm:flex">
           <ModelViewer
             url={
               'https://cdn.jsdelivr.net/gh/leetaesk/assets@main/man%20in%20blazer%203d%20model%20(2).compressed.glb'
             }
-            width={400}
-            height={400}
+            width={dimensions.width}
+            height={dimensions.height}
             defaultRotationX={-50}
             defaultRotationY={20}
             // environmentPreset="forest"

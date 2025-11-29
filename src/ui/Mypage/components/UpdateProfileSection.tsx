@@ -119,20 +119,19 @@ const UpdateProfileSection = () => {
       {/* 폼 태그 */}
       {/* [변경] RHF의 handleSubmit 제거, 기본 onSubmit 연결 */}
       <form onSubmit={onSubmit}>
-        {/* 페이지 제목 */}
-        <h2 className="dark:text-textWhite mb-8 border-b border-gray-200 pb-4 text-3xl font-bold text-gray-800 dark:border-gray-700">
+        {/* 페이지 제목
+        <h2 className="hidden pb-4 mb-8 text-3xl font-bold text-gray-800 border-b border-gray-200 dark:text-textWhite sm:block dark:border-gray-700">
           프로필 수정
-        </h2>
-
+        </h2> */}
         {/* 1. 프로필 이미지 섹션 */}
-        <section className="mb-10 flex flex-col items-center gap-5">
+        <section className="mb-10 flex items-center justify-between gap-5 sm:flex-col">
           {/* 이미지 미리보기 */}
           <div className="h-32 w-32 overflow-hidden rounded-full border-2 border-gray-300 dark:border-gray-600">
             <ProfileImage src={imagePreview} alt="프로필 미리보기" />
           </div>
 
           {/* 이미지 변경 버튼 그룹 */}
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="text-bold font-archivo flex flex-col justify-end gap-3 sm:flex-row sm:justify-center">
             {/* [변경] RHF의 register 대신 수동 onChange 연결 */}
             <input
               type="file"
@@ -145,7 +144,7 @@ const UpdateProfileSection = () => {
             {/* 파일 업로드 버튼 */}
             <label
               htmlFor="profileImageInput"
-              className={`cursor-pointer rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+              className={`cursor-pointer rounded-md px-4 py-2 text-center text-sm font-medium transition-colors ${
                 isMutationLoading
                   ? 'cursor-not-allowed bg-gray-400 text-gray-100'
                   : 'bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
@@ -175,9 +174,8 @@ const UpdateProfileSection = () => {
           {/* [유지] 에러 표시는 동일하게 'errors' 상태 사용 */}
           {errors.image && <p className="mt-2 text-sm text-red-500">{errors.image}</p>}
         </section>
-
         {/* 2. 닉네임 섹션 */}
-        <section className="mb-10">
+        <section className="sm:mb-10">
           <label
             htmlFor="nickname"
             className="mb-2 block text-lg font-medium text-gray-800 dark:text-gray-200"
@@ -200,9 +198,8 @@ const UpdateProfileSection = () => {
           {/* [유지] 에러 표시는 동일하게 'errors' 상태 사용 */}
           {errors.nickname && <p className="mt-2 text-sm text-red-500">{errors.nickname}</p>}
         </section>
-
         {/* 3. 액션 버튼 섹션 (기존 로직 동일) */}
-        <section className="flex justify-end gap-4 border-t border-gray-200 pt-6 dark:border-gray-700">
+        <section className="flex justify-end gap-4 border-t border-gray-200 pt-4 sm:pt-6 dark:border-gray-700">
           <button
             type="button"
             onClick={handleCancel}
