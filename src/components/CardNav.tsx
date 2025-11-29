@@ -210,7 +210,7 @@ const CardNav: React.FC<CardNavProps> = ({
       // --- ⬇️ 동적 클래스 추가 ⬇️ ---
       // isVisible 상태에 따라 Y축 위치 변경, transition으로 부드러운 효과 적용
       // className={`card-nav-container fixed top-[1.2em] left-1/2 z-[99] w-[90%] max-w-[800px] -translate-x-1/2 transition-transform duration-300 ease-in-out md:top-[2em] ${
-      className={`card-nav-container itesm-center top-0 left-0 z-[99] flex w-dvw justify-center transition-transform duration-300 ease-in-out md:fixed md:top-[2em] md:left-1/2 md:w-[90%] md:max-w-[800px] md:-translate-x-1/2 ${
+      className={`card-nav-container fixed top-0 left-0 z-[99] flex w-dvw items-center justify-center transition-transform duration-300 ease-in-out md:top-[2em] md:left-1/2 md:w-[90%] md:max-w-[800px] md:-translate-x-1/2 ${
         isVisible ? 'translate-y-0' : '-translate-y-[160%]' // 150%로 설정하여 확실히 화면 밖으로 이동
       } ${className}`}
       // --- ⬆️ 동적 클래스 추가 ⬆️ ---
