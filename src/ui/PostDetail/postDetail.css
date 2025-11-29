@@ -43,10 +43,12 @@ html.dark {
 .post-content {
   color: var(--color-text-primary);
   font-family: var(--font-serif);
-  font-size: 1.1rem; /* 17px or 18px is good for reading */
+  font-size: 1.2rem; /* 17px or 18px is good for reading */
   line-height: 1.7;
   max-width: 720px; /* 가독성을 위한 최대 너비 */
   margin: 0 auto;
+  overflow-wrap: break-word; /* 단어가 길면 줄바꿈 허용 */
+  word-break: break-word; /* 호환성을 위해 추가 */
 }
 
 /* ==========================================================================

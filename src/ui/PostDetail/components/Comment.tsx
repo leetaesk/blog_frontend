@@ -48,19 +48,25 @@ export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
       </div>
 
       <div className="flex-1">
-        {/* 2. 작성자 정보 (닉네임, 작성일) */}
+        {/* 닉네임, 작성일, 수정삭제버튼박스 */}
         <div className="flex flex-col">
           <div className="flex items-center justify-between space-x-2">
-            <div className="flex items-end gap-2">
+            {/* 닉네임 작성일 */}
+            <div className="flex flex-wrap items-end gap-2">
               <span className="text-sm font-semibold">{author.nickname}</span>
-              <span className="text-xs">{formatDate({ dateString: createdAt })}</span>
+              <span className="hidden text-xs sm:inline">
+                {formatDate({ dateString: createdAt })}
+              </span>
+              <span className="text-xs sm:hidden">
+                {formatDate({ dateString: createdAt, onlyDay: true })}
+              </span>
             </div>
             {isOwner && (
-              <div className="flex h-full justify-between gap-2">
+              <div className="flex h-full justify-between sm:gap-2">
                 <button
                   type="button"
                   onClick={() => setIsEditing(!isEditing)}
-                  className="rounded-md bg-transparent px-3 py-1 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:text-gray-400 disabled:hover:bg-transparent"
+                  className="rounded-md bg-transparent py-1 text-sm font-medium whitespace-nowrap text-blue-600 transition-colors hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:text-gray-400 disabled:hover:bg-transparent sm:px-3"
                   aria-label="댓글수정"
                 >
                   수정
@@ -131,7 +137,7 @@ export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
             key={`replyCommentForm${commentId}`}
             postId={postId}
             parentCommentId={commentId}
-            onSuccess={() => setShowReplyForm(false)}
+            onSuccess={() => setShowReplyForm(true)}
           />
         )}
       </div>

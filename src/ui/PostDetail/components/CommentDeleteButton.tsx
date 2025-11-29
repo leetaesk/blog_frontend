@@ -28,7 +28,7 @@ const CommentDeleteButton = ({ commentId }: CommentDeleteButtonProps) => {
       type="button"
       onClick={handleDeleteClick}
       disabled={isPending}
-      className="rounded-md bg-transparent px-3 py-1 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:text-gray-400 disabled:hover:bg-transparent"
+      className="rounded-md bg-transparent px-3 py-1 text-sm font-medium whitespace-nowrap text-red-600 transition-colors hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:text-gray-400 disabled:hover:bg-transparent"
       aria-label="댓글 삭제"
     >
       {isPending ? '삭제 중...' : '삭제'}

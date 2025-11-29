@@ -24,6 +24,12 @@ export const formatDate = ({ dateString, onlyDay }: formatDateProps) => {
 
     // 일단은 new Date()가 KST로 잘 해석한다고 가정하고 진행합니다.
 
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hour = String(date.getHours()).padStart(2, '0');
+    const minute = String(date.getMinutes()).padStart(2, '0');
+
     if (onlyDay) {
       return new Intl.DateTimeFormat('ko-KR', {
         year: 'numeric',
@@ -32,14 +38,7 @@ export const formatDate = ({ dateString, onlyDay }: formatDateProps) => {
       }).format(date);
     }
 
-    return new Intl.DateTimeFormat('ko-KR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    }).format(date);
+    return `${year}.${month}.${day}. ${hour}:${minute}`;
   } catch (error) {
     console.warn('Invalid date string:', dateString);
     return dateString; // 오류 발생 시 원본 반환

@@ -63,7 +63,7 @@ const CommentForm = ({ postId, parentCommentId = null, onSuccess }: CommentFormP
         </div>
 
         <textarea
-          className="w-full flex-1 rounded-lg border border-gray-300 p-3 shadow-sm transition-shadow focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="w-full flex-1 rounded-lg border border-gray-300 p-3 shadow-sm transition-shadow"
           rows={3}
           value={content}
           onChange={(e) => setContent(e.target.value)}
