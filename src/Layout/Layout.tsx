@@ -34,7 +34,12 @@ const Layout = () => {
       <Navbar />
 
       {/* // Navbar 공간(pt-32) + 반응형 좌우 패딩(px-6 md:px-12) + 최대 너비 제한 및 중앙 */}
-      <main className={clsx('mx-auto flex min-h-dvh w-[90%] justify-center md:pt-32', 'max-w-7xl')}>
+      <main
+        className={clsx(
+          'mx-auto flex min-h-dvh w-[90%] justify-center pt-[60px] md:pt-32',
+          'max-w-7xl',
+        )}
+      >
         {/* 로딩 중일 때 바운스로더 */}
         {isGlobalLoading && <BounceLoader />}
         <Outlet />
