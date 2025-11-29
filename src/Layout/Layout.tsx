@@ -41,12 +41,12 @@ const Layout = () => {
       </main>
 
       {/* 푸터 */}
-      <footer className="text-muted-foreground border-border grid grid-cols-3 border-t px-6 py-8 text-center md:px-12">
-        <ThemeToggleButton />
-        <p>
-          © {new Date().getFullYear()} Taeseok Lee.{' '}
+      <footer className="text-muted-foreground border-border flex justify-between border-t px-6 py-8 text-center sm:grid sm:grid-cols-3 md:px-12">
+        <ThemeToggleButton className="order-2 sm:order-1" />
+        <div className="order-1 sm:order-2">
+          <p className="min-w-[138.54px]">© {new Date().getFullYear()} Taeseok Lee. </p>
           <p className="hidden md:block">All Rights Reserved.</p>
-        </p>
+        </div>
       </footer>
     </>
   );

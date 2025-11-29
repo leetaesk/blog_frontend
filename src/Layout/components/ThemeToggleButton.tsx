@@ -3,8 +3,13 @@ import { useEffect } from 'react';
 import clsx from 'clsx';
 
 import useThemeStore from '@/store/themeStore';
+import { cn } from '@/utils/utils';
 
-const ThemeToggleButton = () => {
+interface ThemeToggleButtonProps {
+  className?: string;
+}
+
+const ThemeToggleButton = ({ className }: ThemeToggleButtonProps) => {
   const { theme, toggleTheme } = useThemeStore();
   const isDark = theme === 'dark';
 
@@ -21,9 +26,10 @@ const ThemeToggleButton = () => {
       type="button"
       aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
       // [트랙] 버튼 전체 배경 (색상만 변경됨)
-      className={clsx(
+      className={cn(
         'relative h-8 w-14 cursor-pointer rounded-full p-1 transition-colors duration-300 focus:outline-none',
         isDark ? 'bg-compDark' : 'bg-main', // 다크일 때 어두운색, 라이트일 때 밝은 하늘색
+        className, //props로 받은 css 우선적용
       )}
     >
       {/* [썸(Thumb)] 움직이는 하얀 동그라미 */}
