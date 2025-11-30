@@ -1,10 +1,12 @@
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
+// import 'highlight.js/styles/github-dark.css';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Toaster } from 'react-hot-toast';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import Layout from '@/Layout/Layout';
 import { GlobalConfirmModal } from '@/components/ConfirmToast';
+import HighlightTheme from '@/components/HighlightTheme';
 import { ROUTES } from '@/constants/routes';
 import { getPostByIdLoader } from '@/features/posts/posts.loader';
 import { queryClient } from '@/lib/react-query';
@@ -95,9 +97,11 @@ function App() {
         <ErrorBoundary onReset={reset} FallbackComponent={ErrorFallback}>
           {/* 기존 라우터나 메인 컴포넌트 */}
           <RouterProvider router={router} />
-
-          {/* 전역 토스트 위치 (react-hot-toast) */}
+          {/* 블로그 코드 테마 자동관리 컴포넌트 */}
+          <HighlightTheme />
+          {/* 전역 토스트 + 위치 관리 */}
           <Toaster position="top-center" />
+          {/* 확인 모달 - 비동기처리까지 */}
           <GlobalConfirmModal />
         </ErrorBoundary>
       )}
