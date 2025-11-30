@@ -5,7 +5,7 @@ const SkeletonPostCard = () => {
     <div
       className={clsx(
         // 기본 및 모바일 (리스트형, 이미지 우측 배치를 위한 reverse)
-        'group bg-compWhite dark:bg-compDark flex h-full w-full flex-row-reverse items-start overflow-hidden py-5',
+        'group bg-background md:dark:bg-compDark flex h-full w-full flex-row-reverse items-start overflow-hidden py-5',
         'border-b border-gray-100 dark:border-gray-800',
 
         // PC (카드형, 세로 배치)

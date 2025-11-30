@@ -210,3 +210,11 @@ html {
     scrollbar-width: none;
   }
 }
+
+@media (max-width: 768px) {
+  :root,
+  .dark {
+    /* 기존 색상 대신 투명으로 설정 */
+    --card: transparent;
+  }
+}

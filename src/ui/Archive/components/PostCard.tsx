@@ -32,7 +32,7 @@ const PostCard = ({ post }: PostCardProps) => {
       <article
         className={clsx(
           // [기본 스타일] 배경, 오버플로우 처리
-          'group bg-compWhite dark:bg-compDark h-full overflow-hidden',
+          'group bg-background md:dark:bg-compDark h-full overflow-hidden dark:border-b-gray-700',
 
           // [변경점 1: 컨테이너 레이아웃]
           // 기존: 항상 세로 배치(flex-col), 둥근 모서리, 그림자

@@ -158,7 +158,7 @@ const PostDetailPage = () => {
         <CommentSection postId={postId} />
       </div>
 
-      <div className="mt-12 text-center">
+      <div className="my-12 text-center sm:mt-12 sm:mb-0">
         <Link
           to={ROUTES.ARCHIVE}
           className="bg-compWhite dark:bg-compDark inline-block rounded-lg px-6 py-3 font-bold shadow-md transition-shadow hover:shadow-lg"

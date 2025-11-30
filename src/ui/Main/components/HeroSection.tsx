@@ -170,9 +170,8 @@ const HeroSection = () => {
           className="font-archivo text-foreground mt-13 flex items-end justify-between border-t-3 border-black py-3 text-xs leading-none font-bold tracking-[-0.03em] antialiased dark:border-t-gray-200"
         >
           <div className="max-w-2/3 break-words">
-            RECORDING THE JOURNEY OF A DEVELOPER GROWING THROUGH TRIALS AND ERRORS. OPEN SPACE READY
-            FOR NEW CHALLENGES AND EXPERIMENTS. ARCHIVE DEDICATED TO WRITING CODE THAT TURNS INTO
-            REALITY.
+            A PLACE TO ARCHIVE MY CODE AND DEVELOPMENT JOURNEY. DESIGN CONCEPT INSPIRED BY ARCHIVE -
+            WEBSITE CONCEPT BY TOMASZ MAZURCZAK ON DRIBBBLE.
           </div>
           <span>[ VIEW STORIES ]</span>
         </motion.div>
