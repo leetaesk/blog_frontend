@@ -101,7 +101,7 @@ const PostDetailPage = () => {
 
         <div className="mb-8 flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-y border-gray-200 py-4 text-gray-500 sm:items-center dark:border-gray-700 dark:text-gray-400">
           {/* 프사랑 이름이랑 날짜 박스 */}
-          <div className="flex flex-col items-center sm:flex-row sm:gap-6">
+          <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-6">
             {/* 프사랑 이름 */}
             <div className="flex items-center">
               <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
@@ -110,7 +110,7 @@ const PostDetailPage = () => {
               <span className="font-semibold">{post.author.nickname}</span>
             </div>
             {/* 날짜 */}
-            <div className="flex items-center">
+            <div className="flexitems-center">
               <CalendarIcon />
               <span>{post.createdAt.split(' ')[0]}</span> {/* 날짜만 표시 */}
             </div>
