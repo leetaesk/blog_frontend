@@ -1,46 +1,55 @@
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 
 import github from '@/assets/images/githubLogo.png';
 import instagram from '@/assets/images/instagramLogo.png';
 import threads from '@/assets/images/threadsLogo.png';
 import velog from '@/assets/images/velogLogo.jpg';
-import ModelViewer from '@/components/ModelViewer';
 import ExternalLink from '@/ui/AboutMe/components/ExternalLink';
 import ProjectSection from '@/ui/AboutMe/components/ProjectSection';
 import SectionTitleBox from '@/ui/AboutMe/components/SectionTitileBox';
 import SkillBar from '@/ui/AboutMe/components/SkillBar';
 
+// Lazy Import 선언 (이 코드는 이 컴포넌트가 필요할 때 로딩됨)
+const ModelViewer = lazy(() => import('@/components/ModelViewer'));
+
 const AboutMePage = () => {
+  // 3. 렌더링 여부를 결정할 state (초기값 false로 SSR/Hydration 에러 방지)
+  const [show3D, setShow3D] = useState<boolean>(false);
   const [dimensions, setDimensions] = useState({ width: 400, height: 400 });
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     // 1. 미디어 쿼리 리스트 정의
+    const mmSm = window.matchMedia('(min-width: 640px)'); // sm
     const mmMd = window.matchMedia('(min-width: 768px)'); // md
     const mmLg = window.matchMedia('(min-width: 1024px)'); // lg
 
-    // 2. 사이즈 결정 함수
-    const updateSize = () => {
+    // 2. 사이즈 및 렌더링 여부 결정 함수
+    const handleResize = () => {
+      // (1) 3D 모델 보여줄지 말지 결정 (sm 이상일 때만 true)
+      setShow3D(mmSm.matches);
       if (mmLg.matches) {
-        setDimensions({ width: 400, height: 400 }); // lg 이상
+        setDimensions({ width: 400, height: 400 });
       } else if (mmMd.matches) {
-        setDimensions({ width: 320, height: 320 }); // md 이상
+        setDimensions({ width: 320, height: 320 });
       } else {
-        setDimensions({ width: 240, height: 240 }); // 그 외 (모바일)
+        // sm~md 사이 구간 사이즈 (필요하다면 조정)
+        setDimensions({ width: 240, height: 240 });
       }
     };
 
     // 3. 초기 실행
-    updateSize();
+    handleResize();
 
-    // 4. 이벤트 리스너 등록 (화면 크기 변경 감지)
-    // resize 이벤트보다 훨씬 효율적입니다.
-    mmMd.addEventListener('change', updateSize);
-    mmLg.addEventListener('change', updateSize);
+    // 4. 이벤트 리스너 등록
+    mmSm.addEventListener('change', handleResize);
+    mmMd.addEventListener('change', handleResize);
+    mmLg.addEventListener('change', handleResize);
 
     // 5. 뒷정리
     return () => {
-      mmMd.removeEventListener('change', updateSize);
-      mmLg.removeEventListener('change', updateSize);
+      mmSm.removeEventListener('change', handleResize);
+      mmMd.removeEventListener('change', handleResize);
+      mmLg.removeEventListener('change', handleResize);
     };
   }, []);
   const mySkills = [
@@ -105,22 +114,36 @@ const AboutMePage = () => {
           </div>
         </div>
         <div className="hidden sm:flex">
-          <ModelViewer
-            url={
-              'https://cdn.jsdelivr.net/gh/leetaesk/assets@main/man%20in%20blazer%203d%20model%20(2).compressed.glb'
-            }
-            width={dimensions.width}
-            height={dimensions.height}
-            defaultRotationX={-50}
-            defaultRotationY={20}
-            // environmentPreset="forest"
-            autoRotate
-            autoRotateSpeed={0.5}
-            // maxZoomDistance={100}
-            minZoomDistance={0.2}
-            autoFrame
-            // fadeIn
-          />
+          {show3D && (
+            <Suspense
+              fallback={
+                // 로딩 중에 보여줄 가벼운 스켈레톤이나 텍스트
+                <div
+                  className="flex animate-pulse items-center justify-center rounded-lg bg-gray-100"
+                  style={{ width: dimensions.width, height: dimensions.height }}
+                >
+                  <span className="text-gray-400">Loading 3D...</span>
+                </div>
+              }
+            >
+              <ModelViewer
+                url={
+                  'https://cdn.jsdelivr.net/gh/leetaesk/assets@main/man%20in%20blazer%203d%20model%20(2).compressed.glb'
+                }
+                width={dimensions.width}
+                height={dimensions.height}
+                defaultRotationX={-50}
+                defaultRotationY={20}
+                // environmentPreset="forest"
+                autoRotate
+                autoRotateSpeed={0.5}
+                // maxZoomDistance={100}
+                minZoomDistance={0.2}
+                autoFrame
+                // fadeIn
+              />
+            </Suspense>
+          )}
         </div>
       </div>
 
