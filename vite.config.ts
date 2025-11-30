@@ -27,15 +27,16 @@ export default defineConfig({
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
+            purpose: 'any',
           },
           {
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable', // 아이콘이 꽉 차게 보이도록 함
+            purpose: 'maskable',
           },
         ],
-        display: 'standalone', // ⭐️ 이게 있어야 주소창 없이 앱처럼 켜짐
+        display: 'standalone',
       },
     }),
   ],
