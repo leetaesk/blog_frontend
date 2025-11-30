@@ -22,7 +22,6 @@ const Navbar = () => {
       key={theme} //key로 theme을 지정해서 theme 바뀔떄마다 리렌더링
       items={themedItems}
       ease="power3.out"
-      baseColor={theme === 'dark' ? '#333333' : '#fff'}
       menuColor={theme === 'dark' ? '#f9f9f9' : '#111'}
       buttonBgColor={theme === 'dark' ? '#f2f2f2' : '#111'}
       buttonTextColor={theme === 'dark' ? '#202020' : '#fff'}

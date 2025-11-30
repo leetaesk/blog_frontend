@@ -31,7 +31,6 @@ export interface CardNavProps {
   items: CardNavItem[];
   className?: string;
   ease?: string;
-  baseColor?: string;
   menuColor?: string;
   buttonBgColor?: string;
   buttonTextColor?: string;
@@ -41,7 +40,6 @@ const CardNav: React.FC<CardNavProps> = ({
   items,
   className = '',
   ease = 'power3.out',
-  baseColor = '#fff',
   menuColor,
   buttonBgColor,
   buttonTextColor,
@@ -209,8 +207,9 @@ const CardNav: React.FC<CardNavProps> = ({
     <div
       // --- ⬇️ 동적 클래스 추가 ⬇️ ---
       // isVisible 상태에 따라 Y축 위치 변경, transition으로 부드러운 효과 적용
+      // 배경색 이새끼한테 입혀주기
       // className={`card-nav-container fixed top-[1.2em] left-1/2 z-[99] w-[90%] max-w-[800px] -translate-x-1/2 transition-transform duration-300 ease-in-out md:top-[2em] ${
-      className={`card-nav-container fixed top-0 left-0 z-[99] flex w-dvw items-center justify-center transition-transform duration-300 ease-in-out md:top-[2em] md:left-1/2 md:w-[90%] md:max-w-[800px] md:-translate-x-1/2 ${
+      className={`card-nav-container bg-background md:dark:bg-compDark fixed top-0 left-0 z-[99] flex w-dvw items-center justify-center transition-transform duration-300 ease-in-out md:top-[2em] md:left-1/2 md:w-[90%] md:max-w-[800px] md:-translate-x-1/2 md:rounded-xl ${
         isVisible ? 'translate-y-0' : '-translate-y-[160%]' // 150%로 설정하여 확실히 화면 밖으로 이동
       } ${className}`}
       // --- ⬆️ 동적 클래스 추가 ⬆️ ---
@@ -219,8 +218,7 @@ const CardNav: React.FC<CardNavProps> = ({
         ref={navRef}
         className={`card-nav ${
           isExpanded ? 'open' : ''
-        } relative block h-[60px] w-[90%] overflow-hidden rounded-xl p-0 will-change-[height] md:w-full md:shadow-md`}
-        style={{ backgroundColor: baseColor }}
+        } relative block h-[60px] w-[90%] p-0 will-change-[height] md:w-full md:shadow-md dark:bg-transparent`}
       >
         {/* 세개를 감싼 div */}
         <div className="card-nav-top absolute inset-x-0 top-0 z-[2] flex h-[60px] items-center justify-between p-0 md:p-2 md:pl-[1.1rem]">
@@ -281,15 +279,16 @@ const CardNav: React.FC<CardNavProps> = ({
             type="button"
             onClick={handleAuthButton}
             // md이상에서만 보임
-            className="card-nav-cta-button hidden h-full cursor-pointer items-center justify-center rounded-[calc(0.75rem-0.2rem)] border-0 px-4 font-medium transition-colors duration-300 md:order-1 md:inline-flex"
+            className="card-nav-cta-button hidden h-full cursor-pointer items-center justify-center rounded-[calc(0.75rem-0.2rem)] border-0 px-4 text-lg font-medium transition-colors duration-300 md:order-1 md:inline-flex"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
           >
-            {accessToken ? 'My Profile' : 'Get Started'}
+            {accessToken ? 'My Profile' : 'Sign In'}
           </button>
         </div>
 
         <div
-          className={`card-nav-content absolute top-[60px] right-0 bottom-0 left-0 z-[1] flex flex-col items-stretch justify-start gap-2 p-2 ${
+          // 부모색깔 따라가는 새끼라 md이하에서 이새끼도 투명해짐... 색깔 입혀주기
+          className={`card-nav-content absolute top-[60px] right-0 bottom-0 left-0 z-[1] flex flex-col items-stretch justify-start gap-2 p-2 md:bg-transparent ${
             isExpanded ? 'pointer-events-auto visible' : 'pointer-events-none invisible'
           } md:flex-row md:items-end md:gap-[12px]`}
           // aria-hidden={!isExpanded}
@@ -299,10 +298,10 @@ const CardNav: React.FC<CardNavProps> = ({
             <button
               type="button"
               onClick={handleAuthButton}
-              className="card-nav-cta-button inline-flex h-full cursor-pointer items-center justify-center rounded-[calc(0.75rem-0.2rem)] border-0 px-4 font-medium transition-colors duration-300"
+              className="card-nav-cta-button font-archivo inline-flex h-full cursor-pointer items-center justify-center rounded-[calc(0.75rem-0.2rem)] border-0 px-4 font-medium transition-colors duration-300"
               style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
             >
-              {accessToken ? 'My Profile' : 'Get Started'}
+              {accessToken ? 'My Profile' : 'Sign In'}
             </button>
           </div>
           {(items || []).slice(0, 3).map((item, idx) => (

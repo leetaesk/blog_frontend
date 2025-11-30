@@ -10,7 +10,8 @@ import useScrollToTop from '@/hooks/useScrollToTop';
 import useUiStore from '@/store/useUiStore';
 
 const Layout = () => {
-  // location바뀌면 항상 맨 위로 스크롤 => search파라미터 입력 시 이거 막아야 함
+  // location바뀌면 항상 맨 위로 스크롤 => Todo:search파라미터 입력 시 이거 막아야 함
+  // 일단 냅두긴 했음
   const location = useLocation();
   useScrollToTop(location);
 
@@ -29,17 +30,12 @@ const Layout = () => {
   }, [navigation.state, showGlobalLoading, hideGlobalLoading]); // 의존성 배열에 추가
 
   return (
-    <>
+    <section className="flex min-h-dvh flex-col">
       {/* 내비게이션 바 */}
       <Navbar />
 
       {/* // Navbar 공간(pt-32) + 반응형 좌우 패딩(px-6 md:px-12) + 최대 너비 제한 및 중앙 */}
-      <main
-        className={clsx(
-          'mx-auto flex min-h-dvh w-[90%] justify-center pt-[60px] md:pt-32',
-          'max-w-7xl',
-        )}
-      >
+      <main className={clsx('mx-auto flex w-[90%] justify-center pt-[60px] md:pt-32', 'max-w-7xl')}>
         {/* 로딩 중일 때 바운스로더 */}
         {isGlobalLoading && <BounceLoader />}
         <Outlet />
@@ -53,7 +49,7 @@ const Layout = () => {
           <p className="hidden md:block">All Rights Reserved.</p>
         </div>
       </footer>
-    </>
+    </section>
   );
 };
 
