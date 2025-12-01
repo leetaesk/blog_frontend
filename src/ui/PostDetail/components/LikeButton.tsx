@@ -53,7 +53,7 @@ const LikeButton = ({ postId, initialLikesCount, initialIsLiked }: LikeButtonPro
     if (!isLoggedIn) {
       const result = await confirm(
         '로그인이 필요한 서비스입니다. 로그인하시겠습니까?',
-        '로그아웃',
+        '로그인',
         '취소',
       );
 

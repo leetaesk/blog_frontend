@@ -1,6 +1,10 @@
 import { useState } from 'react';
 
+import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
+
 import ProfileImage from '@/components/ProfileImage';
+import { ROUTES } from '@/constants/routes';
 import type { postCommentRequestDto } from '@/features/comments/comments.dto';
 import { usePostComment } from '@/features/comments/comments.hook';
 import useUserStore from '@/store/useUserStore';
@@ -12,45 +16,51 @@ interface CommentFormProps {
 }
 
 const CommentForm = ({ postId, parentCommentId = null, onSuccess }: CommentFormProps) => {
-  // 1. 폼 내부 상태 (댓글 내용)
+  const navigate = useNavigate();
+  const isLoggedIn = useUserStore((s) => s.accessToken) !== null;
+
   const [content, setContent] = useState('');
-
-  // 2. usePostComment 훅 연결
   const { mutate: postComment, isPending } = usePostComment();
+  const profileImageUrl = useUserStore((s) => s.userInfo?.profileImageUrl);
 
-  // 3. 동적 placeholder와 버튼 텍스트 설정
   const isReply = parentCommentId !== null;
-  const placeholder = isReply ? '답글을 입력하세요...' : '댓글을 입력하세요...';
+
+  const placeholder = !isLoggedIn
+    ? '로그인 후 댓글을 작성해보세요.'
+    : isReply
+      ? '답글을 입력하세요...'
+      : '댓글을 입력하세요...';
+
   const buttonText = isReply ? '답글 등록' : '댓글 등록';
 
-  const profileImageUrl = useUserStore((s) => s.userInfo?.profileImageUrl);
-  /**
-   * 폼 제출(등록 버튼 클릭) 시 실행되는 핸들러
-   */
+  // 버튼에 공통으로 들어가는 긴 스타일을 변수로 분리 (clsx 활용 시 유용)
+  const buttonBaseClass = clsx(
+    'rounded-lg px-5 py-2 font-semibold text-white shadow-md transition-colors',
+    'bg-blue-600 hover:bg-blue-700',
+    'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75',
+    'disabled:cursor-not-allowed disabled:bg-gray-400',
+  );
+
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // 폼 기본 제출(새로고침) 방지
+    e.preventDefault();
 
     if (content.trim() === '') {
       alert('내용을 입력해주세요.');
       return;
     }
 
-    if (isPending) return; // 이미 제출 중이면 중복 클릭 방지
+    if (isPending) return;
 
-    // 4. API DTO에 맞게 데이터 조립
     const newComment: postCommentRequestDto = {
       postId,
       content,
-      parentCommentId: parentCommentId || undefined, // null -> undefined
+      parentCommentId: parentCommentId || undefined,
     };
 
-    // 5. usePostComment 훅을 실행 (API 호출)
     postComment(newComment, {
       onSuccess: () => {
-        setContent(''); // 폼 클리어
-        if (onSuccess) {
-          onSuccess(); // 부모에게 성공 콜백 전달 (예: 폼 닫기)
-        }
+        setContent('');
+        if (onSuccess) onSuccess();
       },
     });
   };
@@ -63,22 +73,40 @@ const CommentForm = ({ postId, parentCommentId = null, onSuccess }: CommentFormP
         </div>
 
         <textarea
-          className="w-full flex-1 rounded-lg border border-gray-300 p-3 shadow-sm transition-shadow"
+          className={clsx(
+            'w-full flex-1 rounded-lg border border-gray-300 p-3 shadow-sm transition-shadow',
+            // 필요하다면 포커스 시 스타일 등을 여기에 추가
+          )}
           rows={3}
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder={placeholder}
-          disabled={isPending} // 로딩 중일 때 입력 방지
+          disabled={isPending || !isLoggedIn}
           aria-label={placeholder}
         />
       </div>
+
       <div className="mt-2 flex justify-end">
+        {/* 등록 버튼 (type="submit" 기본값) */}
         <button
           type="submit"
-          className="focus:ring-opacity-75 rounded-lg bg-blue-600 px-5 py-2 font-semibold text-white shadow-md transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-400"
-          disabled={isPending} // 로딩 중일 때 클릭 방지
+          className={clsx(buttonBaseClass, {
+            hidden: !isLoggedIn, // 비로그인 시 숨김
+          })}
+          disabled={isPending}
         >
           {isPending ? '등록 중...' : buttonText}
+        </button>
+
+        {/* 로그인 버튼: type="button"을 반드시 명시해야 폼 제출을 막음 */}
+        <button
+          type="button"
+          onClick={() => navigate(ROUTES.LOGIN)}
+          className={clsx(buttonBaseClass, {
+            hidden: isLoggedIn, // 로그인 상태면 숨김
+          })}
+        >
+          로그인
         </button>
       </div>
     </form>
