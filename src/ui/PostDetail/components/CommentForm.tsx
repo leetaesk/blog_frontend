@@ -65,6 +65,14 @@ const CommentForm = ({ postId, parentCommentId = null, onSuccess }: CommentFormP
     });
   };
 
+  const handleLoginClick = () => {
+    // 1. 현재 보고 있는 페이지 주소를 저장 (쿼리 파라미터 포함)
+    sessionStorage.setItem('loginRedirectUrl', location.pathname + location.search);
+
+    // 2. 로그인 페이지로 이동
+    navigate(ROUTES.LOGIN);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="my-4 w-full">
       <div className="flex gap-2 pl-2">
@@ -87,7 +95,6 @@ const CommentForm = ({ postId, parentCommentId = null, onSuccess }: CommentFormP
       </div>
 
       <div className="mt-2 flex justify-end">
-        {/* 등록 버튼 (type="submit" 기본값) */}
         <button
           type="submit"
           className={clsx(buttonBaseClass, {
@@ -98,10 +105,10 @@ const CommentForm = ({ postId, parentCommentId = null, onSuccess }: CommentFormP
           {isPending ? '등록 중...' : buttonText}
         </button>
 
-        {/* 로그인 버튼: type="button"을 반드시 명시해야 폼 제출을 막음 */}
         <button
+          // 버튼 명시해야 폼 제출 방지
           type="button"
-          onClick={() => navigate(ROUTES.LOGIN)}
+          onClick={handleLoginClick}
           className={clsx(buttonBaseClass, {
             hidden: isLoggedIn, // 로그인 상태면 숨김
           })}

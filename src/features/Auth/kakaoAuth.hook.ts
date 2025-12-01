@@ -13,7 +13,7 @@ import useUserStore from '@/store/useUserStore';
  * 에러 시 로그이능로 리다이렉트 / alert
  */
 export const useKakaoLoginMutation = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const setUser = useUserStore((s) => s.setUser);
 
   return useMutation({
@@ -30,13 +30,13 @@ export const useKakaoLoginMutation = () => {
           kakaoProfileImageUrl: data.userKakaoProfileImageUrl,
         },
       });
-      navigate(ROUTES.HOME);
     },
 
     onError: (error) => {
       console.error('로그인에 실패했습니다:', error);
       alert('로그인에 실패했습니다. 다시 시도해주세요.');
-      navigate(ROUTES.LOGIN);
+      //Todo: 실패 시 로직도 컴포넌트에서 제어하는 게 좋을 듯? 우선 navigate만 삭제 - 로그인실패 시 로그인페이지 초기화
+      // navigate(ROUTES.LOGIN);
     },
   });
 };

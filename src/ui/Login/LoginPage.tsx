@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import KakaoIcon from '@/assets/images/KakaoIcon.svg';
 import LogoImage from '@/components/LogoImage';
+import { ROUTES } from '@/constants/routes';
 import { useKakaoLoginMutation } from '@/features/Auth/kakaoAuth.hook';
 
 /**
@@ -23,17 +24,36 @@ const LoginPage = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
 
-  useEffect(() => {
-    // 2. URL에서 카카오가 보내준 인가 'code'를 추출합니다.
-    const code = new URL(window.location.href).searchParams.get('code');
+  // 인가코드 추출
+  const code = new URL(window.location.href).searchParams.get('code');
 
+  useEffect(() => {
     // 3. code가 있다면, 백엔드에 로그인 요청을 보냅니다.
     if (code) {
-      kakaoLogin({ code, redirectURI: REDIRECT_URI });
+      kakaoLogin(
+        { code, redirectURI: REDIRECT_URI },
+        {
+          // 훅의 기본 onSuccess 실행 후, 이 함수가 추가로 실행됩니다.
+          onSuccess: () => {
+            // 1. 저장해둔 이전 주소 가져오기
+            const redirectUrl = sessionStorage.getItem('loginRedirectUrl');
+
+            // 2. 저장소 비우기 (일회용이므로)
+            sessionStorage.removeItem('loginRedirectUrl');
+
+            // 3. 있으면 거기로, 없으면 홈으로 이동
+            if (redirectUrl) {
+              navigate(redirectUrl);
+            } else {
+              navigate(ROUTES.HOME);
+            }
+          },
+        },
+      );
       // 뒤로가기 시 코드가 재사용되는 것을 방지하기 위해 URL에서 코드를 제거합니다.
       window.history.replaceState({}, '', window.location.pathname);
     }
-  }, [kakaoLogin]);
+  }, [kakaoLogin, code, kakaoLogin]);
 
   return (
     // 화면 전체를 덮는 배경 및 중앙 정렬 컨테이너
