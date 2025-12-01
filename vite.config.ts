@@ -1,7 +1,8 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react-swc';
 import path from 'node:path';
-import { defineConfig } from 'vite';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { type PluginOption, defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vite.dev/config/
@@ -9,6 +10,12 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    visualizer({
+      filename: './dist/stats.html',
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    }) as PluginOption,
     VitePWA({
       registerType: 'autoUpdate', // 업데이트되면 자동으로 새 버전 적용
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
