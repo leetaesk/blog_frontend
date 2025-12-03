@@ -15,14 +15,14 @@ const CommentSection = ({ postId }: CommentSectionProps) => {
   const { data: comments } = useGetComments({ postId });
   return (
     <div className="bg-compWhite dark:bg-compDark text-textDark dark:text-textWhite rounded-2xl p-6 shadow-xl sm:p-8 md:p-12">
-      {comments?.commentCount === 0 ? (
-        // Todo: 이거꾸미셈
-        <>댓글이 없습니다. 댓글을 작성해주세요 😊 </>
-      ) : (
-        comments?.comments.map((com, idx) => {
-          return <Comment postId={postId} comment={com} key={`${com.id} - ${idx}`} />;
-        })
-      )}
+      <h2 className="mb-3 text-xl font-semibold">
+        댓글 <span className="font-black">{comments?.commentCount}</span>개
+      </h2>
+      <hr />
+      {/* 댓글 */}
+      {comments?.comments.map((com, idx) => {
+        return <Comment postId={postId} comment={com} key={`${com.id} - ${idx}`} />;
+      })}
       {/* 댓글작성폼 */}
       <CommentForm postId={postId} />
     </div>
