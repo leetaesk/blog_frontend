@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 
 import ProfileImage from '@/components/ProfileImage';
 import type { CommentByUser } from '@/features/comments/comments.dto';
@@ -14,9 +14,13 @@ interface CommentProps {
   isReply?: boolean;
 }
 
-export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
+/**
+ * 댓글 컴포넌트 - 재귀로 답글 구현
+ * 무한댓글도 가능하나 api에 맞춰 1차 깊이로 구현
+ * 부모 commentId 가 있을 경우 답글폼 렌더링하지 않음
+ */
+export const Comment = memo(({ postId, comment, isReply = false }: CommentProps) => {
   const [showReplies, setShowReplies] = useState<boolean>(false);
-  const [showReplyForm, setShowReplyForm] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const {
@@ -31,27 +35,37 @@ export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
     isOwner,
   } = comment;
 
-  // (추가) 답글 목록과 폼을 함께 토글하는 핸들러
-  const handleToggleRepliesAndForm = () => {
-    // 다음 상태를 미리 계산
-    const nextShowState = !showReplies;
-    // 답글 목록과 답글 폼의 상태를 동기화
-    setShowReplies(nextShowState);
-    setShowReplyForm(nextShowState);
-  };
+  // 2. 함수 재생성 방지를 위해 useCallback 사용
+  const handleToggleRepliesAndForm = useCallback(() => {
+    // 이전 상태(prev)를 기반으로 반전시키는 것이 더 안전합니다.
+    setShowReplies((prev) => !prev);
+  }, []);
+
+  const handleToggleEdit = useCallback(() => {
+    setIsEditing((prev) => !prev);
+  }, []);
+
+  // 댓글 작성 성공 시: 답글 목록을 열어둔 상태로 유지
+  const onSuccessCreateComment = useCallback(() => {
+    setShowReplies(true);
+  }, []);
+
+  // 수정 취소/성공 핸들러
+  const handleEditClose = useCallback(() => {
+    setIsEditing(false);
+  }, []);
 
   return (
     <div className="flex space-x-3 border-b border-gray-100 py-4 last:border-b-0">
-      {/* 1. 프로필 이미지 */}
+      {/* 프로필 이미지 */}
       <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
         <ProfileImage src={author.profileImageUrl} alt={`${author.nickname} 프로필`} />
       </div>
 
       <div className="flex-1">
-        {/* 닉네임, 작성일, 수정삭제버튼박스 */}
         <div className="flex flex-col">
           <div className="flex items-center justify-between space-x-2">
-            {/* 닉네임 작성일 */}
+            {/* 닉네임 및 날짜 */}
             <div className="flex flex-wrap items-end gap-2">
               <span className="text-sm font-semibold">{author.nickname}</span>
               <span className="hidden text-xs sm:inline">
@@ -61,88 +75,87 @@ export const Comment = ({ postId, comment, isReply = false }: CommentProps) => {
                 {formatDate({ dateString: createdAt, onlyDay: true })}
               </span>
             </div>
+
+            {/* 본인 댓글일 경우 수정/삭제 버튼 */}
             {isOwner && (
               <div className="flex h-full justify-between sm:gap-2">
                 <button
                   type="button"
-                  onClick={() => setIsEditing(!isEditing)}
+                  onClick={handleToggleEdit}
                   className="rounded-md bg-transparent py-1 text-sm font-medium whitespace-nowrap text-blue-600 transition-colors hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:text-gray-400 disabled:hover:bg-transparent sm:px-3"
                   aria-label="댓글수정"
                 >
                   수정
                 </button>
-                <CommentDeleteButton commentId={comment.id} />
+                {/* DeleteButton은 내부 로직이 복잡하지 않다면 그대로 둡니다 */}
+                <CommentDeleteButton commentId={commentId} />
               </div>
             )}
           </div>
         </div>
 
-        {/* 3. 댓글 내용 */}
+        {/* 내용 또는 수정 폼 */}
         {isEditing ? (
           <CommentEditForm
             commentId={commentId}
             originalContent={content}
-            onSuccess={() => setIsEditing(false)}
-            onCancel={() => setIsEditing(false)}
+            onSuccess={handleEditClose}
+            onCancel={handleEditClose}
           />
         ) : (
           <p className="mt-1 mb-2 text-sm whitespace-pre-wrap">{content}</p>
         )}
 
-        {/* 4. 댓글 하단 액션 (좋아요, 답글) */}
+        {/* 하단 액션 버튼 */}
         <div className="flex items-center space-x-4 text-xs">
+          {/* LikeButton도 props가 같다면 리렌더링 되지 않도록 내부에서 memo 되어 있으면 좋습니다 */}
           <CommentLikeButton
             commentId={commentId}
             initialLikesCount={likesCount}
             initialIsLiked={isLiked}
           />
 
-          {/* 1. 답글이 없는 경우: '답글 달기' 버튼 (폼만 토글) */}
-          {!isReply && repliesCount === 0 && (
-            <button
-              type="button"
-              className="cursor-pointer transition-colors"
-              onClick={() => setShowReplyForm(!showReplyForm)}
-            >
-              <span>답글 달기</span>
-            </button>
-          )}
-
-          {/* 2. 답글이 있는 경우: '답글 N개' 버튼 (목록과 폼을 함께 토글) */}
-          {!isReply && repliesCount > 0 && (
+          {/* 답글 달기/보기 버튼 통합 로직 */}
+          {!isReply && (
             <button
               type="button"
               className="cursor-pointer transition-colors"
               onClick={handleToggleRepliesAndForm}
             >
-              <span>{showReplies ? '답글 숨기기' : `답글 ${repliesCount}개`}</span>
+              {/* showReplies를 먼저 달아야 답글 작성 시 바로 보임 */}
+              {showReplies
+                ? '답글 숨기기'
+                : repliesCount === 0
+                  ? '답글 달기'
+                  : `답글 ${repliesCount}개`}
             </button>
           )}
         </div>
 
-        {/* 5. 답글 목록 (토글됨) */}
+        {/* 답글 목록 (재귀 렌더링) */}
         {showReplies && replies.length > 0 && (
           <div className="mt-4 space-y-4">
             {replies.map((reply) => (
-              // 답글도 동일한 Comment 컴포넌트를 재귀적으로 사용
-              // 답글에 isReply를 true로 넘겨 조건부렌더링
-              <Comment postId={postId} key={reply.id} comment={reply} isReply={true} />
+              <Comment key={reply.id} postId={postId} comment={reply} isReply={true} />
             ))}
           </div>
         )}
 
-        {/* (수정) 'onSuccess' 핸들러를 추가하여 답글 작성 완료 시 폼을 닫습니다. */}
-        {showReplyForm && !isReply && (
+        {/* 답글 작성 폼 */}
+        {showReplies && !isReply && (
           <CommentForm
-            key={`replyCommentForm${commentId}`}
+            key={`reply-form-${commentId}`}
             postId={postId}
             parentCommentId={commentId}
-            onSuccess={() => setShowReplyForm(true)}
+            onSuccess={onSuccessCreateComment}
           />
         )}
       </div>
     </div>
   );
-};
+});
+
+// React DevTools에서 컴포넌트 이름을 식별하기 위해 설정
+Comment.displayName = 'Comment';
 
 export default Comment;
