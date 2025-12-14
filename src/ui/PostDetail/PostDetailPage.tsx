@@ -1,8 +1,9 @@
+import { Helmet } from 'react-helmet-async';
 import toast from 'react-hot-toast';
+// ✨ 1. Helmet 임포트
 import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
 import CalendarIcon from '@/assets/icons/CalendarIcon';
-// import EyeIcon from '@/assets/icons/EyeIcon';
 import { confirm } from '@/components/ConfirmToast';
 import ProfileImage from '@/components/ProfileImage';
 import { ROUTES, urlFor } from '@/constants/routes';
@@ -11,6 +12,15 @@ import useUserStore from '@/store/useUserStore';
 import CommentSection from '@/ui/PostDetail/components/CommentSection';
 import LikeButton from '@/ui/PostDetail/components/LikeButton';
 import '@/ui/PostDetail/postDetail.css';
+
+/**
+ * HTML 문자열에서 태그를 제거하고 텍스트만 추출하는 헬퍼 함수
+ * (메타 태그 description 용도)
+ */
+const stripHtml = (html: string) => {
+  if (!html) return '';
+  return html.replace(/<[^>]*>?/gm, '').substring(0, 160) + '...';
+};
 
 /**
  * 게시글 상세 페이지 - 심장
@@ -27,26 +37,45 @@ const PostDetailPage = () => {
   const { data: post, isError } = useGetPostById({ postId, initialData: initialData });
   const { mutate: deletePost, isPending: isDeleting } = useDeletePost();
 
-  // if (isLoading) return;
+  // 에러 처리 화면
   if (isError || !post) {
     return (
-      <div className="bg-bgWhite dark:bg-bgDark dark:text-textWhite text-textDark flex min-h-screen flex-col items-center justify-center px-4">
-        <h2 className="mb-4 text-center text-3xl font-bold">게시글을 찾을 수 없습니다.</h2>
-        <p className="mb-8 text-center text-gray-500 dark:text-gray-400">
-          요청하신 페이지가 존재하지 않거나, 서버에 문제가 발생했을 수 있습니다. 근데 사실 여기까진
-          올수가 없죠 ㅋㅋ
-        </p>
-        <Link
-          to={ROUTES.ARCHIVE}
-          className="rounded-lg bg-indigo-600 px-6 py-3 font-bold text-white transition-colors hover:bg-indigo-700"
-        >
-          목록으로 돌아가기
-        </Link>
-      </div>
+      <>
+        {/* 에러 상황에서도 제목은 바꿔줍니다 */}
+        <Helmet>
+          <title>게시글을 찾을 수 없습니다 | 이태석의 블로그</title>
+          <meta name="robots" content="noindex" />
+        </Helmet>
+        <div className="bg-bgWhite dark:bg-bgDark dark:text-textWhite text-textDark flex min-h-screen flex-col items-center justify-center px-4">
+          <h2 className="mb-4 text-center text-3xl font-bold">게시글을 찾을 수 없습니다.</h2>
+          <p className="mb-8 text-center text-gray-500 dark:text-gray-400">
+            요청하신 페이지가 존재하지 않거나, 서버에 문제가 발생했을 수 있습니다.
+          </p>
+          <Link
+            to={ROUTES.ARCHIVE}
+            className="rounded-lg bg-indigo-600 px-6 py-3 font-bold text-white transition-colors hover:bg-indigo-700"
+          >
+            목록으로 돌아가기
+          </Link>
+        </div>
+      </>
     );
   }
 
   const isOwner = userId === post.author.id;
+
+  // ✨ SEO를 위한 데이터 가공
+  const metaDescription = stripHtml(post.content);
+  const metaImage = post.thumbnailUrl || 'https://leetaesk.com/og.png'; // 썸네일 없으면 기본 이미지
+  const metaKeywords = [
+    post.category?.name,
+    ...post.tags.map((tag) => tag.name),
+    '이태석',
+    '이태석의 블로그',
+    '기술블로그',
+  ]
+    .filter(Boolean)
+    .join(', '); // 빈 값 제거하고 콤마로 연결
 
   // 3. 삭제 버튼 핸들러
   const handleDelete = async () => {
@@ -67,6 +96,30 @@ const PostDetailPage = () => {
   // --- 데이터 로딩 성공 시 렌더링 ---
   return (
     <section className="bg-bgWhite dark:bg-bgDark text-textDark dark:text-textWhite mx-auto w-full max-w-4xl sm:px-6 sm:py-8 md:py-12 lg:px-8">
+      {/* ✨ 2. Helmet 적용 */}
+      <Helmet>
+        <title>{post.title} | 이태석의 아카이브</title>
+        <meta name="description" content={metaDescription} />
+        <meta name="keywords" content={metaKeywords} />
+        <meta name="author" content={post.author.nickname} />
+
+        {/* Open Graph (카카오톡, 페이스북, 디스코드 등) */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://leetaesk.com/posts/${post.id}`} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:image" content={metaImage} />
+        <meta property="og:site_name" content="이태석의 아카이브" />
+        <meta property="article:published_time" content={post.createdAt} />
+        <meta property="article:author" content={post.author.nickname} />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={metaImage} />
+      </Helmet>
+
       {isOwner && (
         <div className="mb-4 flex justify-end gap-x-3">
           <Link
@@ -100,28 +153,18 @@ const PostDetailPage = () => {
         </header>
 
         <div className="mb-8 flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-y border-gray-200 py-4 text-gray-500 sm:items-center dark:border-gray-700 dark:text-gray-400">
-          {/* 프사랑 이름이랑 날짜 박스 */}
-          {/* Todo: 조회수 로직 완성 시 원상복구 */}
-          {/* <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-6"> */}
           <div className="flex flex-wrap items-center gap-6">
-            {/* 프사랑 이름 */}
             <div className="flex items-center">
               <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
                 <ProfileImage src={post.author.profileImageUrl} alt={post.author.nickname} />
               </div>
               <span className="font-semibold">{post.author.nickname}</span>
             </div>
-            {/* 날짜 */}
-            <div className="flexitems-center">
+            <div className="flex items-center">
               <CalendarIcon />
-              <span>{post.createdAt.split(' ')[0]}</span> {/* 날짜만 표시 */}
+              <span className="ml-1">{post.createdAt.split(' ')[0]}</span>
             </div>
           </div>
-          {/* 조회수 */}
-          {/* <div className="flex items-center">
-            <EyeIcon />
-            <span>{post.views} views</span>
-          </div> */}
         </div>
 
         <div
@@ -129,10 +172,8 @@ const PostDetailPage = () => {
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
-        {/* --- [수정됨] Tags & Like Section --- */}
         <div className="mt-10 border-t border-gray-200 pt-6 dark:border-gray-700">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            {/* LikeButton (Right) */}
             <div className="flex-shrink-0">
               <LikeButton
                 postId={postId}
@@ -140,7 +181,6 @@ const PostDetailPage = () => {
                 initialIsLiked={post.isLikedByUser}
               />
             </div>
-            {/* Tags (Left) */}
             <div className="flex flex-wrap items-center gap-3">
               {post.tags.length > 0 &&
                 post.tags.map((tag) => (
