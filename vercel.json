@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/sitemap.xml",
+      "destination": "https://api.leetaesk.com/sitemap.xml"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
