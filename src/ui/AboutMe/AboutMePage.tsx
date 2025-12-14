@@ -1,4 +1,6 @@
-import { Suspense, lazy, useEffect, useRef, useState } from 'react';
+// import { Suspense, lazy, useEffect, useRef, useState } from 'react';
+// import {   useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 import github from '@/assets/images/githubLogo.png';
 import instagram from '@/assets/images/instagramLogo.png';
@@ -10,48 +12,48 @@ import SectionTitleBox from '@/ui/AboutMe/components/SectionTitileBox';
 import SkillBar from '@/ui/AboutMe/components/SkillBar';
 
 // Lazy Import 선언 (이 코드는 이 컴포넌트가 필요할 때 로딩됨)
-const ModelViewer = lazy(() => import('@/components/ModelViewer'));
+// const ModelViewer = lazy(() => import('@/components/ModelViewer'));
 
 const AboutMePage = () => {
   // 3. 렌더링 여부를 결정할 state (초기값 false로 SSR/Hydration 에러 방지)
-  const [show3D, setShow3D] = useState<boolean>(false);
-  const [dimensions, setDimensions] = useState({ width: 400, height: 400 });
+  // const [show3D, setShow3D] = useState<boolean>(false);
+  // const [dimensions, setDimensions] = useState({ width: 400, height: 400 });
   const containerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    // 1. 미디어 쿼리 리스트 정의
-    const mmSm = window.matchMedia('(min-width: 640px)'); // sm
-    const mmMd = window.matchMedia('(min-width: 768px)'); // md
-    const mmLg = window.matchMedia('(min-width: 1024px)'); // lg
+  // useEffect(() => {
+  //   // 1. 미디어 쿼리 리스트 정의
+  //   const mmSm = window.matchMedia('(min-width: 640px)'); // sm
+  //   const mmMd = window.matchMedia('(min-width: 768px)'); // md
+  //   const mmLg = window.matchMedia('(min-width: 1024px)'); // lg
 
-    // 2. 사이즈 및 렌더링 여부 결정 함수
-    const handleResize = () => {
-      // (1) 3D 모델 보여줄지 말지 결정 (sm 이상일 때만 true)
-      setShow3D(mmSm.matches);
-      if (mmLg.matches) {
-        setDimensions({ width: 400, height: 400 });
-      } else if (mmMd.matches) {
-        setDimensions({ width: 320, height: 320 });
-      } else {
-        // sm~md 사이 구간 사이즈 (필요하다면 조정)
-        setDimensions({ width: 240, height: 240 });
-      }
-    };
+  //   // 2. 사이즈 및 렌더링 여부 결정 함수
+  //   const handleResize = () => {
+  //     // (1) 3D 모델 보여줄지 말지 결정 (sm 이상일 때만 true)
+  //     setShow3D(mmSm.matches);
+  //     if (mmLg.matches) {
+  //       setDimensions({ width: 400, height: 400 });
+  //     } else if (mmMd.matches) {
+  //       setDimensions({ width: 320, height: 320 });
+  //     } else {
+  //       // sm~md 사이 구간 사이즈 (필요하다면 조정)
+  //       setDimensions({ width: 240, height: 240 });
+  //     }
+  //   };
 
-    // 3. 초기 실행
-    handleResize();
+  //   // 3. 초기 실행
+  //   handleResize();
 
-    // 4. 이벤트 리스너 등록
-    mmSm.addEventListener('change', handleResize);
-    mmMd.addEventListener('change', handleResize);
-    mmLg.addEventListener('change', handleResize);
+  //   // 4. 이벤트 리스너 등록
+  //   mmSm.addEventListener('change', handleResize);
+  //   mmMd.addEventListener('change', handleResize);
+  //   mmLg.addEventListener('change', handleResize);
 
-    // 5. 뒷정리
-    return () => {
-      mmSm.removeEventListener('change', handleResize);
-      mmMd.removeEventListener('change', handleResize);
-      mmLg.removeEventListener('change', handleResize);
-    };
-  }, []);
+  //   // 5. 뒷정리
+  //   return () => {
+  //     mmSm.removeEventListener('change', handleResize);
+  //     mmMd.removeEventListener('change', handleResize);
+  //     mmLg.removeEventListener('change', handleResize);
+  //   };
+  // }, []);
   const mySkills = [
     { skill: 'JavaScript / TypeScript', percentage: 90 },
     { skill: 'React', percentage: 85 },
@@ -65,21 +67,25 @@ const AboutMePage = () => {
 
   return (
     <div className="font-archivo mb-8 w-full max-w-7xl p-4">
-      <div className="flex justify-between gap-12" ref={containerRef}>
-        <div>
-          <div className="my-4 border-l-2 border-gray-400 px-4">
-            {/* md~834 글씨 잘리는데 걍 냅둠 */}
-            <h1 className="text-5xl font-bold md:text-6xl">Lee Tae Seok</h1>
-            <h2 className="text-xl font-semibold sm:text-2xl">FrontEnd Developer</h2>
-            <br />
-            <div>
-              <span>
-                안녕하세요, 프론트엔드 개발자 이태석입니다. React와 Node.js, express를 사용하여 개인
-                블로그를 만들었습니다. 트러블슈팅부터 개인적인 일상까지 글로 끄적여볼까 합니다.{' '}
+      <div className="flex justify-between md:gap-12" ref={containerRef}>
+        <div className="w-full">
+          <div className="my-4 flex w-full flex-row justify-between gap-4 border-l-2 border-gray-400 px-4 pr-0 md:pr-4">
+            <div className="min-w-[167.04px]">
+              {/* md~834 글씨 잘리는데 걍 냅둠 */}
+              <h1 className="text-3xl font-bold sm:text-5xl md:text-6xl">Lee Tae Seok</h1>
+              <h2 className="text-lg font-semibold sm:text-2xl">FrontEnd Developer</h2>
+              <br />
+              <div className="block">
+                <span>안녕하세요, 프론트엔드 개발자 이태석입니다.</span>
                 <br />
-                모두에게는 아니겠지만, 단 한 사람에게라도 도움이 되었으면 합니다.
-              </span>
+                <span>오늘의 문제를 해결하며, 내일의 서비스를 만듭니다.</span>
+              </div>
             </div>
+            <img
+              src="https://leetaesk-blog-bucket.s3.ap-northeast-2.amazonaws.com/images/1f549bcc-d83b-44f2-b19b-77e5e5628672-blob"
+              alt="이태석"
+              className="h-52 min-w-36 object-cover md:hidden"
+            />
           </div>
           <div className="border-t p-4">
             <h2 className="text-xl font-bold italic">Contact me</h2>
@@ -102,24 +108,31 @@ const AboutMePage = () => {
                   children={<img src={github} aria-label="깃허브" className="h-9 w-9" />}
                 />
                 <ExternalLink
-                  href={'https://instagram.com'}
+                  href={'https://www.threads.com/@ttttt_sk'}
                   children={<img src={threads} aria-label="쓰레드" className="h-9 w-9" />}
                 />
                 <ExternalLink
-                  href={'https://instagram.com'}
+                  href={'https://velog.io/@leetaesk/posts'}
                   children={<img src={velog} aria-label="벨로그" className="h-9 w-9 rounded-xl" />}
                 />
               </div>
             </span>
           </div>
         </div>
-        <div className="hidden sm:flex">
+        <div>
+          <img
+            src="https://leetaesk-blog-bucket.s3.ap-northeast-2.amazonaws.com/images/1f549bcc-d83b-44f2-b19b-77e5e5628672-blob"
+            alt="이태석"
+            className="hidden object-cover md:block md:h-[320px] md:min-w-[240px] lg:h-[396.57px] lg:min-h-[396.57px] lg:min-w-[309.78px]"
+          />
+        </div>
+        {/* <div className="hidden sm:flex">
           {show3D && (
             <Suspense
               fallback={
                 // 로딩 중에 보여줄 가벼운 스켈레톤이나 텍스트
                 <div
-                  className="flex animate-pulse items-center justify-center rounded-lg bg-gray-100"
+                  className="flex items-center justify-center bg-gray-100 rounded-lg animate-pulse"
                   style={{ width: dimensions.width, height: dimensions.height }}
                 >
                   <span className="text-gray-400">Loading 3D...</span>
@@ -144,7 +157,7 @@ const AboutMePage = () => {
               />
             </Suspense>
           )}
-        </div>
+        </div> */}
       </div>
 
       {/* 어바웃미 */}
