@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://leetaesk.com/sitemap.xml
