@@ -1,6 +1,6 @@
 // import { StrictMode } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from '@vercel/analytics/react';
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { createRoot } from 'react-dom/client';
