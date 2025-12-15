@@ -4,6 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Toaster } from 'react-hot-toast';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
+import GlobalLayout from '@/Layout/GlobalLayout';
 import Layout from '@/Layout/Layout';
 import { GlobalConfirmModal } from '@/components/ConfirmToast';
 import HighlightTheme from '@/components/HighlightTheme';
@@ -23,49 +24,56 @@ import { isAdminLoader, isGuestLoader, isLoginLoader } from '@/utils/userRoleLoa
 
 const router = createBrowserRouter([
   {
-    path: ROUTES.HOME, // '/'
-    element: <Layout />,
+    // 최상위에 GlobalLayout을 배치하여 모든 하위 경로를 감쌉니다.
+    element: <GlobalLayout />,
     errorElement: <NotFoundPage />,
     children: [
       {
-        index: true,
-        element: <MainPage />,
+        path: ROUTES.HOME,
+        element: <Layout />, // 기존 디자인 레이아웃 (헤더/푸터 포함)
+        children: [
+          {
+            index: true,
+            element: <MainPage />,
+          },
+          {
+            path: ROUTES.ABOUTME,
+            element: <AboutMePage />,
+          },
+          {
+            path: ROUTES.ARCHIVE,
+            element: <ArchivePage />,
+          },
+          {
+            path: ROUTES.POST_DETAIL,
+            element: <PostDetailPage />,
+            loader: getPostByIdLoader(queryClient),
+          },
+          {
+            path: ROUTES.POST_CREATE,
+            element: <CreatePostPage />,
+            loader: isAdminLoader,
+          },
+          {
+            path: ROUTES.POST_UPDATE,
+            element: <UpdatePostPage />,
+            loader: isAdminLoader,
+          },
+          {
+            path: ROUTES.MYPAGE,
+            element: <MyPage />,
+            loader: isLoginLoader,
+          },
+        ],
       },
+      // 로그인 페이지도 GlobalLayout의 자식이므로 GA가 적용되지만,
+      // Layout(헤더/푸터)의 영향은 받지 않습니다.
       {
-        path: ROUTES.ABOUTME,
-        element: <AboutMePage />,
-      },
-      {
-        path: ROUTES.ARCHIVE, // '/archive'
-        element: <ArchivePage />,
-      },
-      {
-        path: ROUTES.POST_DETAIL, // '/posts/:postId'
-        element: <PostDetailPage />,
-        loader: getPostByIdLoader(queryClient),
-      },
-      {
-        path: ROUTES.POST_CREATE, // '/posts/create'
-        element: <CreatePostPage />,
-        loader: isAdminLoader,
-      },
-      {
-        path: ROUTES.POST_UPDATE, // '/posts/:postId/update'
-        element: <UpdatePostPage />,
-        loader: isAdminLoader,
-      },
-      {
-        path: ROUTES.MYPAGE,
-        element: <MyPage />,
-        loader: isLoginLoader,
+        path: ROUTES.LOGIN,
+        element: <LoginPage />,
+        loader: isGuestLoader,
       },
     ],
-  },
-  {
-    path: ROUTES.LOGIN,
-    element: <LoginPage />,
-    loader: isGuestLoader,
-    errorElement: <NotFoundPage />,
   },
 ]);
 
