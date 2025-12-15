@@ -15,7 +15,7 @@ const CommentCreatedByMe = ({ comment }: CommentCreatedByMeProps) => {
   return (
     <article
       key={comment.id}
-      className="overflow-hidden rounded-xl bg-white p-6 shadow-xl ring-1 ring-gray-200 transition-all duration-300 hover:shadow-2xl dark:bg-gray-800 dark:ring-gray-700"
+      className="dark:bg-background overflow-hidden rounded-xl bg-white p-6 shadow-xl transition-all duration-300 hover:shadow-2xl"
     >
       {/* 댓글 박스 */}
       <div className="flex items-start justify-between">

@@ -58,11 +58,11 @@ const AboutMePage = () => {
     { skill: 'JavaScript / TypeScript', percentage: 90 },
     { skill: 'React', percentage: 85 },
     { skill: 'TailwindCSS', percentage: 85 },
-    { skill: 'Zustand, ReduxToolkit', percentage: 80 },
+    { skill: 'Zustand, ReduxToolkit', percentage: 70 },
     { skill: 'Node.js & Express', percentage: 40 },
-    { skill: 'PostgreSQL', percentage: 30 },
+    { skill: 'PostgreSQL', percentage: 20 },
     { skill: 'AWS', percentage: 5 },
-    { skill: 'Docker', percentage: 20 },
+    { skill: 'Docker', percentage: 5 },
   ];
 
   return (
