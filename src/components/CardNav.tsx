@@ -268,7 +268,7 @@ const CardNav: React.FC<CardNavProps> = ({
           <div className="logo-container order-1 flex items-center md:absolute md:top-1/2 md:left-1/2 md:order-2 md:-translate-x-1/2 md:-translate-y-1/2">
             <Link to={'/'} className="flex items-center justify-center gap-1 md:gap-2">
               <img src={Logo} alt="로고" className="h-12" />
-              <span className="font-archivo text-lg font-black tracking-tighter md:text-base md:font-semibold">
+              <span className="font-archivo text-lg leading-none font-black tracking-tighter">
                 LTK's ARCHIVE
               </span>
             </Link>

@@ -31,7 +31,7 @@ export const useNavItems = (): NavSection[] => {
   const navItems = useMemo(() => {
     return [
       {
-        label: 'Archive',
+        label: '📰 Archive',
         links: [
           { label: 'All Posts', to: ROUTES.ARCHIVE, ariaLabel: 'View all posts' },
           // 조건부 렌더링 로직은 그대로 사용
@@ -41,19 +41,40 @@ export const useNavItems = (): NavSection[] => {
         ],
       },
       {
-        label: 'Projects',
+        label: 'About Me',
         links: [
+          { label: 'Portfolio', to: ROUTES.ABOUTME, ariaLabel: 'Learn more about me' },
           {
-            label: 'My GitHub',
+            label: 'GitHub',
             to: 'https://github.com/leetaesk',
             ariaLabel: 'Visit my GitHub profile',
-            isExternal: true, // 타입 정의 덕분에 자동완성 됨
+            isExternal: true,
           },
         ],
       },
       {
-        label: 'About & Contact',
-        links: [{ label: 'About Me', to: ROUTES.ABOUTME, ariaLabel: 'Learn more about me' }],
+        label: 'Contact Me',
+        links: [
+          {
+            label: 'Email',
+            // mailto는 유지하되, 불편하면 아래 오픈채팅을 메인으로 쓰세요.
+            to: 'mailto:leetaesk@gmail.com',
+            ariaLabel: 'Send email',
+            isExternal: true,
+          },
+          {
+            label: 'Phone',
+            to: 'tel:010-2563-5930',
+            ariaLabel: 'Call me',
+            isExternal: true,
+          },
+          {
+            label: 'KakaoTalk',
+            to: 'https://open.kakao.com/o/sKgmfG6h',
+            ariaLabel: 'KakaoTalk Open Chat',
+            isExternal: true,
+          },
+        ],
       },
     ];
   }, [userRole]); // userRole이 변경될 때만 이 함수를 다시 실행합니다.
