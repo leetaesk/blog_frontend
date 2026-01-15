@@ -66,7 +66,6 @@ const PostDetailPage = () => {
 
   // ✨ SEO를 위한 데이터 가공
   const metaDescription = stripHtml(post.content);
-  const metaImage = post.thumbnailUrl || 'https://leetaesk.com/og.png'; // 썸네일 없으면 기본 이미지
   const metaKeywords = [
     post.category?.name,
     ...post.tags.map((tag) => tag.name),
@@ -102,22 +101,6 @@ const PostDetailPage = () => {
         <meta name="description" content={metaDescription} />
         <meta name="keywords" content={metaKeywords} />
         <meta name="author" content={post.author.nickname} />
-
-        {/* Open Graph (카카오톡, 페이스북, 디스코드 등) */}
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://leetaesk.com/posts/${post.id}`} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={metaDescription} />
-        <meta property="og:image" content={metaImage} />
-        <meta property="og:site_name" content="이태석의 아카이브" />
-        <meta property="article:published_time" content={post.createdAt} />
-        <meta property="article:author" content={post.author.nickname} />
-
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={metaDescription} />
-        <meta name="twitter:image" content={metaImage} />
       </Helmet>
 
       {isOwner && (

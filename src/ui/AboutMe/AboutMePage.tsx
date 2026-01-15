@@ -1,6 +1,6 @@
-// import { Suspense, lazy, useEffect, useRef, useState } from 'react';
-// import {   useEffect, useRef } from 'react';
 import { useRef } from 'react';
+
+import { Helmet } from 'react-helmet-async';
 
 import github from '@/assets/images/githubLogo.png';
 import instagram from '@/assets/images/instagramLogo.png';
@@ -66,67 +66,78 @@ const AboutMePage = () => {
   ];
 
   return (
-    <div className="font-archivo mb-8 w-full max-w-7xl p-4">
-      <div className="flex justify-between md:gap-12" ref={containerRef}>
-        <div className="w-full">
-          <div className="my-4 flex w-full flex-row justify-between gap-4 border-l-2 border-gray-400 px-4 pr-0 md:pr-4">
-            <div className="min-w-[167.04px]">
-              {/* md~834 글씨 잘리는데 걍 냅둠 */}
-              <h1 className="text-3xl font-bold sm:text-5xl md:text-6xl">Lee Tae Seok</h1>
-              <h2 className="text-lg font-semibold sm:text-2xl">FrontEnd Developer</h2>
-              <br />
-              <div className="block">
-                <span>안녕하세요, 프론트엔드 개발자 이태석입니다.</span>
+    <>
+      <Helmet>
+        <title>About Me | Lee Tae Seok</title>
+        <meta name="description" content="안녕하세요, 프론트엔드 개발자 이태석입니다." />
+        <meta property="og:title" content="About Me | Lee Tae Seok" />
+        <meta property="og:description" content="안녕하세요, 프론트엔드 개발자 이태석입니다." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://leetaesk.com/about" />
+      </Helmet>
+      <div className="font-archivo mb-8 w-full max-w-7xl p-4">
+        <div className="flex justify-between md:gap-12" ref={containerRef}>
+          <div className="w-full">
+            <div className="my-4 flex w-full flex-row justify-between gap-4 border-l-2 border-gray-400 px-4 pr-0 md:pr-4">
+              <div className="min-w-[167.04px]">
+                {/* md~834 글씨 잘리는데 걍 냅둠 */}
+                <h1 className="text-3xl font-bold sm:text-5xl md:text-6xl">Lee Tae Seok</h1>
+                <h2 className="text-lg font-semibold sm:text-2xl">FrontEnd Developer</h2>
                 <br />
-                <span>오늘의 문제를 해결하며, 내일의 서비스를 만듭니다.</span>
+                <div className="block">
+                  <span>안녕하세요, 프론트엔드 개발자 이태석입니다.</span>
+                  <br />
+                  <span>오늘의 문제를 해결하며, 내일의 서비스를 만듭니다.</span>
+                </div>
               </div>
+              <img
+                src="https://leetaesk-blog-bucket.s3.ap-northeast-2.amazonaws.com/images/1f549bcc-d83b-44f2-b19b-77e5e5628672-blob"
+                alt="이태석"
+                className="h-52 min-w-36 object-cover md:hidden"
+              />
             </div>
+            <div className="border-t p-4">
+              <h2 className="text-xl font-bold italic">Contact me</h2>
+              <br />
+              <span className="grid grid-cols-[1fr_2fr] items-center gap-2">
+                <span className="text-xl">☎️ Tel</span>
+                <p>010-2563-5930</p>
+                <span className="text-xl">✉️ E-mail</span>
+                <span>leetaesuka@gmail.com</span>
+                <div></div>
+                <span>itasuk@naver.com</span>
+                <span className="text-xl">🤝 Social</span>
+                <div className="flex gap-2 pt-2">
+                  <ExternalLink
+                    href={'https://instagram.com/ttttt_sk'}
+                    children={<img src={instagram} aria-label="인스타" className="h-9 w-9" />}
+                  />
+                  <ExternalLink
+                    href={'https://github.com/leetaesk'}
+                    children={<img src={github} aria-label="깃허브" className="h-9 w-9" />}
+                  />
+                  <ExternalLink
+                    href={'https://www.threads.com/@ttttt_sk'}
+                    children={<img src={threads} aria-label="쓰레드" className="h-9 w-9" />}
+                  />
+                  <ExternalLink
+                    href={'https://velog.io/@leetaesk/posts'}
+                    children={
+                      <img src={velog} aria-label="벨로그" className="h-9 w-9 rounded-xl" />
+                    }
+                  />
+                </div>
+              </span>
+            </div>
+          </div>
+          <div>
             <img
               src="https://leetaesk-blog-bucket.s3.ap-northeast-2.amazonaws.com/images/1f549bcc-d83b-44f2-b19b-77e5e5628672-blob"
               alt="이태석"
-              className="h-52 min-w-36 object-cover md:hidden"
+              className="hidden object-cover md:block md:h-[320px] md:min-w-[240px] lg:h-[396.57px] lg:min-h-[396.57px] lg:min-w-[309.78px]"
             />
           </div>
-          <div className="border-t p-4">
-            <h2 className="text-xl font-bold italic">Contact me</h2>
-            <br />
-            <span className="grid grid-cols-[1fr_2fr] items-center gap-2">
-              <span className="text-xl">☎️ Tel</span>
-              <p>010-2563-5930</p>
-              <span className="text-xl">✉️ E-mail</span>
-              <span>leetaesuka@gmail.com</span>
-              <div></div>
-              <span>itasuk@naver.com</span>
-              <span className="text-xl">🤝 Social</span>
-              <div className="flex gap-2 pt-2">
-                <ExternalLink
-                  href={'https://instagram.com/ttttt_sk'}
-                  children={<img src={instagram} aria-label="인스타" className="h-9 w-9" />}
-                />
-                <ExternalLink
-                  href={'https://github.com/leetaesk'}
-                  children={<img src={github} aria-label="깃허브" className="h-9 w-9" />}
-                />
-                <ExternalLink
-                  href={'https://www.threads.com/@ttttt_sk'}
-                  children={<img src={threads} aria-label="쓰레드" className="h-9 w-9" />}
-                />
-                <ExternalLink
-                  href={'https://velog.io/@leetaesk/posts'}
-                  children={<img src={velog} aria-label="벨로그" className="h-9 w-9 rounded-xl" />}
-                />
-              </div>
-            </span>
-          </div>
-        </div>
-        <div>
-          <img
-            src="https://leetaesk-blog-bucket.s3.ap-northeast-2.amazonaws.com/images/1f549bcc-d83b-44f2-b19b-77e5e5628672-blob"
-            alt="이태석"
-            className="hidden object-cover md:block md:h-[320px] md:min-w-[240px] lg:h-[396.57px] lg:min-h-[396.57px] lg:min-w-[309.78px]"
-          />
-        </div>
-        {/* <div className="hidden sm:flex">
+          {/* <div className="hidden sm:flex">
           {show3D && (
             <Suspense
               fallback={
@@ -158,38 +169,39 @@ const AboutMePage = () => {
             </Suspense>
           )}
         </div> */}
-      </div>
-
-      {/* 어바웃미 */}
-      <div className="font-archivo text-foreground mt-12 gap-6 text-center text-xs leading-none font-bold tracking-[-0.03em] antialiased">
-        <SectionTitleBox>
-          <div>
-            <p className="text-4xl">About Me</p>
-          </div>
-          <div className="flex h-full items-end">
-            <p>FRONTEND DEVELOPER</p>
-          </div>
-        </SectionTitleBox>
-        {/* 여기에 스킬 바 섹션 추가! */}
-        <div className="mt-8 px-4 text-left">
-          <h3 className="mb-6 text-2xl">My Tech Stack</h3>
-
-          {/* 반응형 그리드: 모바일은 1열, 큰 화면은 2열로 나오게 설정 */}
-          <div className="grid grid-cols-1 gap-x-12 gap-y-4 md:grid-cols-2">
-            {mySkills.map((item) => (
-              <SkillBar key={item.skill} skill={item.skill} percentage={item.percentage} />
-            ))}
-          </div>
         </div>
 
-        {/* 여기에 프로젝트 섹션 추가! */}
-        <div className="mt-8 px-4 text-left">
-          <h3 className="mb-6 text-2xl">My Projects</h3>
+        {/* 어바웃미 */}
+        <div className="font-archivo text-foreground mt-12 gap-6 text-center text-xs leading-none font-bold tracking-[-0.03em] antialiased">
+          <SectionTitleBox>
+            <div>
+              <p className="text-4xl">About Me</p>
+            </div>
+            <div className="flex h-full items-end">
+              <p>FRONTEND DEVELOPER</p>
+            </div>
+          </SectionTitleBox>
+          {/* 여기에 스킬 바 섹션 추가! */}
+          <div className="mt-8 px-4 text-left">
+            <h3 className="mb-6 text-2xl">My Tech Stack</h3>
 
-          <ProjectSection />
+            {/* 반응형 그리드: 모바일은 1열, 큰 화면은 2열로 나오게 설정 */}
+            <div className="grid grid-cols-1 gap-x-12 gap-y-4 md:grid-cols-2">
+              {mySkills.map((item) => (
+                <SkillBar key={item.skill} skill={item.skill} percentage={item.percentage} />
+              ))}
+            </div>
+          </div>
+
+          {/* 여기에 프로젝트 섹션 추가! */}
+          <div className="mt-8 px-4 text-left">
+            <h3 className="mb-6 text-2xl">My Projects</h3>
+
+            <ProjectSection />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

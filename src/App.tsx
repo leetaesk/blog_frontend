@@ -1,3 +1,5 @@
+import { Suspense, lazy } from 'react';
+
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
 // import 'highlight.js/styles/github-dark.css';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -6,21 +8,33 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import GlobalLayout from '@/Layout/GlobalLayout';
 import Layout from '@/Layout/Layout';
+import BounceLoader from '@/components/BounceLoader';
 import { GlobalConfirmModal } from '@/components/ConfirmToast';
 import HighlightTheme from '@/components/HighlightTheme';
 import { ROUTES } from '@/constants/routes';
 import { getPostByIdLoader } from '@/features/posts/posts.loader';
 import { queryClient } from '@/lib/react-query';
-import AboutMePage from '@/ui/AboutMe/AboutMePage';
 import ArchivePage from '@/ui/Archive/ArchivePage';
-import CreatePostPage from '@/ui/CreatePost/CreatePostPage';
 import LoginPage from '@/ui/Login/LoginPage';
 import MainPage from '@/ui/Main/MainPage';
 import MyPage from '@/ui/Mypage/MyPage';
 import NotFoundPage from '@/ui/NotFoundPage';
-import PostDetailPage from '@/ui/PostDetail/PostDetailPage';
-import UpdatePostPage from '@/ui/UpdatePost/UpdatePostPage';
 import { isAdminLoader, isGuestLoader, isLoginLoader } from '@/utils/userRoleLoader';
+
+/**
+ * lazy Loading 페이지 선언
+ */
+const CreatePostPage = lazy(() => import('@/ui/CreatePost/CreatePostPage'));
+const UpdatePostPage = lazy(() => import('@/ui/UpdatePost/UpdatePostPage'));
+const PostDetailPage = lazy(() => import('@/ui/PostDetail/PostDetailPage'));
+const AboutMePage = lazy(() => import('@/ui/AboutMe/AboutMePage'));
+
+// 2. 로딩 중 보여줄 간단한 Fallback UI (Tailwind 적용)
+const SuspenseFallback = () => (
+  <div className="flex w-full items-center justify-center py-20">
+    <BounceLoader />
+  </div>
+);
 
 const router = createBrowserRouter([
   {
@@ -38,7 +52,11 @@ const router = createBrowserRouter([
           },
           {
             path: ROUTES.ABOUTME,
-            element: <AboutMePage />,
+            element: (
+              <Suspense fallback={<SuspenseFallback />}>
+                <AboutMePage />
+              </Suspense>
+            ),
           },
           {
             path: ROUTES.ARCHIVE,
@@ -46,17 +64,29 @@ const router = createBrowserRouter([
           },
           {
             path: ROUTES.POST_DETAIL,
-            element: <PostDetailPage />,
+            element: (
+              <Suspense fallback={<SuspenseFallback />}>
+                <PostDetailPage />
+              </Suspense>
+            ),
             loader: getPostByIdLoader(queryClient),
           },
           {
             path: ROUTES.POST_CREATE,
-            element: <CreatePostPage />,
+            element: (
+              <Suspense fallback={<SuspenseFallback />}>
+                <CreatePostPage />
+              </Suspense>
+            ),
             loader: isAdminLoader,
           },
           {
             path: ROUTES.POST_UPDATE,
-            element: <UpdatePostPage />,
+            element: (
+              <Suspense fallback={<SuspenseFallback />}>
+                <UpdatePostPage />
+              </Suspense>
+            ),
             loader: isAdminLoader,
           },
           {

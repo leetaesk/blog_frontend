@@ -11,6 +11,7 @@ export const getPostByIdLoader =
   (queryClient: QueryClient): LoaderFunction =>
   async ({ params }: LoaderFunctionArgs): Promise<GetPostByIdResultType> => {
     const postId = parseInt(params.postId || '', 10);
+
     if (isNaN(postId)) {
       throw new Response('Invalid Post ID', { status: 400 });
     }

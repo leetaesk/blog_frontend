@@ -22,7 +22,7 @@ const SectionTitleBox = ({ children }: SectionTitleBoxProps) => {
         'after:bg-gradient-to-r after:from-gray-600 after:to-transparent',
 
         // 4. 다크모드
-        'before:dark:from-gray-400 after:dark:from-gray-400',
+        'dark:before:from-gray-400 dark:after:from-gray-400',
       )}
     >
       {children}
