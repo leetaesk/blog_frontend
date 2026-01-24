@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
-import codePosting from '@/assets/images/CodePostingLogo.png';
 import grapPt from '@/assets/images/GrabPTLogo.svg';
+import codePosting from '@/assets/images/codePostingLogo.png';
 import LogoImage from '@/components/LogoImage';
 import { ROUTES } from '@/constants/routes';
 
