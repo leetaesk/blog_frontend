@@ -104,9 +104,12 @@ const ProjectSection = () => {
             불필요한 주석, import, className 제거부터 Prettier 정렬까지 한 번에 처리해드립니다.
           </p>
           <div className="group mt-4 hidden cursor-pointer items-center text-[1rem] sm:flex">
-            <Link className="text-primary group font-medium group-hover:underline" to={ROUTES.HOME}>
+            <a
+              className="text-primary group font-medium group-hover:underline"
+              href="https://www.codeposting.com"
+            >
               사이트 방문하기
-            </Link>
+            </a>
             <ArrowRightIcon />
           </div>
         </div>
