@@ -47,6 +47,10 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    port: 3001,
+    strictPort: true, // 3001번이 사용 중이면 3002번으로 안 넘어가고 그냥 에러를 띄웁니다.
+  },
   resolve: {
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
   },

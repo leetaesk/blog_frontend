@@ -45,7 +45,7 @@ export const useUpdatePost = () => {
       // 게시글 쿼리 갱신
       queryClient.invalidateQueries({ queryKey: QUERY_KEY.posts.BY_POST_ID(data.postId) });
       // archive 갱신
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.posts.ALL });
       // alert 후 archive로 이동
     },
     onError: () => {
@@ -70,7 +70,7 @@ export const useDeletePost = () => {
       // queryClient.removeQueries({ queryKey: QUERY_KEY.posts.BY_POST_ID(data.postId) });
 
       // archive 갱신
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.posts.ALL });
     },
     onError: () => {
       alert('게시글 삭제 중 오류 발생');

@@ -46,7 +46,7 @@ export const queryClient = new QueryClient({
       // 꺼삐자
       refetchOnWindowFocus: false,
       // 이거 켜줘야 ErrorBoundary로 에러 던집니다~
-      throwOnError: true,
+      throwOnError: false,
     },
   },
   // QueryCache: GET 요청 실패 시 전역 핸들링

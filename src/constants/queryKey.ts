@@ -4,13 +4,6 @@ import type {
 } from '@/features/posts/archive/archive.dto';
 
 export const QUERY_KEY = {
-  category: {
-    INDEX: ['categories'],
-  },
-  comments: {
-    BY_POST_ID: (postId: number) => ['comments', postId],
-    BY_ME: ['comments', 'byMe'],
-  },
   posts: {
     ARCHIVE: (params: GetPostsRequestDto) => [
       'posts',
@@ -27,7 +20,16 @@ export const QUERY_KEY = {
       params.category,
       params.search,
     ],
+    ALL: ['posts'],
     BY_POST_ID: (postId: number) => ['post', postId],
     FOR_EDIT: (postId: number) => ['post', 'edit', postId],
+  },
+  comments: {
+    ALL: ['comments'],
+    BY_POST_ID: (postId: number) => ['comments', postId],
+    BY_ME: ['comments', 'byMe'],
+  },
+  category: {
+    INDEX: ['categories'],
   },
 };

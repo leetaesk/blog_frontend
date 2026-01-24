@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
+import { QUERY_KEY } from '@/constants/queryKey';
 import { toggleCommentLike, togglePostLike } from '@/features/likes/likes.api';
 import type {
   ToggleCommentLikeRequestDto,
@@ -13,8 +14,8 @@ export const useTogglePostLike = () => {
     mutationFn: (params: TogglePostLikeRequestDto) => togglePostLike(params),
 
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
-      queryClient.invalidateQueries({ queryKey: ['post', data.result.postId] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.posts.ALL });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.posts.BY_POST_ID(data.result.postId) });
     },
 
     onError: (error) => {
@@ -30,7 +31,7 @@ export const useToggleCommentLike = () => {
 
     onSuccess: () => {
       // Todo: 좋아요 누른 댓글이 있는 게시글 postId 필요함 -> 쿼리키 넣어야 함
-      queryClient.invalidateQueries({ queryKey: ['comments'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.comments.ALL });
     },
 
     onError: (error) => {

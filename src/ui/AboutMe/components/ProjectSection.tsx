@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
+import codePosting from '@/assets/images/CodePostingLogo.png';
 import grapPt from '@/assets/images/GrabPTLogo.svg';
 import LogoImage from '@/components/LogoImage';
 import { ROUTES } from '@/constants/routes';
@@ -63,6 +64,44 @@ const ProjectSection = () => {
           <p className="text-muted-foreground mt-2 leading-4">
             React, Node.JS와 express를 활용하여 개인 블로그를 제작했습니다. <br />
             주로 기술적인 이야기를 다룹니다.
+          </p>
+          <div className="group mt-4 hidden cursor-pointer items-center text-[1rem] sm:flex">
+            <Link className="text-primary group font-medium group-hover:underline" to={ROUTES.HOME}>
+              사이트 방문하기
+            </Link>
+            <ArrowRightIcon />
+          </div>
+        </div>
+      </div>
+
+      {/* 코드포스팅 */}
+      <div className="bg-card mx-auto mt-8 flex h-40 max-w-4xl overflow-hidden rounded-xl shadow-lg sm:h-64">
+        <div className="flex w-1/3 items-center justify-center py-4 sm:min-w-[150.76px]">
+          <a
+            rel="noopener"
+            href="https://www.codeposting.com"
+            target="_blank"
+            className="text-primary group h-full object-cover font-medium group-hover:underline"
+          >
+            <img
+              className="w-full object-contain"
+              src={codePosting}
+              alt="grabPT project screenshot"
+            />
+          </a>
+        </div>
+        <div className="flex w-2/3 flex-col gap-2 p-2 sm:p-7 lg:p-8">
+          <h3 className="text-card-foreground mt-2 text-base leading-1 font-bold sm:text-3xl lg:text-4xl">
+            CodePosting <span className="font-normal">|</span>{' '}
+            <span className="text-sm lg:text-xl">React 블로거를 위한 코드요약기</span>
+          </h3>
+          <div className="text-primary text-sm font-semibold tracking-wide">Personal Project</div>
+          <p className="text-muted-foreground mt-2 leading-4">
+            <p className="text-base">블로그 포스팅을 위한 React 코드 완벽 정리</p>
+            <br />
+            복잡한 React 코드를 붙여넣기만 하세요.
+            <br />
+            불필요한 주석, import, className 제거부터 Prettier 정렬까지 한 번에 처리해드립니다.
           </p>
           <div className="group mt-4 hidden cursor-pointer items-center text-[1rem] sm:flex">
             <Link className="text-primary group font-medium group-hover:underline" to={ROUTES.HOME}>

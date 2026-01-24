@@ -1,7 +1,6 @@
 // import { StrictMode } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { createRoot } from 'react-dom/client';
@@ -24,7 +23,7 @@ createRoot(document.getElementById('root')!).render(
     </HelmetProvider>
 
     {/* DevTools는 QueryClientProvider 안에 있어야 작동함 */}
-    {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+    <ReactQueryDevtools initialIsOpen={false} position="bottom" />
   </QueryClientProvider>,
   // </StrictMode>,
 );

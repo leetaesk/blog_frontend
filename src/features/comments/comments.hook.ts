@@ -58,7 +58,7 @@ export const usePatchComment = () => {
     onSuccess: () => {
       // postComment에서 댓글에 해당하는 게시물 id를 주지 않아서 전체 comments를 초기화 중
       // Todo: 백에서 postComment에 게시물id 리턴 => queryKey에 추가
-      queryClient.invalidateQueries({ queryKey: ['comments'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.comments.ALL });
       toast.success('댓글 수정 완료!');
     },
 
@@ -77,7 +77,7 @@ export const useDeleteComment = () => {
     onSuccess: () => {
       // postComment에서 댓글에 해당하는 게시물 id를 주지 않아서 전체 comments를 초기화 중
       // Todo: 백에서 postComment에 게시물id 리턴 => queryKey에 추가
-      queryClient.invalidateQueries({ queryKey: ['comments'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.comments.ALL });
       toast.success('댓글이 삭제되었습니다.');
     },
 
