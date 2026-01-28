@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom';
 
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
+import codePostingLogoBlack from '@/assets/images/CodePostingLogoBlackSVG.svg';
+import codePostingLogoWhite from '@/assets/images/CodePostingLogoWhiteSVG.svg';
 import grapPt from '@/assets/images/GrabPTLogo.svg';
-import codePosting from '@/assets/images/codePostingLogo.png';
 import LogoImage from '@/components/LogoImage';
 import { ROUTES } from '@/constants/routes';
+import useThemeStore from '@/store/themeStore';
 
 const ProjectSection = () => {
+  const theme = useThemeStore((s) => s.theme);
+  const codePostingLogo = theme === 'dark' ? codePostingLogoWhite : codePostingLogoBlack;
+
   return (
     <div className="mx-auto w-full">
       {/* 그랩피티 */}
@@ -85,7 +90,7 @@ const ProjectSection = () => {
           >
             <img
               className="w-full object-contain"
-              src={codePosting}
+              src={codePostingLogo}
               alt="grabPT project screenshot"
             />
           </a>
