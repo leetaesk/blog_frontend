@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "dev:sang": "vite --mode sangman",
-    "build": "tsc -b && vite build",
+    "build": "pnpm sitemap && tsc -b && vite build",
+    "sitemap": "node scripts/generate-sitemap.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
