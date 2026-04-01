@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 
 import CalendarIcon from '@/assets/icons/CalendarIcon';
+import EyeIcon from '@/assets/icons/EyeIcon';
 import { confirm } from '@/components/ConfirmToast';
 import ProfileImage from '@/components/ProfileImage';
 import { ROUTES, urlFor } from '@/constants/routes';
@@ -135,7 +136,7 @@ const PostDetailPage = () => {
           </h1>
         </header>
 
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-y border-gray-200 py-4 text-gray-500 sm:items-center dark:border-gray-700 dark:text-gray-400">
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-y border-gray-200 py-4 text-gray-500 sm:items-center dark:border-gray-700 dark:text-gray-400">
           <div className="flex flex-wrap items-center gap-6">
             <div className="flex items-center">
               <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
@@ -147,6 +148,10 @@ const PostDetailPage = () => {
               <CalendarIcon />
               <span className="ml-1">{post.createdAt.split(' ')[0]}</span>
             </div>
+          </div>
+          <div className="flex items-center">
+            <EyeIcon />
+            <span>{post.views}</span>&nbsp;views
           </div>
         </div>
 
