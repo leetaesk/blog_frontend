@@ -1,7 +1,12 @@
 import type {
+  CreateDraftResponseDto,
+  CreateDraftResultType,
   DeletePostRequestDto,
   DeletePostResponseDto,
   DeletePostResultType,
+  DraftPayload,
+  GetDraftsResponseDto,
+  GetDraftsResultType,
   GetPostByIdRequestDto,
   GetPostByIdResponseDto,
   GetPostByIdResultType,
@@ -11,6 +16,8 @@ import type {
   PostPostRequestDto,
   PostPostResponseDto,
   PostPostResultType,
+  UpdateDraftResponseDto,
+  UpdateDraftResultType,
   UpdatePostRequestDto,
   UpdatePostResponseDto,
   UpdatePostResultType,
@@ -85,4 +92,55 @@ export const getPostForEdit = async (
   );
 
   return response.data.result;
+};
+
+/**
+ * 내 임시글 목록 조회 - GET /api/posts/drafts
+ * 임시글이 없거나(404) 백엔드 미구현이면 빈 배열로 처리해 화면이 깨지지 않게 함.
+ * @returns 임시글 목록
+ */
+export const getDrafts = async (): Promise<GetDraftsResultType> => {
+  try {
+    const response = await axiosPrivateInstance.get<GetDraftsResponseDto>('/api/posts/drafts');
+    return response.data.result;
+  } catch (error) {
+    if ((error as { status?: number })?.status === 404) return [];
+    throw error;
+  }
+};
+
+/**
+ * 새 임시글 생성 - POST /api/posts/drafts
+ * @returns { id, updatedAt }
+ */
+export const createDraft = async (payload: DraftPayload): Promise<CreateDraftResultType> => {
+  const response = await axiosPrivateInstance.post<CreateDraftResponseDto>(
+    '/api/posts/drafts',
+    payload,
+  );
+
+  return response.data.result;
+};
+
+/**
+ * 기존 임시글 수정 - PUT /api/posts/drafts/:draftId
+ * @returns { updatedAt }
+ */
+export const updateDraft = async (params: {
+  draftId: number;
+  payload: DraftPayload;
+}): Promise<UpdateDraftResultType> => {
+  const response = await axiosPrivateInstance.put<UpdateDraftResponseDto>(
+    `/api/posts/drafts/${params.draftId}`,
+    params.payload,
+  );
+
+  return response.data.result;
+};
+
+/**
+ * 임시글 삭제 - DELETE /api/posts/drafts/:draftId
+ */
+export const deleteDraft = async (draftId: number): Promise<void> => {
+  await axiosPrivateInstance.delete(`/api/posts/drafts/${draftId}`);
 };

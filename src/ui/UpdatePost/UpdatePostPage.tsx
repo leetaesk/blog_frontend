@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import MDEditor from '@uiw/react-md-editor';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ZodError } from 'zod';
 
-import ImageUploader from '@/components/ImageUploader';
+import PostEditor from '@/components/PostEditor';
+import ThumbnailInput from '@/components/ThumbnailInput';
 import { urlFor } from '@/constants/routes';
 import { useGetPostForEdit, useUpdatePost } from '@/features/posts/posts.hook';
 import { postPostSchema } from '@/features/posts/posts.schema';
-import useThemeStore from '@/store/themeStore';
 import CategoryInput from '@/ui/PostDetail/components/CategoryInput';
 
 /**
@@ -19,8 +18,6 @@ const UpdatePostPage = () => {
   const navigate = useNavigate();
   const { postId: postIdStr } = useParams<{ postId: string }>();
   const postId = parseInt(postIdStr || '', 10);
-
-  const currentTheme = useThemeStore((s) => s.theme);
 
   const { data: post, isLoading, isError } = useGetPostForEdit({ postId });
 
@@ -32,6 +29,9 @@ const UpdatePostPage = () => {
   const [summary, setSummary] = useState<string>('');
   const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
   const [tagsInput, setTagsInput] = useState('');
+  // 글 데이터가 비동기로 도착하면 PostEditor를 리마운트시켜 본문(HTML)을 주입하기 위한 key.
+  // (PostEditor의 초기화는 최초 1회만 실행되므로, value가 빈값일 때 마운트되면 본문이 안 들어감)
+  const [editorKey, setEditorKey] = useState(0);
 
   useEffect(() => {
     if (post) {
@@ -41,6 +41,7 @@ const UpdatePostPage = () => {
       setSummary(post.summary || '');
       setThumbnailUrl(post.thumbnailUrl || '');
       setTagsInput(post.tags.join(', '));
+      setEditorKey((k) => k + 1); // 본문 HTML로 에디터 재초기화
     }
   }, [post]); // post 데이터가 변경될 때만 실행
 
@@ -110,9 +111,6 @@ const UpdatePostPage = () => {
         </p>
       </header>
 
-      {/* ImageUploader는 새 글 작성과 동일하게 UI만 제공 */}
-      <ImageUploader />
-
       <div className="space-y-6">
         {/* 제목 입력 필드 */}
         <div>
@@ -129,37 +127,8 @@ const UpdatePostPage = () => {
           />
         </div>
 
-        {/* 썸네일 입력필드 */}
-        <div>
-          <label
-            htmlFor="thumbnailUrl"
-            className="text-foreground mb-2 block text-lg font-semibold"
-          >
-            썸네일 URL
-          </label>
-          <input
-            id="thumbnailUrl"
-            type="text"
-            placeholder="이미지 URL을 직접 입력하세요 (예: https://...)"
-            value={thumbnailUrl}
-            onChange={(e) => setThumbnailUrl(e.target.value)}
-            className="bg-card text-foreground placeholder:text-muted-foreground rounded-lg-md border-border focus:ring-ring w-full border p-3 transition focus:ring-2 focus:outline-none"
-          />
-          {thumbnailUrl && (
-            <div className="mt-4">
-              <p className="text-muted-foreground mb-2 text-sm">이미지 미리보기:</p>
-              <div className="h-48 w-72 overflow-hidden">
-                <img
-                  src={thumbnailUrl}
-                  alt="썸네일 미리보기"
-                  onError={(e) => (e.currentTarget.style.display = 'none')}
-                  onLoad={(e) => (e.currentTarget.style.display = 'block')}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-              </div>
-            </div>
-          )}
-        </div>
+        {/* 썸네일 (URL 직접 입력 또는 이미지 붙여넣기/업로드) */}
+        <ThumbnailInput value={thumbnailUrl} onChange={setThumbnailUrl} />
 
         {/* 카테고리 */}
         <CategoryInput value={categoryId} onChange={setCategoryId} />
@@ -194,14 +163,10 @@ const UpdatePostPage = () => {
           />
         </div>
 
-        {/* 마크다운 에디터 */}
-        <div data-color-mode={currentTheme}>
-          <MDEditor
-            value={content}
-            onChange={(value) => setContent(value || '')}
-            height={800}
-            className="rounded-lg-md border-border border"
-          />
+        {/* 본문 에디터 (BlockNote - 노션 스타일) */}
+        <div>
+          <label className="text-foreground mb-2 block text-lg font-semibold">본문</label>
+          <PostEditor key={editorKey} value={content} onChange={setContent} />
         </div>
       </div>
 

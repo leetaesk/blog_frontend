@@ -1,76 +1,101 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import MDEditor from '@uiw/react-md-editor';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { ZodError } from 'zod';
 
-import ImageUploader from '@/components/ImageUploader';
-import { usePostPost } from '@/features/posts/posts.hook';
+import DraftListPanel from '@/components/DraftListPanel';
+import PostEditor from '@/components/PostEditor';
+import ThumbnailInput from '@/components/ThumbnailInput';
+import type { DraftDetail } from '@/features/posts/posts.dto';
+import { useDeleteDraft, usePostPost, useSaveDraft } from '@/features/posts/posts.hook';
 import { postPostSchema } from '@/features/posts/posts.schema';
-import useThemeStore from '@/store/themeStore';
 import CategoryInput from '@/ui/PostDetail/components/CategoryInput';
 
-export const DRAFT_STORAGE_KEY = 'create-post-draft';
-
-const getInitialDraft = () => {
-  const savedDraft = localStorage.getItem(DRAFT_STORAGE_KEY);
-  if (savedDraft) {
-    try {
-      // JSON 파싱에 실패할 경우를 대비해 try...catch
-      const draft = JSON.parse(savedDraft);
-      console.log('임시 저장된 글을 불러왔습니다.', draft);
-      return draft;
-    } catch (e) {
-      console.error('임시 저장된 글을 불러오는 데 실패했습니다.', e);
-      // 잘못된 데이터가 저장되어 있으면 삭제
-      localStorage.removeItem(DRAFT_STORAGE_KEY);
-      return null;
-    }
-  }
-  return null;
-};
+/** 쉼표 구분 태그 문자열을 배열로 파싱 */
+const parseTags = (input: string): string[] =>
+  input
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter((tag) => tag.length > 0);
 
 const CreatePostPage = () => {
   const navigate = useNavigate();
-  const currentTheme = useThemeStore((s) => s.theme);
   const { mutate: createPost, isPending } = usePostPost();
 
-  // 👈 3. 마운트 시 1회만 실행되는 'Lazy Initializer'로 초기 상태 설정
-  // getInitialDraft()를 한 번만 호출해서 초기 데이터를 가져옴
-  const initialDraft = getInitialDraft();
+  // 임시저장(서버) 관련
+  const { mutate: saveDraft, isPending: isSavingDraft } = useSaveDraft();
+  const { mutate: deleteDraft } = useDeleteDraft();
+  // 현재 폼에 불러와 편집 중인 임시글 id (없으면 새 임시글로 저장)
+  const [currentDraftId, setCurrentDraftId] = useState<number | null>(null);
+  // 임시글을 불러올 때 PostEditor를 강제 리마운트시켜 새 본문으로 초기화하기 위한 key
+  const [editorKey, setEditorKey] = useState(0);
 
-  // 1. DTO에 매핑되는 상태들
-  const [title, setTitle] = useState<string>(() => initialDraft?.title || '');
-  const [content, setContent] = useState<string>(
-    () => initialDraft?.content || '**새로운 글을 작성해보세요!**',
-  );
-  const [categoryId, setCategoryId] = useState<number>(() => initialDraft?.categoryId || 0);
-  const [summary, setSummary] = useState<string>(() => initialDraft?.summary || '');
-  const [thumbnailUrl, setThumbnailUrl] = useState<string>(() => initialDraft?.thumbnailUrl || '');
-  const [tagsInput, setTagsInput] = useState<string>(() => initialDraft?.tagsInput || '');
+  // DTO에 매핑되는 상태들
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
+  const [categoryId, setCategoryId] = useState<number>(0);
+  const [summary, setSummary] = useState<string>('');
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
+  const [tagsInput, setTagsInput] = useState<string>('');
 
-  // 👈 4. 폼 상태가 변경될 때마다 localStorage에 자동 저장
-  useEffect(() => {
-    const draft = {
-      title,
-      content,
-      categoryId,
-      summary,
-      thumbnailUrl,
-      tagsInput,
-    };
-    // 현재 폼 상태를 JSON 문자열로 변환하여 저장
-    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
-  }, [title, content, categoryId, summary, thumbnailUrl, tagsInput]); // 👈 감시할 상태들
+  /** 임시글 목록에서 선택 → 폼에 불러오기 */
+  const handleLoadDraft = (draft: DraftDetail) => {
+    setTitle(draft.title || '');
+    setContent(draft.content || '');
+    setCategoryId(draft.categoryId || 0);
+    setSummary(draft.summary || '');
+    setThumbnailUrl(draft.thumbnailUrl || '');
+    setTagsInput((draft.tags || []).join(', '));
+    setCurrentDraftId(draft.id);
+    setEditorKey((prev) => prev + 1); // 에디터 본문 갱신
+    toast.success('임시저장된 글을 불러왔습니다.');
+  };
+
+  /** 임시글 삭제 (목록 패널에서) */
+  const handleDeleteDraft = (draftId: number) => {
+    deleteDraft(draftId, {
+      onSuccess: () => {
+        // 편집 중이던 임시글을 삭제했다면 연결 해제 (이후 저장 시 새로 생성)
+        if (draftId === currentDraftId) setCurrentDraftId(null);
+        toast.success('임시글을 삭제했습니다.');
+      },
+    });
+  };
+
+  /** '임시저장' 버튼 → 현재 폼 상태를 임시글로 저장(신규/수정) */
+  const handleSaveDraft = () => {
+    if (!title.trim() && !content.trim()) {
+      toast.error('제목이나 본문을 입력한 뒤 임시저장할 수 있습니다.');
+      return;
+    }
+    saveDraft(
+      {
+        draftId: currentDraftId,
+        payload: {
+          title,
+          content,
+          categoryId: categoryId || null,
+          summary,
+          thumbnailUrl,
+          tags: parseTags(tagsInput),
+        },
+      },
+      {
+        onSuccess: (result) => {
+          setCurrentDraftId(result.id);
+          window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 최상단으로 스크롤
+          toast.success('임시저장되었습니다.');
+        },
+        onError: () => toast.error('임시저장에 실패했습니다.'),
+      },
+    );
+  };
 
   const handleSave = () => {
     // 1. 태그 문자열을 배열로 파싱
-    const tags: string[] | undefined = tagsInput.trim()
-      ? tagsInput
-          .split(',')
-          .map((tag) => tag.trim())
-          .filter((tag) => tag.length > 0) // 빈 태그 제거
-      : undefined;
+    const parsedTags = parseTags(tagsInput);
+    const tags: string[] | undefined = parsedTags.length > 0 ? parsedTags : undefined;
 
     // 2. DTO 객체 구성 (콘솔 출력용)
     const postData = {
@@ -86,8 +111,12 @@ const CreatePostPage = () => {
       // 3. Zod 스키마로 데이터 유효성 검증
       const validatedData = postPostSchema.parse(postData);
 
-      // 4. 검증 통과 시, 서버에 데이터 전송 (mutate 함수 호출)
-      createPost(validatedData);
+      // 4. 검증 통과 시, 서버에 데이터 전송. 발행 성공 시 연결된 임시글 삭제.
+      createPost(validatedData, {
+        onSuccess: () => {
+          if (currentDraftId) deleteDraft(currentDraftId);
+        },
+      });
     } catch (error) {
       // 5. 유효성 검증 실패 시 에러 처리
       if (error instanceof ZodError) {
@@ -122,7 +151,12 @@ const CreatePostPage = () => {
         </p>
       </header>
 
-      <ImageUploader />
+      {/* 임시저장 목록 - 선택해서 불러오기 */}
+      <DraftListPanel
+        currentDraftId={currentDraftId}
+        onLoad={handleLoadDraft}
+        onDelete={handleDeleteDraft}
+      />
 
       <div className="space-y-6">
         {/* 제목 입력 필드 */}
@@ -140,39 +174,8 @@ const CreatePostPage = () => {
           />
         </div>
 
-        {/* 썸네일 입력필드 */}
-        {/* 2. 썸네일 URL (thumbnailUrl) */}
-        <div>
-          <label
-            htmlFor="thumbnailUrl"
-            className="text-foreground mb-2 block text-lg font-semibold"
-          >
-            썸네일 URL
-          </label>
-          <input
-            id="thumbnailUrl"
-            type="text"
-            placeholder="이미지 URL을 직접 입력하세요 (예: https://...)"
-            value={thumbnailUrl}
-            onChange={(e) => setThumbnailUrl(e.target.value)}
-            className="bg-card text-foreground placeholder:text-muted-foreground rounded-lg-md border-border focus:ring-ring w-full border p-3 transition focus:ring-2 focus:outline-none"
-          />
-          {/* 이미지 URL 입력 시 간단한 미리보기 */}
-          {thumbnailUrl && (
-            <div className="mt-4">
-              <p className="text-muted-foreground mb-2 text-sm">이미지 미리보기:</p>
-              <div className="h-48 w-72 overflow-hidden">
-                <img
-                  src={thumbnailUrl}
-                  alt="썸네일 미리보기"
-                  onError={(e) => (e.currentTarget.style.display = 'none')} // URL이 잘못되면 숨김
-                  onLoad={(e) => (e.currentTarget.style.display = 'block')} // 로드되면 표시
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-              </div>
-            </div>
-          )}
-        </div>
+        {/* 썸네일 (URL 직접 입력 또는 이미지 붙여넣기/업로드) */}
+        <ThumbnailInput value={thumbnailUrl} onChange={setThumbnailUrl} />
 
         {/* 3. 🔽 카테고리 (categoryId) - 기존 select 로직을 통째로 교체 */}
         <CategoryInput value={categoryId} onChange={setCategoryId} />
@@ -207,23 +210,23 @@ const CreatePostPage = () => {
           />
         </div>
 
-        {/* 마크다운 에디터 */}
-        {/* MDEditor는 data-color-mode 속성으로 테마를 제어합니다.
-          앱의 테마 상태(light/dark)에 따라 동적으로 값을 설정해줘야 합니다.
-        */}
-        <div data-color-mode={currentTheme}>
-          <MDEditor
-            value={content}
-            //임마는 undefined 필요하대 ;;
-            onChange={(value) => setContent(value || '')}
-            height={800}
-            className="rounded-lg-md border-border border"
-          />
+        {/* 본문 에디터 (BlockNote - 노션 스타일) */}
+        <div>
+          <label className="text-foreground mb-2 block text-lg font-semibold">본문</label>
+          <PostEditor key={editorKey} value={content} onChange={setContent} />
         </div>
       </div>
 
       {/* 액션 버튼 */}
-      <div className="mt-8 flex justify-end gap-4">
+      <div className="mt-8 flex items-center justify-end gap-4">
+        <button
+          type="button"
+          onClick={handleSaveDraft}
+          disabled={isSavingDraft}
+          className="rounded-lg-md bg-secondary text-secondary-foreground hover:bg-muted mr-auto px-6 py-2 font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {isSavingDraft ? '임시저장 중...' : currentDraftId ? '임시저장 갱신' : '임시저장'}
+        </button>
         <button
           type="button"
           onClick={handleCancel}

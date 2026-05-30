@@ -23,6 +23,7 @@ export const QUERY_KEY = {
     ALL: ['posts'],
     BY_POST_ID: (postId: number) => ['post', postId],
     FOR_EDIT: (postId: number) => ['post', 'edit', postId],
+    DRAFTS: ['posts', 'drafts'],
   },
   comments: {
     ALL: ['comments'],

@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import { Helmet } from 'react-helmet-async';
 import toast from 'react-hot-toast';
 // ✨ 1. Helmet 임포트
@@ -157,7 +158,7 @@ const PostDetailPage = () => {
 
         <div
           className="prose prose-lg post-content dark:prose-invert prose-p:text-textDark dark:prose-p:text-textWhite prose-h3:text-textDark dark:prose-h3:text-textWhite prose-strong:text-textDark dark:prose-strong:text-textWhite max-w-none"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
         />
 
         <div className="mt-10 border-t border-gray-200 pt-6 dark:border-gray-700">

@@ -5,19 +5,23 @@ import { useNavigate } from 'react-router-dom';
 import { QUERY_KEY } from '@/constants/queryKey';
 import { urlFor } from '@/constants/routes';
 import {
+  createDraft,
+  deleteDraft,
   deletePostById,
+  getDrafts,
   getPostById,
   getPostForEdit,
   patchPostById,
   postPost,
+  updateDraft,
 } from '@/features/posts/posts.api';
+import type { DraftPayload } from '@/features/posts/posts.dto';
 import type {
   DeletePostRequestDto,
   GetPostByIdRequestDto,
   GetPostForEditRequestDto,
   UpdatePostRequestDto,
 } from '@/features/posts/posts.dto';
-import { DRAFT_STORAGE_KEY } from '@/ui/CreatePost/CreatePostPage';
 
 /**
  * 게시글 상세 조회
@@ -99,13 +103,57 @@ export const usePostPost = () => {
 
     onSuccess: (data) => {
       toast.success(`게시글 작성이 완료되었습니다!`);
-      // 로컬스토리지에 저장된 임시글 삭제
-      localStorage.removeItem(DRAFT_STORAGE_KEY);
       navigate(urlFor.postDetail(data.postId));
     },
 
     onError: (error) => {
       alert(`게시글 등록에 실패했습니다: ${error.message}`);
+    },
+  });
+};
+
+/**
+ * 내 임시글 목록 조회.
+ * - retry: false → 백엔드 미구현/임시글 없음(404)일 때 재시도하지 않음
+ */
+export const useGetDrafts = () => {
+  return useQuery({
+    queryKey: QUERY_KEY.posts.DRAFTS,
+    queryFn: getDrafts,
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+};
+
+/**
+ * 임시글 저장. draftId가 있으면 수정, 없으면 새로 생성한다.
+ * @returns 항상 { id, updatedAt } 형태
+ */
+export const useSaveDraft = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (vars: { draftId: number | null; payload: DraftPayload }) => {
+      if (vars.draftId) {
+        const result = await updateDraft({ draftId: vars.draftId, payload: vars.payload });
+        return { id: vars.draftId, updatedAt: result.updatedAt };
+      }
+      return await createDraft(vars.payload);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.posts.DRAFTS });
+    },
+  });
+};
+
+/**
+ * 임시글 삭제 (목록에서 삭제 또는 발행 성공 후 호출).
+ */
+export const useDeleteDraft = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteDraft,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY.posts.DRAFTS });
     },
   });
 };
