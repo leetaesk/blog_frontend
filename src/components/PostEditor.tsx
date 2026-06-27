@@ -67,7 +67,6 @@ const PostEditor = ({ value, onChange }: PostEditorProps) => {
         editor={editor}
         onChange={handleChange}
         theme={currentTheme === 'dark' ? 'dark' : 'light'}
-        className="min-h-[600px] py-4"
       />
     </div>
   );
