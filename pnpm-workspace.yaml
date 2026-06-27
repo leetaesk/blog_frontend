@@ -1,0 +1,5 @@
+allowBuilds:
+  '@swc/core': true
+  '@tailwindcss/oxide': true
+  '@vercel/speed-insights': true
+  esbuild: true
